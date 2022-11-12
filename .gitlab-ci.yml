@@ -13,28 +13,30 @@ stages:
   - build
   - deploy
 
-build-app:
-  stage: build
-  image: node:16.16.0
-  before_script:
-    - npm install
-  script:
-    - npm run build
-  artifacts:
-    paths:
-      - build/
+#build-app:
+#  stage: build
+#  image: node:16.16.0
+#  before_script:
+#    - npm install
+#  script:
+#    - npm run build
+#  artifacts:
+#    paths:
+#      - build/
 
 deploy-app-image:
   stage: deploy
   image: ubuntu:latest
-  needs:
-    - build-app
+  #needs:
+    #- build-app
   before_script:
     - apt-get update -y
     - apt-get install -y curl apache2-utils
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
   script:
+    - mkdir -p build
+    - echo "$(date)" > build/index.html
     - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
     # push to github container registry (ghcr.io)
     - echo "$CR_ALT_PASS" | docker login $CR_ALT_SERVER --username $CR_ALT_USER --password-stdin
