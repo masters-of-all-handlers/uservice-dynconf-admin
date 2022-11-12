@@ -51,4 +51,4 @@ jobs:
       - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
       - run: scp -o StrictHostKeyChecking=no .deploy/nginx.conf ${{ secrets.SSH_LOGIN }}:~/frontend/
       - run: scp -o StrictHostKeyChecking=no -r build ${{ secrets.SSH_LOGIN }}:~/frontend/
-      - run: ssh -o StrictHostKeyChecking=no sudo -i service nginx restart
+      - run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} sudo -i service nginx restart
