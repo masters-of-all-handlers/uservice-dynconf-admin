@@ -28,7 +28,7 @@ jobs:
           path: build/
       - run: |
           curl -sSL https://get.docker.com/ | sudo sh
-          docker build -t uda-frontend ./.deploy
+          docker build -t uda-frontend .
       - uses: ishworkh/docker-image-artifact-upload@v1
         with:
           image: uda-frontend
@@ -49,6 +49,6 @@ jobs:
         with:
           config_file: ./client.ovpn
       - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      - run: scp -o StrictHostKeyChecking=no .deploy/nginx.conf ${{ secrets.SSH_LOGIN }}:~/frontend/
+      - run: scp -o StrictHostKeyChecking=no nginx.conf ${{ secrets.SSH_LOGIN }}:~/frontend/
       - run: scp -o StrictHostKeyChecking=no -r build ${{ secrets.SSH_LOGIN }}:~/frontend/
       - run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} sudo -i service nginx restart
