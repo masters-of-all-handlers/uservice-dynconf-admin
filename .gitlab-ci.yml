@@ -44,6 +44,7 @@ build-docker:
     DOCKER_HOST: tcp://localhost:2375
   before_script:
     - curl -sSL https://get.docker.com/ | sh
+    - dockerd &
   script:
     - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
     - docker build -t $CR_IMAGE .
