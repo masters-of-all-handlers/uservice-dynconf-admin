@@ -10,7 +10,7 @@ variables:
   CR_PASS: $CI_JOB_TOKEN
 
 stages:
-  - build
+  #- build
   - deploy
 
 #build-app:
