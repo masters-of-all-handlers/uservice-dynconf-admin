@@ -42,6 +42,7 @@ build-docker:
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
     - mkdir -p build
+    - echo $(date) > build/index.html
   script:
     - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
     - echo "$CR_PASS" | docker login $CR_SERVER --username $CR_USER --password-stdin
