@@ -34,7 +34,7 @@ build-ba:
 
 build-docker:
   stage: build
-  image: ubuntu:19.03.0
+  image: ubuntu:latest
   needs:
     - build-app
     - build-ba
