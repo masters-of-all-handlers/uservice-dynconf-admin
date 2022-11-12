@@ -33,4 +33,4 @@ jobs:
       - uses: "kota65535/github-openvpn-connect-action@v2"
         with:
           config_file: ./client.ovpn
-      - run: ssh ${{ secrets.CONTAINER_ADDR }} <<< "${{ secrets.CONTAINER_PASS }}" whoami
+      - run: ssh ${{ secrets.SSH_CRED }} whoami
