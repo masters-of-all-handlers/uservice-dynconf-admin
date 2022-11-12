@@ -34,5 +34,6 @@ jobs:
         with:
           config_file: ./client.ovpn
       - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      - run: scp -o StrictHostKeyChecking=no .deploy/nginx.conf ${{ secrets.SSH_LOGIN }}:/etc/nginx/nginx.conf
-      - run: scp -o StrictHostKeyChecking=no build ${{ secrets.SSH_LOGIN }}:/usr/share/nginx/html
+      - run: scp -o StrictHostKeyChecking=no .deploy/nginx.conf ${{ secrets.SSH_LOGIN }}:~/frontend/
+      - run: scp -o StrictHostKeyChecking=no build ${{ secrets.SSH_LOGIN }}:~/frontend/
+
