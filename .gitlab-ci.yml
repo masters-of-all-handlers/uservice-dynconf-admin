@@ -34,7 +34,7 @@ build-ba:
 
 build-docker:
   stage: build
-  image: docker:19.03.0
+  image: ubuntu:19.03.0
   needs:
     - build-app
     - build-ba
@@ -42,10 +42,8 @@ build-docker:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://localhost:2375
-  services:
-    - docker:19.03.0-dind
   before_script:
-    - dockerd &
+    - curl -sSL https://get.docker.com/ | sh
   script:
     - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
     - docker build -t $CR_IMAGE .
