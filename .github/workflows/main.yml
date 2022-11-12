@@ -33,5 +33,5 @@ jobs:
       - uses: "kota65535/github-openvpn-connect-action@v2"
         with:
           config_file: ./client.ovpn
-      - run: echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+      - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
       - run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} whoami
