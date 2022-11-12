@@ -4,10 +4,10 @@ variables:
   CR_ALT_USER: kormanowsky
   CR_ALT_SERVER: ghcr.io
   CR_ALT_IMAGE: $CR_ALT_SERVER/masters-of-all-handlers/uda-frontend:latest
-  CR_SEVRER: $CI_REGISTRY
+  CR_SEVRER: registry.yandex-academy.ru
   CR_IMAGE: $CR_SERVER/kormanowsky.m/uda-frontend:latest
-  CR_USER: $CI_REGISTRY_USER
-  CR_PASS: $CI_REGISTRY_PASSWORD
+  CR_USER: ci-job-token
+  CR_PASS: $CI_JOB_TOKEN
 
 stages:
   - build
