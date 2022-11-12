@@ -1,9 +1,11 @@
 variables:
   BA_USER: team14
   SSH_ADDR: student@10.21.0.234
-  CR_USER: kormanowsky
-  CR_SERVER: ghcr.io
-  CR_IMAGE: $CR_SERVER/masters-of-all-handlers/uda-frontend:latest
+  CR_ALT_USER: kormanowsky
+  CR_ALT_SERVER: ghcr.io
+  CR_ALT_IMAGE: $CR_ALT_SERVER/masters-of-all-handlers/uda-frontend:latest
+  CR_SEVRER: registry.yandex-academy.ru
+  CR_IMAGE: $CR_SERVER/kormanowsky/uda-frontend:latest
 
 stages:
   - build
@@ -32,7 +34,12 @@ deploy-app-image:
     - dockerd &
   script:
     - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
-    - echo "$CR_PASS" | docker login $CR_SERVER --username $CR_USER --password-stdin
+    # push to github container registry (ghcr.io)
+    - echo "$CR_ALT_PASS" | docker login $CR_ALT_SERVER --username $CR_ALT_USER --password-stdin
+    - docker build -t $CR_ALT_IMAGE .
+    - docker push $CR_ALT_IMAGE
+    # push to gitlab registry
+    - docker login $CR_SERVER
     - docker build -t $CR_IMAGE .
     - docker push $CR_IMAGE
 
