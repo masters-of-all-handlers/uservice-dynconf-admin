@@ -25,10 +25,9 @@ stages:
 #  image: ubuntu:latest
 #  before_script:
 #    - apt-get update -y
-#    - apt-get install -y apache2-utils
+#    - apt-get install -y
 #  script:
-#    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
-#  artifacts:
+#
 #    paths:
 #      - .htpasswd
 #
@@ -37,15 +36,15 @@ build-docker:
   image: ubuntu:latest
 #  needs:
 #    - build-app
-#    - build-ba
   before_script:
     - apt-get update -y
-    - apt-get install -y curl
+    - apt-get install -y curl apache2-utils
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
     - mkdir -p build
   script:
-    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
+    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
+    - echo "$CR_PASS" | docker login $CR_SERVER --username $CR_USER --password-stdin
     - docker build -t $CR_IMAGE .
     - docker push $CR_IMAGE
 
