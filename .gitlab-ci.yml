@@ -6,7 +6,7 @@ variables:
   CR_IMAGE: $CR_SERVER/masters-of-all-handlers/uda-frontend:latest
 
 stages:
-#  - build
+  - build
   - deploy
 
 #build-app:
@@ -32,23 +32,21 @@ stages:
 #    paths:
 #      - .htpasswd
 #
-#build-docker:
-#  stage: build
-#  image: ubuntu:latest
+build-docker:
+  stage: build
+  image: ubuntu:latest
 #  needs:
 #    - build-app
 #    - build-ba
-#  variables:
-#    DOCKER_DRIVER: overlay2
-#    DOCKER_TLS_CERTDIR: ""
-#    DOCKER_HOST: tcp://localhost:2375
-#  before_script:
-#    - curl -sSL https://get.docker.com/ | sh
-#    - dockerd &
-#  script:
-#    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
-#    - docker build -t $CR_IMAGE .
-#    - docker push $CR_IMAGE
+  before_script:
+    - apt-get update -y
+    - apt-get install curl
+    - curl -sSL https://get.docker.com/ | sh
+    - dockerd &
+  script:
+    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
+    - docker build -t $CR_IMAGE .
+    - docker push $CR_IMAGE
 
 
 deploy-app-scp:
