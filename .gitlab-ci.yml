@@ -34,7 +34,7 @@ build-ba:
 
 build-docker:
   stage: build
-  image: docker:latest
+  image: docker:dind
   needs:
     - build-app
     - build-ba
