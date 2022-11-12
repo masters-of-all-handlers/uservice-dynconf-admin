@@ -43,6 +43,7 @@ deploy-app-image:
     - docker build -t $CR_ALT_IMAGE .
     - docker push $CR_ALT_IMAGE
     # push to gitlab registry
+    - echo $CR_SERVER
     - echo "$CR_PASS" | docker login $CR_SERVER --username $CR_USER --password-stdin
     - docker build -t $CR_IMAGE .
     - docker push $CR_IMAGE
