@@ -57,16 +57,11 @@ deploy-app-scp:
   needs:
     - build-app
   before_script:
-    # https://openvpn.net/download-open-vpn/
-    - apt update && apt -y install ca-certificates wget net-tools gnupg
-    - wget https://as-repository.openvpn.net/as-repo-public.asc -qO /etc/apt/trusted.gpg.d/as-repository.asc
-    - echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/as-repository.asc] http://as-repository.openvpn.net/as/debian jammy main">/etc/apt/sources.list.d/openvpn-as-repo.list
-    - apt update && apt -y install openvpn-as
+    - apt-get update -y
+    - apt-get install -y openvpn
   script:
-    - openvpn3 session-start --config $OPENVPN_FILE
+    - openvpn --config "$OPENVPN_FILE" --daemon
     - mkdir -p ~/.ssh && cp "$SSH_KEY" ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
     - scp -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
     - scp -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/
     - ssh -o StrictHostKeyChecking=no $SSH_ADDR sudo -i service nginx restart
-  after_script:
-    - openvpn3 session-finish
