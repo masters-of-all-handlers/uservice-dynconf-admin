@@ -5,7 +5,7 @@ variables:
   CR_ALT_SERVER: ghcr.io
   CR_ALT_IMAGE: $CR_ALT_SERVER/masters-of-all-handlers/uda-frontend:latest
   CR_SEVRER: registry.yandex-academy.ru
-  CR_IMAGE: $CR_SERVER/kormanowsky/uda-frontend:latest
+  CR_IMAGE: $CR_SERVER/kormanowsky.m/uda-frontend:latest
 
 stages:
   - build
