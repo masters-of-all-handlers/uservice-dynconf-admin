@@ -63,6 +63,6 @@ deploy-app-scp:
     - mkdir -p build
     - openvpn --config "$OPENVPN_FILE" --daemon
     - mkdir -p ~/.ssh && cp "$SSH_KEY" ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-    - scp -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
-    - scp -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/
-    - ssh -o StrictHostKeyChecking=no $SSH_ADDR sudo -i service nginx restart
+    - scp -v -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
+    - scp -v -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/
+    - ssh -v -o StrictHostKeyChecking=no $SSH_ADDR sudo -i service nginx restart
