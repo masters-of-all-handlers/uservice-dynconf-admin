@@ -28,11 +28,11 @@ jobs:
           path: build/
       - run: |
           curl -sSL https://get.docker.com/ | sudo sh
-          docker build -t uda-frontend .
+          docker build -t ghcr.io/yandex-uda/uda-frontend .
           docker push ghcr.io/yandex-uda/uda-frontend:latest
       - uses: ishworkh/docker-image-artifact-upload@v1
         with:
-          image: uda-frontend
+          image: ghcr.io/yandex-uda/uda-frontend
   deploy-app-scp:
     runs-on: ubuntu-latest
     needs: [ build-app ]
