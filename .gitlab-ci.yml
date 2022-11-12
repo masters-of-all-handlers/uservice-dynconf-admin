@@ -65,4 +65,4 @@ deploy-app-scp:
     - chmod 600 $SSH_KEY
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/
-    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR sudo -i service nginx restart
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR "sudo -i service nginx restart &"
