@@ -4,31 +4,31 @@ variables:
   CR_ALT_USER: kormanowsky
   CR_ALT_SERVER: ghcr.io
   CR_ALT_IMAGE: $CR_ALT_SERVER/masters-of-all-handlers/uda-frontend:latest
-  CR_SEVRER: registry.yandex-academy.ru
+  CR_SERVER: registry.yandex-academy.ru
   CR_IMAGE: $CR_SERVER/kormanowsky.m/uda-frontend:latest
   CR_USER: ci-job-token
   CR_PASS: $CI_JOB_TOKEN
 
 stages:
-  #- build
+  - build
   - deploy
 
-#build-app:
-#  stage: build
-#  image: node:16.16.0
-#  before_script:
-#    - npm install
-#  script:
-#    - npm run build
-#  artifacts:
-#    paths:
-#      - build/
+build-app:
+  stage: build
+  image: node:16.16.0
+  before_script:
+    - npm install
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build/
 
 deploy-app-image:
   stage: deploy
   image: ubuntu:latest
-  #needs:
-    #- build-app
+  needs:
+    - build-app
   before_script:
     - apt-get update -y
     - apt-get install -y curl apache2-utils
@@ -43,24 +43,23 @@ deploy-app-image:
     - docker build -t $CR_ALT_IMAGE .
     - docker push $CR_ALT_IMAGE
     # push to gitlab registry
-    - echo $CR_SERVER
     - echo "$CR_PASS" | docker login $CR_SERVER --username $CR_USER --password-stdin
     - docker build -t $CR_IMAGE .
     - docker push $CR_IMAGE
 
 
-#deploy-app-scp:
-#  stage: deploy
-#  image: ubuntu:latest
-#  needs:
-#    - build-app
-#  before_script:
-#    - apt-get update -y
-#    - apt-get install -y openvpn openssh-client
-#  script:
-#    - openvpn --config "$OPENVPN_FILE" --daemon
-#    - chmod 600 $SSH_KEY
-#    - scp -i $SSH_KEY -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf &
-#    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/ &
-#    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR "sudo -i service nginx restart &" &
-#    - sleep 15
+deploy-app-scp:
+  stage: deploy
+  image: ubuntu:latest
+  needs:
+    - build-app
+  before_script:
+    - apt-get update -y
+    - apt-get install -y openvpn openssh-client
+  script:
+    - openvpn --config "$OPENVPN_FILE" --daemon
+    - chmod 600 $SSH_KEY
+    - scp -i $SSH_KEY -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf &
+    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/ &
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR "sudo -i service nginx restart &" &
+    - sleep 15
