@@ -39,9 +39,6 @@ jobs:
           curl -sSL https://get.docker.com/ | sudo sh
           docker build -t ghcr.io/${{ github.repository_owner }}/uda-frontend .
           docker push ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
-      - uses: ishworkh/docker-image-artifact-upload@v1
-        with:
-          image: ghcr.io/${{ github.repository_owner }}/uda-frontend
   deploy-app-scp:
     runs-on: ubuntu-latest
     needs: [ build-app ]
