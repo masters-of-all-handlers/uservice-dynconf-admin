@@ -33,12 +33,10 @@ build-ba:
 
 build-docker:
   stage: build
-  image: ubuntu:latest
+  image: docker:latest
   needs:
     - build-app
     - build-ba
-  before_script:
-    - curl -sSL https://get.docker.com/ | sudo sh
   script:
     - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
     - docker build -t $CR_IMAGE .
