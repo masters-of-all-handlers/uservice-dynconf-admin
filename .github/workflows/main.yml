@@ -27,6 +27,21 @@ jobs:
           name: app-build
           path: build/
       - run: |
+          curl -sSL https://get.docker.com/ | sudo sh
+          docker build -t uda-frontend ./.deploy
+      - uses: ishworkh/docker-image-artifact-upload@v1
+        with:
+          image: uda-frontend
+  deploy-app-scp:
+    runs-on: ubuntu-latest
+    needs: [ build-app ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-build
+          path: build/
+      - run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
       - run: echo "${{ secrets.OPENVPN_FILE }}" > client.ovpn
