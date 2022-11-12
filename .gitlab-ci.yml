@@ -1,0 +1,65 @@
+variables:
+  BA_USER: team14
+  CR_USER: kormanowsky
+  CR_IMAGE: ghcr.io/masters-of-all-handlers/uda-frontend:latest
+  SSH_ADDR: student@10.21.0.234
+
+stages:
+  - build
+  - deploy
+
+build-app:
+  stage: build
+  image: node:16.16.0
+  before_script:
+    - npm install
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+build-ba:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -y
+    - apt-get install -y apache2-utils
+    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
+  artifacts:
+    paths:
+      - .htpasswd
+
+build-docker:
+  stage: build
+  image: ubuntu:latest
+  needs:
+    - build-app
+    - build-ba
+  before_script:
+    - curl -sSL https://get.docker.com/ | sudo sh
+  script:
+    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
+    - docker build -t $CR_IMAGE .
+    - docker push $CR_IMAGE
+
+
+deploy-app-scp:
+  stage: deploy
+  image: ubuntu:latest
+  needs:
+    - build-app
+  before_script:
+    # https://openvpn.net/download-open-vpn/
+    - apt update && apt -y install ca-certificates wget net-tools gnupg
+    - wget https://as-repository.openvpn.net/as-repo-public.asc -qO /etc/apt/trusted.gpg.d/as-repository.asc
+    - echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/as-repository.asc] http://as-repository.openvpn.net/as/debian jammy main">/etc/apt/sources.list.d/openvpn-as-repo.list
+    - apt update && apt -y install openvpn-as
+  script:
+    - openvpn3 session-start --config $OPENVPN_FILE
+    - mkdir -p ~/.ssh && cp "$SSH_KEY" ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+    - scp -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
+    - scp -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/
+    - ssh -o StrictHostKeyChecking=no $SSH_ADDR sudo -i service nginx restart
+  after_script:
+    - openvpn3 session-finish
