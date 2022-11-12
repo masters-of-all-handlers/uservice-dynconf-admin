@@ -25,6 +25,7 @@ build-ba:
   before_script:
     - apt-get update -y
     - apt-get install -y apache2-utils
+  script:
     - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
   artifacts:
     paths:
