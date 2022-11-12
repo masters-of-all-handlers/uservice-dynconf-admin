@@ -35,8 +35,6 @@ deploy-app-image:
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
   script:
-    - mkdir -p build
-    - echo "$(date)" > build/index.html
     - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
     # push to github container registry (ghcr.io)
     - echo "$CR_ALT_PASS" | docker login $CR_ALT_SERVER --username $CR_ALT_USER --password-stdin
