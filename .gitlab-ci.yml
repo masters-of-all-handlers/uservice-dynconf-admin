@@ -1,8 +1,9 @@
 variables:
   BA_USER: team14
-  CR_USER: kormanowsky
-  CR_IMAGE: ghcr.io/masters-of-all-handlers/uda-frontend:latest
   SSH_ADDR: student@10.21.0.234
+  CR_USER: kormanowsky
+  CR_SERVER: ghcr.io
+  CR_IMAGE: $CR_SERVER/masters-of-all-handlers/uda-frontend:latest
 
 stages:
   - build
