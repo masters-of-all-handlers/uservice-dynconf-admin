@@ -32,6 +32,10 @@ jobs:
           name: app-build
           path: build/
       - run: |
+          apt-get update -y
+          apt-get install -y apache2-utils
+          htpasswd -Bbc .htpasswd ${{ secrets.BA_LOGIN }} ${{ secrets.BA_PASS }}
+      - run: |
           curl -sSL https://get.docker.com/ | sudo sh
           docker build -t ghcr.io/${{ github.repository_owner }}/uda-frontend .
           docker push ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
