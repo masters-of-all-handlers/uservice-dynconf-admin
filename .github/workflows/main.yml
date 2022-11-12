@@ -29,6 +29,7 @@ jobs:
       - run: |
           curl -sSL https://get.docker.com/ | sudo sh
           docker build -t uda-frontend .
+          docker push ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
       - uses: ishworkh/docker-image-artifact-upload@v1
         with:
           image: uda-frontend
