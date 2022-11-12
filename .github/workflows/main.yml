@@ -26,4 +26,8 @@ jobs:
         with:
           name: app-build
           path: build/
-      - run: ls -lah
+      - run: echo "${{  secrets.OPENVPN_FILE }}" > client.ovpn
+      - uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: ./client.ovpn
+      - run: ssh ${{ secrets.CONTAINER_ADDR }} <<< "${{ secrets.CONTAINER_PASS }}" whoami
