@@ -48,18 +48,18 @@ deploy-app-image:
     - docker push $CR_IMAGE
 
 
-deploy-app-scp:
-  stage: deploy
-  image: ubuntu:latest
-  needs:
-    - build-app
-  before_script:
-    - apt-get update -y
-    - apt-get install -y openvpn openssh-client
-  script:
-    - openvpn --config "$OPENVPN_FILE" --daemon
-    - chmod 600 $SSH_KEY
-    - scp -i $SSH_KEY -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf &
-    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/ &
-    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR "sudo -i service nginx restart &" &
-    - sleep 15
+#deploy-app-scp:
+#  stage: deploy
+#  image: ubuntu:latest
+#  needs:
+#    - build-app
+#  before_script:
+#    - apt-get update -y
+#    - apt-get install -y openvpn openssh-client
+#  script:
+#    - openvpn --config "$OPENVPN_FILE" --daemon
+#    - chmod 600 $SSH_KEY
+#    - scp -i $SSH_KEY -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf &
+#    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r build $SSH_ADDR:~/frontend/ &
+#    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_ADDR "sudo -i service nginx restart &" &
+#    - sleep 15
