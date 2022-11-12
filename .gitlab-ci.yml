@@ -34,10 +34,16 @@ build-ba:
 
 build-docker:
   stage: build
-  image: docker:dind
+  image: docker:19.03.0
   needs:
     - build-app
     - build-ba
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375
+  services:
+    - docker:19.03.0-dind
   script:
     - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
     - docker build -t $CR_IMAGE .
