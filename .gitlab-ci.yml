@@ -6,60 +6,61 @@ variables:
   CR_IMAGE: $CR_SERVER/masters-of-all-handlers/uda-frontend:latest
 
 stages:
-  - build
+#  - build
   - deploy
 
-build-app:
-  stage: build
-  image: node:16.16.0
-  before_script:
-    - npm install
-  script:
-    - npm run build
-  artifacts:
-    paths:
-      - build/
-
-build-ba:
-  stage: build
-  image: ubuntu:latest
-  before_script:
-    - apt-get update -y
-    - apt-get install -y apache2-utils
-  script:
-    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
-  artifacts:
-    paths:
-      - .htpasswd
-
-build-docker:
-  stage: build
-  image: ubuntu:latest
-  needs:
-    - build-app
-    - build-ba
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://localhost:2375
-  before_script:
-    - curl -sSL https://get.docker.com/ | sh
-    - dockerd &
-  script:
-    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
-    - docker build -t $CR_IMAGE .
-    - docker push $CR_IMAGE
+#build-app:
+#  stage: build
+#  image: node:16.16.0
+#  before_script:
+#    - npm install
+#  script:
+#    - npm run build
+#  artifacts:
+#    paths:
+#      - build/
+#
+#build-ba:
+#  stage: build
+#  image: ubuntu:latest
+#  before_script:
+#    - apt-get update -y
+#    - apt-get install -y apache2-utils
+#  script:
+#    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
+#  artifacts:
+#    paths:
+#      - .htpasswd
+#
+#build-docker:
+#  stage: build
+#  image: ubuntu:latest
+#  needs:
+#    - build-app
+#    - build-ba
+#  variables:
+#    DOCKER_DRIVER: overlay2
+#    DOCKER_TLS_CERTDIR: ""
+#    DOCKER_HOST: tcp://localhost:2375
+#  before_script:
+#    - curl -sSL https://get.docker.com/ | sh
+#    - dockerd &
+#  script:
+#    - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
+#    - docker build -t $CR_IMAGE .
+#    - docker push $CR_IMAGE
 
 
 deploy-app-scp:
   stage: deploy
   image: ubuntu:latest
-  needs:
-    - build-app
+  #needs:
+  #  - build-app
   before_script:
     - apt-get update -y
     - apt-get install -y openvpn openssh-client
   script:
+    - mkdir -p build
     - openvpn --config "$OPENVPN_FILE" --daemon
     - mkdir -p ~/.ssh && cp "$SSH_KEY" ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
     - scp -o StrictHostKeyChecking=no tmp.nginx.conf $SSH_ADDR:~/frontend/nginx.conf
