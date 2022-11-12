@@ -40,9 +40,10 @@ build-docker:
 #    - build-ba
   before_script:
     - apt-get update -y
-    - apt-get install curl
+    - apt-get install -y curl
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
+    - mkdir -p build
   script:
     - docker login $CR_SERVER --username $CR_USER --password $CR_PASS
     - docker build -t $CR_IMAGE .
