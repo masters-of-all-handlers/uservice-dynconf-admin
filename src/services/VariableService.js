@@ -24,6 +24,19 @@ export const variableAPI = createApi({
                         id
                     }
                 }),
+            providesTags: result => {
+                return [`variable${result.id}`];
+            }
+        }),
+        updateVariable: build.mutation({
+            query: ({id, ...update}) => ({
+                url: "/variable",
+                method: "POST",
+                body: update,
+            }),
+            invalidatesTags: result => {
+                return [`variable${result.id}`];
+            }
         })
     }),
 });
