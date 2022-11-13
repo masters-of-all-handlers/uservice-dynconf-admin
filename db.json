@@ -64,5 +64,11 @@
     ],
     "count": 10,
     "total": 10
+  },
+  "variable": {
+    "uuid": "5",
+    "name": "USERVER_TASK_PROCESSOR_QOS",
+    "service": "__default__",
+    "value": "{\"default-service\":{\"default-task-processor\":{\"wait_queue_overload\":{\"action\":\"ignore\",\"length_limit\":5000,\"time_limit_us\":3000}}}}"
   }
 }
