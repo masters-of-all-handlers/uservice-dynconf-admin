@@ -33,6 +33,7 @@ const VariablesTable = () => {
 
         <Table
           rowKey={(record) => record.uuid}
+          rowClassName={styles.row}
           dataSource={dataVariables && dataVariables.items}
           loading={isLoadingVariables}
           size="small"
