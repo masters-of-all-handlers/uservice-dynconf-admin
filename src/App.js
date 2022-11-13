@@ -6,17 +6,21 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import HomePage from './pages/HomePage/HomePage';
 import EditPage from "./pages/EditPage/EditPage";
+import {Provider} from "react-redux";
+import {store} from "./store";
 
 const App = () => {
     return (
-        <ConfigProvider locale={ruRU}>
-            <BrowserRouter>
-                <Routes>
-                    <Route index element={<HomePage/>}/>
-                    <Route path="/edit/:id" element={<EditPage/>}/>
-                </Routes>
-            </BrowserRouter>
-        </ConfigProvider>
+        <Provider store={store}>
+            <ConfigProvider locale={ruRU}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route index element={<HomePage/>}/>
+                        <Route path="/edit/:id" element={<EditPage/>}/>
+                    </Routes>
+                </BrowserRouter>
+            </ConfigProvider>
+        </Provider>
     );
 };
 

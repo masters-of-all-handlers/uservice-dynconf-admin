@@ -1,16 +1,42 @@
 import React, {useState} from 'react';
-import {Button, Layout, PageHeader, Form, Input, Col, Row, Space} from 'antd';
+import {
+    Button,
+    Layout,
+    PageHeader,
+    Form,
+    Input,
+    Col,
+    Row,
+    Spin,
+    Space
+} from 'antd';
 
 import styles from './styles.module.scss';
+import {variableAPI} from "../../services/VariableService";
+import {useParams} from "react-router-dom";
+import {LoadingOutlined} from "@ant-design/icons";
 
 const {Header, Content, Footer} = Layout;
 
 const EditPage = () => {
     const [form] = Form.useForm();
-    const [requiredMark, setRequiredMarkType] = useState('optional');
-    const onRequiredTypeChange = ({requiredMarkValue}) => {
-        setRequiredMarkType(requiredMarkValue);
-    };
+    const [requiredMark] = useState('optional');
+
+    const {id} = useParams();
+
+    const {
+        data: dataVariable,
+        error: errorVariable,
+        isLoading: isLoadingVariable,
+    } = variableAPI.useFetchVariableByIdQuery(id);
+
+    console.log(dataVariable, errorVariable, isLoadingVariable);
+
+    const renderSpin = ({color, fontSize}) => {
+        const icon = <LoadingOutlined style={{fontSize, color}} spin/>;
+        return <Spin indicator={icon}/>
+    }
+
     return (<>
         <Layout className={styles.layout}>
             <Header className={styles.header}>Динамические конфиги
@@ -28,45 +54,66 @@ const EditPage = () => {
                         onBack={() => window.history.back()}
                         title="Редактирование переменной"
                         extra={[<Button key="2">Отмена</Button>,
-                            <Button key="1" type="primary">
+                            <Button key="1" type="primary"
+                                    loading={isLoadingVariable}>
                                 Сохранить изменения
                             </Button>,]}
                     />
-
-                    <Row>
-                        <Col xs={24} md={12}>
-                            <Form.Item label="Имя переменной" required
-                                       className={styles.formItem}>
-                                <Input placeholder="MY_NICE_VAR"/>
-                            </Form.Item>
-                        </Col>
-                        <Col xs={24} md={12}>
-                            <Form.Item
-                                className={styles.formItem}
-                                label="Сервис"
-                                required
-                            >
-                                <Input placeholder="__default__"/>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={24} md={12}>
-                            <Form.Item label="Значение" required
-                                       className={styles.formItem}>
-                                <Input.TextArea placeholder="{}"
-                                                style={{resize: "none", height: "300px"}}/>
-                            </Form.Item>
-                        </Col>
-                        <Col xs={24} md={12}>
-                            <Form.Item label="Предыдущее значение" required
-                                       className={styles.formItem}>
-                                <Input.TextArea placeholder="{}"
-                                                readOnly
-                                                style={{resize: "none", height: "300px"}}/>
-                            </Form.Item>
-                        </Col>
-                    </Row>
+                    {isLoadingVariable ?
+                        <Row align="middle">
+                            <Space className={styles.spinner}>
+                                {renderSpin({fontSize: 60})}
+                            </Space>
+                        </Row> :
+                        <>
+                            <Row>
+                                <Col xs={24} md={12}>
+                                    <Form.Item label="Имя переменной"
+                                               required
+                                               className={styles.formItem}>
+                                        <Input placeholder="MY_NICE_VAR"
+                                               value={dataVariable.name}/>
+                                    </Form.Item>
+                                </Col>
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        className={styles.formItem}
+                                        label="Сервис"
+                                        required
+                                    >
+                                        <Input placeholder="__default__"
+                                               value={dataVariable.service}/>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} md={12}>
+                                    <Form.Item label="Значение" required
+                                               className={styles.formItem}>
+                                        <Input.TextArea placeholder="{}"
+                                                        style={{
+                                                            resize: "none",
+                                                            height: "300px"
+                                                        }}
+                                                        value={dataVariable.value}/>
+                                    </Form.Item>
+                                </Col>
+                                <Col xs={24} md={12}>
+                                    <Form.Item label="Предыдущее значение"
+                                               required
+                                               className={styles.formItem}>
+                                        <Input.TextArea placeholder="{}"
+                                                        readOnly
+                                                        style={{
+                                                            resize: "none",
+                                                            height: "300px"
+                                                        }}
+                                                        value={dataVariable.value}/>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </>
+                    }
                 </Form>
             </Content>
             <Footer className={styles.footer}>Сделано с любовью ❤️

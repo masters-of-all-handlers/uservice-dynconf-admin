@@ -16,12 +16,15 @@ export const variableAPI = createApi({
                 },
             }),
         }),
-        fetchVariableById: (id) => ({
-            url: "/variable",
-            params: {
-                id
-            }
-        }),
+        fetchVariableById: build.query({
+            query: (id) =>
+                ({
+                    url: "/variable",
+                    params: {
+                        id
+                    }
+                }),
+        })
     }),
 });
 
