@@ -15,6 +15,7 @@ import styles from './styles.module.scss';
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
 import {LoadingOutlined} from "@ant-design/icons";
+import EditVarFields from "../../components/EditVarForm/EditVarFields";
 
 const {Header, Content, Footer} = Layout;
 
@@ -65,54 +66,7 @@ const EditPage = () => {
                                 {renderSpin({fontSize: 60})}
                             </Space>
                         </Row> :
-                        <>
-                            <Row>
-                                <Col xs={24} md={12}>
-                                    <Form.Item label="Имя переменной"
-                                               required
-                                               className={styles.formItem}>
-                                        <Input placeholder="MY_NICE_VAR"
-                                               value={dataVariable.name}/>
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={24} md={12}>
-                                    <Form.Item
-                                        className={styles.formItem}
-                                        label="Сервис"
-                                        required
-                                    >
-                                        <Input placeholder="__default__"
-                                               value={dataVariable.service}/>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} md={12}>
-                                    <Form.Item label="Значение" required
-                                               className={styles.formItem}>
-                                        <Input.TextArea placeholder="{}"
-                                                        style={{
-                                                            resize: "none",
-                                                            height: "300px"
-                                                        }}
-                                                        value={dataVariable.value}/>
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={24} md={12}>
-                                    <Form.Item label="Предыдущее значение"
-                                               required
-                                               className={styles.formItem}>
-                                        <Input.TextArea placeholder="{}"
-                                                        readOnly
-                                                        style={{
-                                                            resize: "none",
-                                                            height: "300px"
-                                                        }}
-                                                        value={dataVariable.value}/>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </>
+                        <EditVarFields data={dataVariable}/>
                     }
                 </Form>
             </Content>
