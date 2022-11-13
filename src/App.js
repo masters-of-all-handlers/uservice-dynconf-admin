@@ -6,6 +6,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import HomePage from './pages/HomePage/HomePage';
 import EditPage from "./pages/EditPage/EditPage";
+import CreatePage from "./pages/CreatePage/CreatePage";
 import {Provider} from "react-redux";
 import {store} from "./store";
 
@@ -17,6 +18,7 @@ const App = () => {
                     <Routes>
                         <Route index element={<HomePage/>}/>
                         <Route path="/edit/:id" element={<EditPage/>}/>
+                        <Route path="/create" element={<CreatePage/>}/>
                     </Routes>
                 </BrowserRouter>
             </ConfigProvider>

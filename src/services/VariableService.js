@@ -37,7 +37,7 @@ export const variableAPI = createApi({
             invalidatesTags: result => {
                 return [`variable${result.id}`];
             }
-        })
+        }),
     }),
 });
 
