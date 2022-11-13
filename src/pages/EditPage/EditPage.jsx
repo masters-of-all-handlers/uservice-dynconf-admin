@@ -8,7 +8,7 @@ import {
     Col,
     Row,
     Spin,
-    Space
+    Space, Popconfirm
 } from 'antd';
 
 import styles from './styles.module.scss';
@@ -21,7 +21,6 @@ const {Header, Content, Footer} = Layout;
 
 const EditPage = () => {
     const [form] = Form.useForm();
-    const [requiredMark] = useState('optional');
 
     const {id: uuid} = useParams();
 
@@ -49,6 +48,21 @@ const EditPage = () => {
         }
     ] = variableAPI.useUpdateVariableMutation();
 
+    const [popconfirmOpen, setPopconfirmOpen] = useState(false);
+
+    const handlePopconfirmCancel = () => {
+        setPopconfirmOpen(false);
+    }
+
+    const handlePopconfirmConfirm = () => {
+        setPopconfirmOpen(false);
+        form.resetFields();
+    }
+
+    const handlePopconfirmOpen = () => {
+        setPopconfirmOpen(true);
+    }
+
     return <>
         <Layout className={styles.layout}>
             <Header className={styles.header}>Динамические конфиги
@@ -64,7 +78,17 @@ const EditPage = () => {
                         ghost={false}
                         onBack={() => window.history.back()}
                         title="Редактирование переменной"
-                        extra={[<Button key="2" htmlType="reset">Cброс</Button>,
+                        extra={[
+                            <Popconfirm
+                                title="Сбросить форму?"
+                                open={popconfirmOpen}
+                                onConfirm={handlePopconfirmConfirm}
+                                onCancel={handlePopconfirmCancel}
+                            >
+                                <Button key="2"
+                                        onClick={handlePopconfirmOpen}>Cброс</Button>
+                            </Popconfirm>
+                            ,
                             <Button key="1" type="primary" htmlType="submit"
                                     loading={isLoadingVariable || isUpdateLoading}>
                                 Сохранить изменения
