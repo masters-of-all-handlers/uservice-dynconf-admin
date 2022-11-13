@@ -15,6 +15,7 @@ export const variableAPI = createApi({
                     _limit: limit,
                 },
             }),
+            providesTags: ["variables"],
         }),
         fetchVariableById: build.query({
             query: (id) =>
@@ -31,13 +32,21 @@ export const variableAPI = createApi({
         updateVariable: build.mutation({
             query: ({id, ...update}) => ({
                 url: "/variable",
-                method: "POST",
+                method: "PATCH",
                 body: update,
             }),
             invalidatesTags: result => {
                 return [`variable${result.id}`];
             }
         }),
+        createVariable: build.mutation({
+            query: (variable) => ({
+                url: "/variables",
+                method: "POST",
+                body: variable
+            }),
+            invalidatesTags: ["variables"]
+        })
     }),
 });
 

@@ -3,10 +3,13 @@ import styles from "../EditPage/styles.module.scss";
 import EditVarForm from "../../components/EditVarForm/EditvarForm";
 import React from "react";
 import {Content, Footer, Header} from "antd/es/layout/layout";
+import {variableAPI} from "../../services/VariableService";
 
 export default function CreatePage() {
-    const isCreateLoading = false, createVariable = () => {
-    }
+    const [createVariable, {
+        isLoading: isCreateLoading
+    }] = variableAPI.useCreateVariableMutation();
+
     return <>
         <Layout className={styles.layout}>
             <Header className={styles.header}>Динамические конфиги

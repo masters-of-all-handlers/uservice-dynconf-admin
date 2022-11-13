@@ -48,12 +48,13 @@ export default function EditVarForm(
             title={title}
             extra={[
                 <Popconfirm
+                    key="2"
                     title="Сбросить форму?"
                     open={popconfirmOpen}
                     onConfirm={handlePopconfirmConfirm}
                     onCancel={handlePopconfirmCancel}
                 >
-                    <Button key="2"
+                    <Button
                             onClick={handlePopconfirmOpen}>Cброс</Button>
                 </Popconfirm>
                 ,
