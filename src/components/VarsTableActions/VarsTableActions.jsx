@@ -6,6 +6,22 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 
+const handleMenuClick = (e, uuid) => {
+  const { key } = e;
+
+  switch (key) {
+    case 'edit':
+      console.log(`Редактирование параметра ${uuid}`);
+      break;
+
+    case 'delete':
+      console.log(`Удаление параметра ${uuid}`);
+      break;
+
+    default:
+  }
+};
+
 const menu = {
   items: [
     {
