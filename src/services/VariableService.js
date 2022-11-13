@@ -46,6 +46,13 @@ export const variableAPI = createApi({
                 body: variable
             }),
             invalidatesTags: ["variables"]
+        }),
+        deleteVariableById: build.mutation({
+            query: (id) => ({
+                url: "/variable",
+                method: "DELETE",
+            }),
+            invalidatesTags: result => [`variable${result.id}`]
         })
     }),
 });
