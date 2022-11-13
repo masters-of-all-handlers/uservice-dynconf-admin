@@ -1,21 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
-    Button,
     Layout,
-    PageHeader,
-    Form,
-    Input,
-    Col,
-    Row,
-    Spin,
-    Space, Popconfirm
 } from 'antd';
 
 import styles from './styles.module.scss';
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
-import {LoadingOutlined} from "@ant-design/icons";
-import EditVarFields from "../../components/EditVarFields/EditVarFields";
 import EditVarForm from "../../components/EditVarForm/EditvarForm";
 
 const {Header, Content, Footer} = Layout;
@@ -26,13 +16,13 @@ const EditPage = () => {
 
     const {
         data: variableData,
-        error: variableError,
+      //  error: variableError,
         isLoading: isLoadingVariable,
     } = variableAPI.useFetchVariableByIdQuery(uuid);
 
     const [
         updateVariable, {
-            error: updateError,
+     //       error: updateError,
             isLoading: isUpdateLoading,
         }
     ] = variableAPI.useUpdateVariableMutation();

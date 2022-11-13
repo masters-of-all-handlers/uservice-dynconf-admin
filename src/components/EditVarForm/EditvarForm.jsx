@@ -34,7 +34,7 @@ export default function EditVarForm(
         if (initialValues) {
             form.resetFields();
         }
-    }, [initialValues]);
+    }, [initialValues, form]);
 
     return <Form
         form={form}
