@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Input, Space } from 'antd';
 
 import styles from './styles.module.scss';
-import { sortByName, filterByName } from './helpers';
+import { filterByName } from './helpers';
 
 import VarsTableActions from '../VarsTableActions/VarsTableActions';
 import data from '../../__mocks__/data';
