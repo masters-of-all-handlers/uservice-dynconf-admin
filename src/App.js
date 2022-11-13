@@ -5,7 +5,7 @@ import ruRU from 'antd/es/locale/ru_RU';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import HomePage from './pages/HomePage/HomePage';
-//import EditPage from "./pages/EditPage/EditPage";
+import EditPage from "./pages/EditPage/EditPage";
 
 const App = () => {
     return (
@@ -13,7 +13,7 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route index element={<HomePage/>}/>
-                    {/*<Route path="/edit/:id" element={<EditPage/>}/>*/}
+                    <Route path="/edit/:id" element={<EditPage/>}/>
                 </Routes>
             </BrowserRouter>
         </ConfigProvider>
