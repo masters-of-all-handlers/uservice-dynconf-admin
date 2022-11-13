@@ -57,7 +57,7 @@ const EditPage = () => {
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={data => updateVariable({uuid, ...data})}
+                    onFinish={updateVariable}
                     initialValues={variableData}
                 >
                     <PageHeader
