@@ -5,22 +5,7 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-
-const handleMenuClick = (e, uuid) => {
-  const { key } = e;
-
-  switch (key) {
-    case 'edit':
-      console.log(`Редактирование параметра ${uuid}`);
-      break;
-
-    case 'delete':
-      console.log(`Удаление параметра ${uuid}`);
-      break;
-
-    default:
-  }
-};
+import { useNavigate } from 'react-router-dom';
 
 const menu = {
   items: [
@@ -39,6 +24,24 @@ const menu = {
 };
 
 const VarsTableActions = ({ render: { uuid } }) => {
+  const navigate = useNavigate();
+
+  const handleMenuClick = (e, uuid) => {
+    const { key } = e;
+
+    switch (key) {
+      case 'edit':
+        navigate(`/edit/${uuid}`);
+        break;
+
+      case 'delete':
+        console.log(`Удаление параметра ${uuid}`);
+        break;
+
+      default:
+    }
+  };
+
   return (
     <Dropdown
       menu={{ ...menu, onClick: (e) => handleMenuClick(e, uuid) }}
