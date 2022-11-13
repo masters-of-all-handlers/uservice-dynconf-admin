@@ -26,7 +26,7 @@ export const variableAPI = createApi({
                     }
                 }),
             providesTags: result => {
-                return [`variable${result.id}`];
+                return [`variable${result?.id}`];
             }
         }),
         updateVariable: build.mutation({
@@ -36,7 +36,7 @@ export const variableAPI = createApi({
                 body: update,
             }),
             invalidatesTags: result => {
-                return [`variable${result.id}`];
+                return [`variable${result?.id}`];
             }
         }),
         createVariable: build.mutation({
@@ -52,7 +52,7 @@ export const variableAPI = createApi({
                 url: "/variable",
                 method: "DELETE",
             }),
-            invalidatesTags: result => [`variable${result.id}`]
+            invalidatesTags: result => [`variable${result?.id}`]
         })
     }),
 });
