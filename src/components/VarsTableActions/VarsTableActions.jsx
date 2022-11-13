@@ -1,26 +1,35 @@
 import React from 'react';
-import { Space, Button } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Dropdown } from 'antd';
+import {
+  EllipsisOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 
-const VarsTableActions = ({ record }) => {
+const menu = {
+  items: [
+    {
+      key: 'edit',
+      label: 'Редактировать',
+      icon: <EditOutlined />,
+    },
+    {
+      key: 'delete',
+      label: 'Удалить',
+      icon: <DeleteOutlined />,
+      danger: true,
+    },
+  ],
+};
+
+const VarsTableActions = ({ render: { uuid } }) => {
   return (
-    <>
-      <Space size="small">
-        <Button
-          type="primary"
-          icon={<EditOutlined />}
-          size="small"
-          title="Редактировать"
-        />
-
-        <Button
-          type="danger"
-          icon={<DeleteOutlined />}
-          size="small"
-          title="Удалить"
-        />
-      </Space>
-    </>
+    <Dropdown
+      menu={{ ...menu, onClick: (e) => handleMenuClick(e, uuid) }}
+      trigger="click"
+    >
+      <Button type="text" icon={<EllipsisOutlined />} size="small" />
+    </Dropdown>
   );
 };
 
