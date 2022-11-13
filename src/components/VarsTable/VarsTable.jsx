@@ -40,8 +40,8 @@ const VariablesTable = () => {
             dataIndex="name"
             key="name"
             width="60%"
-            sorter={sortByName}
-            sortDirections={['descend']}
+            // sorter={sortByName}
+            // sortDirections={['descend']}
           />
 
           <Column
