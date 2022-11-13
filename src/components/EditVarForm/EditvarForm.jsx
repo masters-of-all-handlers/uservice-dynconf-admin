@@ -4,7 +4,6 @@ import {
 import styles from "../../pages/EditPage/styles.module.scss";
 import EditVarFields from "../EditVarFields/EditVarFields";
 import React, {useEffect, useState} from "react";
-import {LoadingOutlined} from "@ant-design/icons";
 
 export default function EditVarForm({
                                       title,
