@@ -2,8 +2,11 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import {ConfigProvider} from 'antd';
 import ruRU from 'antd/es/locale/ru_RU';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
+import { Provider } from 'react-redux';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { store } from './store';
 import HomePage from './pages/HomePage/HomePage';
 import EditPage from "./pages/EditPage/EditPage";
 import CreatePage from "./pages/CreatePage/CreatePage";
