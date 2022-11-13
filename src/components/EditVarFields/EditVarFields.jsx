@@ -27,7 +27,7 @@ export default function EditVarFields({initialValues}) {
             </Col>
         </Row>
         <Row>
-            <Col xs={24} md={12}>
+            <Col xs={24} md={initialValues.value ? 12 : 24}>
                 <Form.Item label="Значение" required
                            name="value"
                            className={styles.formItem}>
@@ -39,22 +39,24 @@ export default function EditVarFields({initialValues}) {
                     />
                 </Form.Item>
             </Col>
-            <Col xs={24} md={12}>
-                <Form.Item label="Предыдущее значение"
-                           required
+            {initialValues.value &&
+                <Col xs={24} md={12}>
+                    <Form.Item label="Предыдущее значение"
+                               required
 
-                           className={styles.formItem}>
-                    <Input.TextArea
-                        placeholder="{}"
-                        readOnly
-                        style={{
-                            resize: "none",
-                            height: "300px"
-                        }}
-                        value={initialValues.value}
-                    />
-                </Form.Item>
-            </Col>
+                               className={styles.formItem}>
+                        <Input.TextArea
+                            placeholder="{}"
+                            readOnly
+                            style={{
+                                resize: "none",
+                                height: "300px"
+                            }}
+                            value={initialValues.value}
+                        />
+                    </Form.Item>
+                </Col>
+            }
         </Row>
     </>
 }
