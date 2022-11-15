@@ -1,8 +1,10 @@
 import {Col, Form, Input, Row} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
+import JSONView from "../JSONView/JSONView";
 
-export default function EditVarFields({initialValues}) {
+export default function EditVarFields({form, initialValues}) {
+  const value = Form.useWatch("value", form);
   return <>
     <Row>
       <Col xs={24} md={12}>
@@ -47,27 +49,19 @@ export default function EditVarFields({initialValues}) {
                    ]}
                    name="value"
                    className={styles.formItem}>
-          <Input.TextArea placeholder="{}"
-                          style={{
-                            resize: "none",
-                            height: "300px"
-                          }}
-          />
+          <JSONView json={value || "{}"}
+                    editable={true} onChange={newValue => {
+            form.setFieldValue("value", newValue);
+          }
+          }/>
         </Form.Item>
       </Col>
       {initialValues?.value &&
         <Col xs={24} md={12}>
           <Form.Item label="Предыдущее значение"
                      className={styles.formItem}>
-            <Input.TextArea
-              placeholder="{}"
-              readOnly
-              style={{
-                resize: "none",
-                height: "300px"
-              }}
-              value={initialValues?.value}
-            />
+            <JSONView json={initialValues?.value}
+                      newJson={value || "{}"}/>
           </Form.Item>
         </Col>
       }

@@ -73,6 +73,6 @@ export default function EditVarForm({
         <Space className={styles.spinner}>
           <Spin />
         </Space>
-      </Row> : <EditVarFields initialValues={initialValues}/>)}
+      </Row> : <EditVarFields initialValues={initialValues} form={form}/>)}
   </Form>
 }
