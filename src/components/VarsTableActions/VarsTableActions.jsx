@@ -1,14 +1,55 @@
-import React from "react";
-import {Button, Dropdown} from "antd";
+import React, {useState} from "react";
+import {Button, Dropdown, Popconfirm, message} from "antd";
 import {
   EllipsisOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
+import {variableAPI} from "../../services/VariableService";
 
 const VarsTableActions = ({render: {uuid}}) => {
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
+
+  const [deleteVariableById, {isLoading: isLoadingDeleteVariableById}] =
+    variableAPI.useDeleteVariableByIdMutation();
+
   const navigate = useNavigate();
+
+  const openDropdown = () => {
+    setIsOpenDropdown(true);
+  };
+
+  const closeDropdown = () => {
+    setIsOpenDropdown(false);
+  };
+
+  const openDeleteConfirm = () => {
+    setIsOpenDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    const response = await deleteVariableById(uuid);
+
+    setIsOpenDeleteConfirm(false);
+    closeDropdown();
+
+    if (response.hasOwnProperty("error")) {
+      return message.error(
+        `При удалении переменной ${uuid} произошла ошибка ${response.error.status}`
+      );
+    }
+
+    message.success(`Переменная ${uuid} удалена`);
+  };
+
+  const handleCancelDelete = () => {
+    setTimeout(() => {
+      setIsOpenDeleteConfirm(false);
+      closeDropdown();
+    }, 0);
+  };
 
   const handleMenuClick = (e) => {
     const {key} = e;
@@ -19,7 +60,7 @@ const VarsTableActions = ({render: {uuid}}) => {
         break;
 
       case "delete":
-        console.log(`Удаление параметра ${uuid}`);
+        openDeleteConfirm();
         break;
 
       default:
@@ -35,7 +76,17 @@ const VarsTableActions = ({render: {uuid}}) => {
       },
       {
         key: "delete",
-        label: "Удалить",
+        label: (
+          <Popconfirm
+            title="Удалить?"
+            open={isOpenDeleteConfirm}
+            onConfirm={handleConfirmDelete}
+            okButtonProps={{loading: isLoadingDeleteVariableById}}
+            onCancel={handleCancelDelete}
+          >
+            Удалить
+          </Popconfirm>
+        ),
         icon: <DeleteOutlined />,
         danger: true,
       },
@@ -44,8 +95,13 @@ const VarsTableActions = ({render: {uuid}}) => {
   };
 
   return (
-    <Dropdown menu={menu} trigger="click">
-      <Button type="text" icon={<EllipsisOutlined />} size="small" />
+    <Dropdown menu={menu} trigger="click" open={isOpenDropdown}>
+      <Button
+        type="text"
+        icon={<EllipsisOutlined />}
+        size="small"
+        onClick={openDropdown}
+      />
     </Dropdown>
   );
 };

@@ -6,6 +6,7 @@ export const variableAPI = createApi({
         baseUrl:
             'https://my-json-server.typicode.com/masters-of-all-handlers/uservice-dynconf-admin',
     }),
+    tagTypes: ['Variables'],
 
     endpoints: (build) => ({
         fetchAllVariables: build.query({
@@ -15,7 +16,7 @@ export const variableAPI = createApi({
                     _limit: limit,
                 },
             }),
-            providesTags: ["variables"],
+            providesTags: (result) => ['Variables'],
         }),
         fetchVariableById: build.query({
             query: (id) =>
@@ -48,11 +49,12 @@ export const variableAPI = createApi({
             invalidatesTags: ["variables"]
         }),
         deleteVariableById: build.mutation({
-            query: (id) => ({
-                url: "/variable",
+            query: (uuid) => ({
+                url: `/variable/${uuid}`,
                 method: "DELETE",
             }),
-            invalidatesTags: result => [`variable${result.id}`]
+
+            invalidatesTags: ["Variables"]
         })
     }),
 });
