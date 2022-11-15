@@ -8,6 +8,7 @@ $color-null: #e61259;
   font-family: monospace;
   word-break: break-all;
   white-space: pre-wrap;
+  position: relative;
 }
 
 .string {
@@ -42,4 +43,12 @@ $color-null: #e61259;
 .newLine::before {
   content: "+";
   color: green;
+}
+
+
+.line::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }

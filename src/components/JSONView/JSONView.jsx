@@ -1,4 +1,4 @@
-import {Fragment, useLayoutEffect, useRef, useState} from "react";
+import {Fragment, useRef, useState} from "react";
 import styles from "./styles.module.scss";
 import classnames from "classnames";
 
@@ -15,6 +15,10 @@ const prettifyJSON = json => {
     }
   }
   return [json.split("\n"), 0];
+}
+
+const unprettifyJSON = json => {
+  return JSON.stringify(JSON.parse(json));
 }
 
 const parseLine = line => {
@@ -76,12 +80,12 @@ const JSONLine = ({line, oldLine, newLine}) => {
 
 export default function JSONView({json, newJson, editable, onChange}) {
   const [localJson, setLocalJson] = useState(json);
-  const [oldLines, oldErrPos] = prettifyJSON(localJson);
-  const [newLines, newErrPos] = newJson ? prettifyJSON(newJson) : [[], -1];
+  const [oldLines, ] = prettifyJSON(localJson);
+  const [newLines, ] = newJson ? prettifyJSON(newJson) : [[], -1];
   const ref = useRef();
   const handleChange = e => {
     if (editable && onChange) {
-      onChange(ref.current.innerText);
+      onChange(unprettifyJSON(ref.current.innerText));
       if (e.type === "blur") {
         setLocalJson(json);
       }
