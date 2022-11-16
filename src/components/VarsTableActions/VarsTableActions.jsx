@@ -29,10 +29,14 @@ const VarsTableActions = ({render: {uuid}}) => {
     setIsOpenDeleteConfirm(true);
   };
 
+  const closeDeleteConfirm = () => {
+    setIsOpenDeleteConfirm(false);
+  };
+
   const handleConfirmDelete = async () => {
     const response = await deleteVariableById(uuid);
 
-    setIsOpenDeleteConfirm(false);
+    closeDeleteConfirm();
     closeDropdown();
 
     if (response.hasOwnProperty("error")) {
@@ -46,9 +50,13 @@ const VarsTableActions = ({render: {uuid}}) => {
 
   const handleCancelDelete = () => {
     setTimeout(() => {
-      setIsOpenDeleteConfirm(false);
+      closeDeleteConfirm();
       closeDropdown();
     }, 0);
+  };
+
+  const handleDropdownOpenChange = (e) => {
+    if (e === false && isOpenDeleteConfirm === false) closeDropdown();
   };
 
   const handleMenuClick = (e) => {
@@ -95,7 +103,12 @@ const VarsTableActions = ({render: {uuid}}) => {
   };
 
   return (
-    <Dropdown menu={menu} trigger="click" open={isOpenDropdown}>
+    <Dropdown
+      menu={menu}
+      trigger="click"
+      open={isOpenDropdown}
+      onOpenChange={handleDropdownOpenChange}
+    >
       <Button
         type="text"
         icon={<EllipsisOutlined />}
