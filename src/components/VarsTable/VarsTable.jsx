@@ -39,20 +39,14 @@ const VariablesTable = () => {
           size="small"
           bordered
         >
-          <Column title="Имя" dataIndex="name" key="name" width="60%" />
+          <Column title="Имя" dataIndex="name" key="name" />
 
-          <Column
-            title="Сервис"
-            dataIndex="service"
-            key="service"
-            width="20%"
-          />
+          <Column title="Сервис" dataIndex="service" key="service" />
 
           <Column
             title="Действия"
             key="actions"
             align="right"
-            width="20%"
             render={renderColumnActions}
           />
         </Table>
