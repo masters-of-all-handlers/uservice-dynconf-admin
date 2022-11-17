@@ -1,12 +1,12 @@
-import React from 'react';
-import { Table, Space, Alert } from 'antd';
+import React from "react";
+import {Table, Space, Alert} from "antd";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
-import VarsTableActions from '../VarsTableActions/VarsTableActions';
-import { variableAPI } from '../../services/VariableService';
+import VarsTableActions from "../VarsTableActions/VarsTableActions";
+import {variableAPI} from "../../services/VariableService";
 
-const { Column } = Table;
+const {Column} = Table;
 
 const VariablesTable = () => {
   const {
@@ -37,6 +37,7 @@ const VariablesTable = () => {
           dataSource={dataVariables && dataVariables.items}
           loading={isLoadingVariables}
           size="small"
+          bordered
         >
           <Column title="Имя" dataIndex="name" key="name" width="60%" />
 
