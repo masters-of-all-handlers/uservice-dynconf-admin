@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Space, Alert} from "antd";
+import {Table, Space} from "antd";
 
 import styles from "./styles.module.scss";
 
@@ -9,11 +9,7 @@ import {useFetchAllVariablesQuery} from "../../services/VariableService";
 const {Column} = Table;
 
 const VariablesTable = () => {
-  const {
-    data: dataVariables,
-    error: errorVariables,
-    isLoading: isLoadingVariables,
-  } = useFetchAllVariablesQuery({limit: 5, offset: 10});
+  const {data: dataVariables, isFetching: isFetchingVariables} =
 
   const renderColumnActions = (_, render) => (
     <VarsTableActions render={render} />
@@ -22,15 +18,6 @@ const VariablesTable = () => {
   return (
     <>
       <Space direction="vertical" size="middle" className={styles.wrap}>
-        {errorVariables && (
-          <Alert
-            message={`Произошла ошибка ${errorVariables.status} при загрузке`}
-            type="error"
-            showIcon
-            closable
-          />
-        )}
-
         <Table
           rowKey={(record) => record.uuid}
           rowClassName={styles.row}
