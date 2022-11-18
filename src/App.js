@@ -1,5 +1,5 @@
 import React from 'react';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import {ConfigProvider} from 'antd';
 import ruRU from 'antd/es/locale/ru_RU';
 
