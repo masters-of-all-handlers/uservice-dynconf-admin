@@ -4,7 +4,7 @@ import {Table, Space, Alert} from "antd";
 import styles from "./styles.module.scss";
 
 import VarsTableActions from "../VarsTableActions/VarsTableActions";
-import {variableAPI} from "../../services/VariableService";
+import {useFetchAllVariablesQuery} from "../../services/VariableService";
 
 const {Column} = Table;
 
@@ -13,7 +13,7 @@ const VariablesTable = () => {
     data: dataVariables,
     error: errorVariables,
     isLoading: isLoadingVariables,
-  } = variableAPI.useFetchAllVariablesQuery(5);
+  } = useFetchAllVariablesQuery({limit: 5, offset: 10});
 
   const renderColumnActions = (_, render) => (
     <VarsTableActions render={render} />

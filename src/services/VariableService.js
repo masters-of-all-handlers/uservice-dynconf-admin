@@ -61,3 +61,5 @@ export const variableAPI = createApi({
     }),
   }),
 });
+
+export const {useFetchAllVariablesQuery} = variableAPI;
