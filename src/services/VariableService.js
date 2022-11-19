@@ -1,24 +1,27 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
+const configsEndpoint = "/variables";
+
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
     baseUrl:
-      "https://my-json-server.typicode.com/masters-of-all-handlers/uservice-dynconf-admin",
+      // "https://my-json-server.typicode.com/masters-of-all-handlers/uservice-dynconf-admin",
+      "http://10.21.0.234:8083/admin/v1",
   }),
-  tagTypes: ["Variables"],
+  tagTypes: ["Variables", "Configs"],
 
   endpoints: (build) => ({
-    fetchAllVariables: build.query({
+    fetchAllConfigs: build.query({
       query: ({limit = 10, offset = 0}) => ({
-        url: "/variables",
+        url: configsEndpoint,
         params: {
           limit: limit,
           offset: offset,
         },
       }),
 
-      providesTags: ["Variables"],
+      providesTags: ["Configs"],
     }),
 
     fetchVariableById: build.query({
@@ -64,4 +67,4 @@ export const variableAPI = createApi({
   }),
 });
 
-export const {useFetchAllVariablesQuery} = variableAPI;
+export const {useFetchAllConfigsQuery} = variableAPI;
