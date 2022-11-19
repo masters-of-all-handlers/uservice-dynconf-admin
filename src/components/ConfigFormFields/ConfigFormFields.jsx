@@ -1,4 +1,13 @@
-import {AutoComplete, Col, Form, Input, Row, Space, Spin} from "antd";
+import {
+  AutoComplete,
+  Col,
+  Form,
+  Input,
+  Row,
+  Space,
+  Spin,
+  Typography
+} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React, {useState} from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
@@ -36,11 +45,18 @@ const validateJSON = (_, value) => new Promise(
 
 export default function ConfigFormFields({form, initialValues, modeData}) {
   const value = Form.useWatch("value", form);
+  const service = Form.useWatch("service", form);
   const allOptions = [{value: "__default__"}, {value: "non-default!"}];
+  const [isNewService, setIsNewService] = useState(false);
   const [options, setOptions] = useState(allOptions);
   const handleServiceSearch = value => {
-    setOptions(allOptions.filter(option => option.value.toLowerCase().includes(value.toLowerCase())));
+    const filtered = allOptions.filter(option => option.value.toLowerCase().includes(value.toLowerCase()));
+    setOptions(filtered);
+    setIsNewService(!filtered.filter(option => option.value === value).length);
   };
+  const handleServiceSelect = value => {
+    setIsNewService(!options.filter(option => option.value === value).length);
+  }
   return <>
     <Row>
       <Col xs={24} md={12}>
@@ -62,10 +78,13 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             required: true, message: "Введите название сервиса"
           }]}
           name="service"
+          help={isNewService && <Typography.Text type="primary">Будет создан
+            сервис&nbsp;{service}</Typography.Text>}
         >
           <AutoComplete
             options={options}
             onSearch={handleServiceSearch}
+            onSelect={handleServiceSelect}
             placeholder="__default__"
             readOnly={!modeData.fields.service}
           />
