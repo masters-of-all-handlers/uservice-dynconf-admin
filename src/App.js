@@ -12,6 +12,7 @@ import EditPage from "./pages/EditPage/EditPage";
 import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ClonePage from "./pages/ClonePage/ClonePage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const loggedInPart = "/dashboard";
 
@@ -28,12 +29,15 @@ const App = () => {
                 <Route path="create" element={<CreatePage/>}/>
                 <Route path=":id/clone" element={<ClonePage/>}/>
                 <Route path=":id/edit" element={<EditPage/>}/>
+                <Route index element={<HomePage/>}/>
               </Route>
+              <Route index element={<NotFoundPage/>}/>
             </Route>
             {/* DEPRECATED */}
             <Route path="/edit/:id" element={<EditPage/>}/>
             <Route path="/create" element={<CreatePage/>}/>
             <Route path="/clone/:id" element={<ClonePage/>}/>
+            <Route path="*" element={<NotFoundPage/>}/>
           </Routes>
         </BrowserRouter>
       </ConfigProvider>
