@@ -1,13 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {API_BASE_URL} from "./constants";
 
 const configsEndpoint = "/variables";
 
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "https://my-json-server.typicode.com/masters-of-all-handlers/uservice-dynconf-admin",
-      "http://10.21.0.234:8083/admin/v1",
+    baseUrl: API_BASE_URL
   }),
   tagTypes: ["Variables", "Configs"],
 
