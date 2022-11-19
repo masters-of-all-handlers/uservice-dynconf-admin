@@ -13,10 +13,11 @@ export default function LandingPage() {
         <Row align="middle" className={styles.heroSectionRow}>
           <Row align="middle">
             <Col>
-              <img src={logo} className={styles.heroSectionLogo}/>
+              <img src={logo} className={styles.heroSectionLogo} alt=""/>
             </Col>
             <Col>
-              <Typography.Title level={2}>userver-dynconf<br/>admin</Typography.Title>
+              <Typography.Title
+                level={2}>userver-dynconf<br/>admin</Typography.Title>
               <Space wrap>
                 <Button type="primary"
                         onClick={() => navigate("/register")}
