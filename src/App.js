@@ -13,16 +13,21 @@ import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ClonePage from "./pages/ClonePage/ClonePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 const loggedInPart = "/dashboard";
 
 const App = () => {
   return (
     <Provider store={store}>
-      <ConfigProvider locale={ruRU}>
+      <ConfigProvider locale={ruRU} theme={{
+        token: {
+          colorPrimary: "rgb(241,129,39)"
+
+        }
+      }}>
         <BrowserRouter>
           <Routes>
-            <Route index element={<HomePage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path={loggedInPart}>
               <Route path="configs">
@@ -34,9 +39,11 @@ const App = () => {
               <Route index element={<NotFoundPage/>}/>
             </Route>
             {/* DEPRECATED */}
+            <Route index element={<HomePage/>}/>
             <Route path="/edit/:id" element={<EditPage/>}/>
             <Route path="/create" element={<CreatePage/>}/>
             <Route path="/clone/:id" element={<ClonePage/>}/>
+            <Route path="/landing" element={<LandingPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
           </Routes>
         </BrowserRouter>
