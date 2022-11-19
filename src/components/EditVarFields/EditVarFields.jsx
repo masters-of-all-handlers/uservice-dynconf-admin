@@ -1,18 +1,48 @@
-import {Col, Form, Input, Row} from "antd";
+import {Col, Form, Input, Row, Space, Spin} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
+import Editor, {DiffEditor} from "@monaco-editor/react";
+import classnames from "classnames";
 
-export default function EditVarFields({initialValues}) {
+const prettifyJSON = json => {
+  try {
+    return JSON.stringify(JSON.parse(json), null, 2);
+  } catch (e) {
+    if (json) {
+      return json;
+    }
+    return "";
+  }
+};
+
+const isJSONValid = (json) => {
+  try {
+    JSON.parse(json);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+const validateJSON = (_, value) => new Promise(
+  (resolve, reject) => {
+    if (isJSONValid(value)) {
+      resolve();
+    } else {
+      reject("Значение должно быть валидным JSON");
+    }
+  }
+);
+
+export default function EditVarFields({form, initialValues}) {
+  const value = Form.useWatch("value", form);
   return <>
     <Row>
       <Col xs={24} md={12}>
         <Form.Item label="Имя переменной"
-                   rules={[
-                     {
-                       required: true,
-                       message: "Введите имя переменной"
-                     }
-                   ]}
+                   rules={[{
+                     required: true, message: "Введите имя переменной"
+                   }]}
                    className={styles.formItem}
                    name="name"
         >
@@ -23,12 +53,9 @@ export default function EditVarFields({initialValues}) {
         <Form.Item
           className={styles.formItem}
           label="Сервис"
-          rules={[
-            {
-              required: true,
-              message: "Введите название сервиса"
-            }
-          ]}
+          rules={[{
+            required: true, message: "Введите название сервиса"
+          }]}
           name="service"
         >
 
@@ -39,38 +66,64 @@ export default function EditVarFields({initialValues}) {
     <Row>
       <Col xs={24} md={initialValues?.value ? 12 : 24}>
         <Form.Item label="Значение"
-                   rules={[
-                     {
-                       required: true,
-                       message: "Введите значение"
-                     }
-                   ]}
+                   rules={[{
+                     required: true, message: "Введите значение",
+                   }, {
+                     validator: validateJSON
+                   }]}
                    name="value"
+                   getValueProps={value => ({
+                     value: prettifyJSON(value),
+                     className: classnames("ant-input", {
+                       "ant-input-status-error": !isJSONValid(value)
+                     })
+                   })}
                    className={styles.formItem}>
-          <Input.TextArea placeholder="{}"
-                          style={{
-                            resize: "none",
-                            height: "300px"
-                          }}
+          <Editor
+            defaultLanguage="json"
+            height="300px"
+            options={{
+              insertSpaces: true,
+              formatOnPaste: true,
+              minimap: {
+                enabled: false
+              }
+            }}
+            loading={
+              <Row align="middle">
+                <Space className={styles.spinner}>
+                  <Spin/>
+                </Space>
+              </Row>
+            }
           />
         </Form.Item>
       </Col>
-      {initialValues?.value &&
-        <Col xs={24} md={12}>
-          <Form.Item label="Предыдущее значение"
-                     className={styles.formItem}>
-            <Input.TextArea
-              placeholder="{}"
-              readOnly
-              style={{
-                resize: "none",
-                height: "300px"
-              }}
-              value={initialValues?.value}
-            />
-          </Form.Item>
-        </Col>
-      }
+      {initialValues?.value && <Col xs={24} md={12}>
+        <Form.Item label="Diff" className={styles.formItem}>
+          <DiffEditor
+            defaultLanguage="json"
+            height="300px"
+            modified={prettifyJSON(value)}
+            original={prettifyJSON(initialValues?.value)}
+            options={{
+              renderSideBySide: false,
+              originalEditable: false,
+              readOnly: true,
+              minimap: {
+                enabled: false
+              }
+            }}
+            loading={
+              <Row align="middle">
+                <Space className={styles.spinner}>
+                  <Spin/>
+                </Space>
+              </Row>
+            }
+          />
+        </Form.Item>
+      </Col>}
     </Row>
   </>
 }
