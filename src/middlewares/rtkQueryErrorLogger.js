@@ -7,7 +7,7 @@ export const rtkQueryErrorLogger = (api) => (next) => (action) => {
       payload: {status, error},
     } = action;
 
-    message.error(`Ошибка при загрузке данных ${status} | ${error}`);
+    message.error(`Асинхронная ошибка ${status} | ${error}`);
   }
 
   return next(action);
