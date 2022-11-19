@@ -2,7 +2,7 @@ import {Col, Form, Input, Row} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
 import JSONView from "../JSONView/JSONView";
-import Editor from "@monaco-editor/react";
+import Editor, {DiffEditor} from "@monaco-editor/react";
 
 const prettifyJSON = json => {
   try {
@@ -57,15 +57,22 @@ export default function EditVarFields({form, initialValues}) {
             defaultLanguage="json"
             height="300px"
             options={{insertSpaces: true, formatOnPaste: true}}
-          >
-          </Editor>
+          />
         </Form.Item>
       </Col>
       {initialValues?.value && <Col xs={24} md={12}>
-        <Form.Item label="Предыдущее значение"
-                   className={styles.formItem}>
-          <JSONView json={initialValues?.value}
-                    newJson={value || "{}"}/>
+        <Form.Item label="Diff" className={styles.formItem}>
+          <DiffEditor
+            defaultLanguage="json"
+            height="300px"
+            modified={prettifyJSON(form.getFieldValue("value"))}
+            original={prettifyJSON(initialValues?.value)}
+            options={{
+              renderSideBySide: false,
+              originalEditable: false,
+              readOnly: true
+            }}
+          />
         </Form.Item>
       </Col>}
     </Row>
