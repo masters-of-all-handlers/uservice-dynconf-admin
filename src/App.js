@@ -13,6 +13,8 @@ import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ClonePage from "./pages/ClonePage/ClonePage";
 
+const loggedInPart = "dashboard";
+
 const App = () => {
   return (
     <Provider store={store}>
@@ -20,10 +22,18 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route index element={<HomePage/>}/>
+            <Route path="/login" element={<LoginPage/>}/>
+            <Route path={loggedInPart}>
+              <Route path="configs">
+                <Route path="create" element={<CreatePage/>}/>
+                <Route path=":id/clone" element={<ClonePage/>}/>
+                <Route path=":id/edit" element={<EditPage/>}/>
+              </Route>
+            </Route>
+            {/* DEPRECATED */}
             <Route path="/edit/:id" element={<EditPage/>}/>
             <Route path="/create" element={<CreatePage/>}/>
             <Route path="/clone/:id" element={<ClonePage/>}/>
-            <Route path="/login" element={<LoginPage/>}/>
           </Routes>
         </BrowserRouter>
       </ConfigProvider>
