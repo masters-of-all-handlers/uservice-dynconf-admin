@@ -1,56 +1,43 @@
-import React from 'react';
-import {
-  Layout, message,
-} from 'antd';
-
-import styles from './styles.module.scss';
-import {variableAPI} from "../../services/VariableService";
+import React from "react";
+import {message} from "antd";
 import {useParams} from "react-router-dom";
+
+import MainLayout from "../MainLayout/MainLayout";
+
+import {
+  variableAPI,
+  useGetConfigByIdQuery,
+} from "../../services/VariableService";
 import EditVarForm from "../../components/EditVarForm/EditvarForm";
 
-const {Header, Content, Footer} = Layout;
-
 const EditPage = () => {
-
-  const {id: uuid} = useParams();
+  const {uuid} = useParams();
 
   const {
-    data: variableData,
-    error: variableError,
-    isLoading: isLoadingVariable,
-  } = variableAPI.useFetchVariableByIdQuery(uuid);
+    data: configData,
+    error: configError,
+    isLoading: isConfigLoading,
+  } = useGetConfigByIdQuery(uuid);
 
-  const [
-    updateVariable, {
-      error: updateError,
-      isLoading: isUpdateLoading,
-    }
-  ] = variableAPI.useUpdateVariableMutation();
+  const [updateVariable, {error: updateError, isLoading: isUpdateLoading}] =
+    variableAPI.useUpdateVariableMutation();
 
-  return <>
-    <Layout className={styles.layout}>
-      <Header className={styles.header}>Динамические конфиги
-        Userver</Header>
-      <Content className={styles.content}>
-        <EditVarForm
-          isLoading={isLoadingVariable}
-          isSaveLoading={isLoadingVariable || isUpdateLoading}
-          title="Редактировать переменную"
-          onFinish={
-            data => {
-              updateVariable(data).then(() => {
-                message.success("Сохранено");
-              })
-            }
-          }
-          initialValues={variableData}
-          error={variableError || updateError}
-        />
-      </Content>
-      <Footer className={styles.footer}>Сделано с любовью ❤️
-        2022</Footer>
-    </Layout>
-  </>;
+  return (
+    <MainLayout>
+      <EditVarForm
+        isLoading={isConfigLoading}
+        isSaveLoading={isConfigLoading || isUpdateLoading}
+        title="Редактировать переменную"
+        onFinish={(data) => {
+          updateVariable(data).then(() => {
+            message.success("Сохранено");
+          });
+        }}
+        initialValues={configData}
+        error={configError || updateError}
+      />
+    </MainLayout>
+  );
 };
 
 export default EditPage;

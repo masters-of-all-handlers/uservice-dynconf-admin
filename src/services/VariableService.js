@@ -9,15 +9,15 @@ export const variableAPI = createApi({
       // "https://my-json-server.typicode.com/masters-of-all-handlers/uservice-dynconf-admin",
       "http://10.21.0.234:8083/admin/v1",
   }),
-  tagTypes: ["Variables", "Configs"],
+  tagTypes: ["Configs"],
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, offset = 0}) => ({
+      query: ({limit = 10, page = 1}) => ({
         url: configsEndpoint,
         params: {
           limit: limit,
-          offset: offset,
+          page: page,
         },
       }),
 
@@ -25,7 +25,7 @@ export const variableAPI = createApi({
         items ? items.map(({uuid}) => ({type: "Configs", uuid})) : ["Configs"],
     }),
 
-    fetchVariableById: build.query({
+    getConfigById: build.query({
       query: (uuid) => ({
         url: `${configsEndpoint}/${uuid}`,
       }),
@@ -40,10 +40,9 @@ export const variableAPI = createApi({
         body: update,
       }),
 
-      invalidatesTags: (result) => {
-        return [`variable${result.id}`];
-      },
+      invalidatesTags: ["Configs"],
     }),
+
     createVariable: build.mutation({
       query: (variable) => ({
         url: "/variables",
@@ -51,17 +50,18 @@ export const variableAPI = createApi({
         body: variable,
       }),
 
-      invalidatesTags: ["Variables"],
+      invalidatesTags: ["Configs"],
     }),
+
     deleteVariableById: build.mutation({
       query: (uuid) => ({
-        url: `/variable/${uuid}`,
+        url: `/variables/${uuid}`,
         method: "DELETE",
       }),
 
-      invalidatesTags: ["Variables"],
+      invalidatesTags: ["Configs"],
     }),
   }),
 });
 
-export const {useGetConfigsQuery} = variableAPI;
+export const {useGetConfigsQuery, useGetConfigByIdQuery} = variableAPI;

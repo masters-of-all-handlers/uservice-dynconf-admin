@@ -35,7 +35,9 @@ const validateJSON = (_, value) => new Promise(
 );
 
 export default function EditVarFields({form, initialValues}) {
-  const value = Form.useWatch("value", form);
+  const {config_name, config_value, service} = initialValues;
+
+  const value = Form.useWatch("config_value", form);
   return <>
     <Row>
       <Col xs={24} md={12}>
@@ -45,8 +47,9 @@ export default function EditVarFields({form, initialValues}) {
                    }]}
                    className={styles.formItem}
                    name="name"
+                   initialValue={config_name}
         >
-          <Input placeholder="MY_NICE_VAR"/>
+          <Input readOnly={config_name} />
         </Form.Item>
       </Col>
       <Col xs={24} md={12}>
@@ -59,21 +62,21 @@ export default function EditVarFields({form, initialValues}) {
           name="service"
         >
 
-          <Input placeholder="__default__"/>
+          <Input readOnly={service}/>
         </Form.Item>
       </Col>
     </Row>
     <Row>
-      <Col xs={24} md={initialValues?.value ? 12 : 24}>
+      <Col xs={24} md={config_value ? 12 : 24}>
         <Form.Item label="Значение"
                    rules={[{
                      required: true, message: "Введите значение",
                    }, {
                      validator: validateJSON
                    }]}
-                   name="value"
+                   name="config_value"
                    getValueProps={value => ({
-                     value: prettifyJSON(value),
+                     value: prettifyJSON(config_value),
                      className: classnames("ant-input", {
                        "ant-input-status-error": !isJSONValid(value)
                      })
@@ -99,13 +102,13 @@ export default function EditVarFields({form, initialValues}) {
           />
         </Form.Item>
       </Col>
-      {initialValues?.value && <Col xs={24} md={12}>
+      {config_value && <Col xs={24} md={12}>
         <Form.Item label="Diff" className={styles.formItem}>
           <DiffEditor
             defaultLanguage="json"
             height="300px"
             modified={prettifyJSON(value)}
-            original={prettifyJSON(initialValues?.value)}
+            original={prettifyJSON(config_value)}
             options={{
               renderSideBySide: false,
               originalEditable: false,
