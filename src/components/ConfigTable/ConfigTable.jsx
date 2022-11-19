@@ -4,7 +4,7 @@ import {Table, Space} from "antd";
 import styles from "./styles.module.scss";
 import {columns} from "./columns";
 
-import {useFetchAllConfigsQuery} from "../../services/VariableService";
+import {useGetConfigsQuery} from "../../services/VariableService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
 const getVariablesParams = (params) => ({
@@ -15,7 +15,7 @@ const getVariablesParams = (params) => ({
 const ConfigTable = () => {
   const {tableParams, handleTableChange} = useTable();
 
-  const {data, isFetching} = useFetchAllConfigsQuery(
+  const {data, isFetching} = useGetConfigsQuery(
     getVariablesParams(tableParams)
   );
 

@@ -12,7 +12,7 @@ export const variableAPI = createApi({
   tagTypes: ["Variables", "Configs"],
 
   endpoints: (build) => ({
-    fetchAllConfigs: build.query({
+    getConfigs: build.query({
       query: ({limit = 10, offset = 0}) => ({
         url: configsEndpoint,
         params: {
@@ -64,4 +64,4 @@ export const variableAPI = createApi({
   }),
 });
 
-export const {useFetchAllConfigsQuery} = variableAPI;
+export const {useGetConfigsQuery} = variableAPI;
