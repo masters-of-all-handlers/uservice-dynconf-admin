@@ -53,10 +53,10 @@ export const variableAPI = createApi({
       invalidatesTags: ["Variables"],
     }),
     cloneVariable: build.mutation({
-      query: ({id, service}) => ({
+      query: ({id, ...clone}) => ({
         url: `/variables/${id}/clone`,
         method: "POST",
-        body: {service}
+        body: clone
       }),
       invalidatesTags: ["Variables"],
     }),

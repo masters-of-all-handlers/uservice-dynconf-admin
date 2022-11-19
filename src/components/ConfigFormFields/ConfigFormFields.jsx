@@ -118,7 +118,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             height="300px"
             options={{
               formatOnPaste: true,
-              formatOnType: true,
+              formatOnType: false,
               minimap: {
                 enabled: false
               },
@@ -130,7 +130,6 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
               overviewRulerBorder: false,
               readOnly: !modeData.fields.value,
             }}
-            onChange={value => form.setFieldValue("value", value)}
             loading={
               <Row align="middle">
                 <Space className={styles.spinner}>
