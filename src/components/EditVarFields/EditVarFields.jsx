@@ -1,4 +1,4 @@
-import {Col, Form, Input, Row} from "antd";
+import {Col, Form, Input, Row, Space, Spin} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
@@ -89,6 +89,13 @@ export default function EditVarFields({form, initialValues}) {
                 enabled: false
               }
             }}
+            loading={
+              <Row align="middle">
+                <Space className={styles.spinner}>
+                  <Spin/>
+                </Space>
+              </Row>
+            }
           />
         </Form.Item>
       </Col>
@@ -107,6 +114,13 @@ export default function EditVarFields({form, initialValues}) {
                 enabled: false
               }
             }}
+            loading={
+              <Row align="middle">
+                <Space className={styles.spinner}>
+                  <Spin/>
+                </Space>
+              </Row>
+            }
           />
         </Form.Item>
       </Col>}
