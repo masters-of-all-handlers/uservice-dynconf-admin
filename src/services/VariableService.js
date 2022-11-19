@@ -13,11 +13,11 @@ export const variableAPI = createApi({
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, offset = 0}) => ({
+      query: ({limit = 10, page = 1}) => ({
         url: configsEndpoint,
         params: {
           limit: limit,
-          offset: offset,
+          page: page,
         },
       }),
 

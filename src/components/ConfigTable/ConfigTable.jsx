@@ -7,17 +7,15 @@ import {columns} from "./columns";
 import {useGetConfigsQuery} from "../../services/VariableService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
-const getVariablesParams = (params) => ({
+const getConfigsParams = (params) => ({
   limit: params.pagination?.pageSize,
-  offset: (params.pagination?.current - 1) * params.pagination?.pageSize,
+  page: params.pagination?.current,
 });
 
 const ConfigTable = () => {
   const {tableParams, handleTableChange} = useTable();
 
-  const {data, isFetching} = useGetConfigsQuery(
-    getVariablesParams(tableParams)
-  );
+  const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
   return (
     <>
