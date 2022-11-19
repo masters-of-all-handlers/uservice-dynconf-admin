@@ -1,45 +1,31 @@
 import React from "react";
-import {Layout, PageHeader, Button} from "antd";
+import {PageHeader, Button} from "antd";
 import {useNavigate} from "react-router-dom";
 
-import styles from "./styles.module.scss";
+import MainLayout from "../MainLayout/MainLayout";
 
 import ConfigTable from "../../components/ConfigTable/ConfigTable";
-
-const {Header, Content, Footer} = Layout;
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const handleCreateClick = (e) => {
+  const handleCreateClick = () => {
     navigate(`/create`);
   };
 
   return (
-    <>
-      <Layout className={styles.layout}>
-        <Header className={styles.header}>Динамические конфиги Userver</Header>
+    <MainLayout>
+      <PageHeader
+        title="Список конфигов"
+        extra={[
+          <Button key="createConfig" type="primary" onClick={handleCreateClick}>
+            Создать конфиг
+          </Button>,
+        ]}
+      />
 
-        <Content className={styles.content}>
-          <PageHeader
-            title="Список переменных"
-            extra={[
-              <Button
-                key="createVar"
-                type="primary"
-                onClick={handleCreateClick}
-              >
-                Создать переменную
-              </Button>,
-            ]}
-          />
-
-          <ConfigTable />
-        </Content>
-
-        <Footer className={styles.footer}>Сделано с любовью ❤️ 2022</Footer>
-      </Layout>
-    </>
+      <ConfigTable />
+    </MainLayout>
   );
 };
 
