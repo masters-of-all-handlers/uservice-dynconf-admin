@@ -4,9 +4,18 @@ import {ReactComponent as Logo} from "../../logo.svg";
 import React from "react";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {useForm} from "antd/es/form/Form";
+import {authAPI} from "../../services/AuthService";
 
-export default function LoginPage({props}) {
+export default function LoginPage() {
   const [form,] = useForm();
+  const [login, {
+    data: loginData, error: loginError, isLoading: isLoginLoading,
+  }] = authAPI.useLoginMutation();
+  const handleFinish = data => {
+    login(data).then(() => {
+      console.log(loginData);
+    });
+  }
   return <Layout className={styles.layout}>
     <Card
       style={{width: 300}}>
@@ -14,9 +23,12 @@ export default function LoginPage({props}) {
         <Logo className={styles.logo}/>
         <h2 className={styles.cardTitle}>Вход</h2>
       </div>
-      <Form form={form}>
+      <Form
+        form={form}
+        onFinish={handleFinish}
+      >
         <Form.Item
-          name="username"
+          name="login"
           rules={[{required: true, message: 'Введите имя пользователя'}]}
         >
           <Input prefix={<UserOutlined className="site-form-item-icon"/>}
@@ -32,7 +44,7 @@ export default function LoginPage({props}) {
             placeholder="Пароль"
           />
         </Form.Item>
-        <Button type="primary" block>
+        <Button type="primary" block loading={isLoginLoading} htmlType="submit">
           Войти
         </Button>
       </Form>
