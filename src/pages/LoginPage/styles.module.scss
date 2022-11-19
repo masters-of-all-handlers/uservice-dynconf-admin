@@ -1,0 +1,19 @@
+.layout {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 5rem;
+}
+
+.cardHeader {
+  text-align: center;
+}
+
+.cardTitle {
+  margin: 0.5rem 0 1rem;
+}
