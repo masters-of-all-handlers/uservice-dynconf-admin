@@ -3,6 +3,7 @@ import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
 import JSONView from "../JSONView/JSONView";
 import Editor, {DiffEditor} from "@monaco-editor/react";
+import classnames from "classnames";
 
 const prettifyJSON = json => {
   try {
@@ -14,6 +15,25 @@ const prettifyJSON = json => {
     return "";
   }
 };
+
+const isJSONValid = (json) => {
+  try {
+    JSON.parse(json);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+const validateJSON = (_, value) => new Promise(
+  (resolve, reject) => {
+    if (isJSONValid(value)) {
+      resolve();
+    } else {
+      reject("Значение должно быть валидным JSON");
+    }
+  }
+);
 
 export default function EditVarFields({form, initialValues}) {
   const value = Form.useWatch("value", form);
@@ -48,15 +68,28 @@ export default function EditVarFields({form, initialValues}) {
       <Col xs={24} md={initialValues?.value ? 12 : 24}>
         <Form.Item label="Значение"
                    rules={[{
-                     required: true, message: "Введите значение"
+                     required: true, message: "Введите значение",
+                   }, {
+                     validator: validateJSON
                    }]}
                    name="value"
-                   getValueProps={value => ({value: prettifyJSON(value)})}
+                   getValueProps={value => ({
+                     value: prettifyJSON(value),
+                     className: classnames("ant-input", {
+                       "ant-input-status-error": !isJSONValid(value)
+                     })
+                   })}
                    className={styles.formItem}>
           <Editor
             defaultLanguage="json"
             height="300px"
-            options={{insertSpaces: true, formatOnPaste: true}}
+            options={{
+              insertSpaces: true,
+              formatOnPaste: true,
+              minimap: {
+                enabled: false
+              }
+            }}
           />
         </Form.Item>
       </Col>
@@ -70,7 +103,10 @@ export default function EditVarFields({form, initialValues}) {
             options={{
               renderSideBySide: false,
               originalEditable: false,
-              readOnly: true
+              readOnly: true,
+              minimap: {
+                enabled: false
+              }
             }}
           />
         </Form.Item>
