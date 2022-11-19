@@ -1,7 +1,6 @@
 import {Col, Form, Input, Row} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import React from "react";
-import JSONView from "../JSONView/JSONView";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 import classnames from "classnames";
 
@@ -98,7 +97,7 @@ export default function EditVarFields({form, initialValues}) {
           <DiffEditor
             defaultLanguage="json"
             height="300px"
-            modified={prettifyJSON(form.getFieldValue("value"))}
+            modified={prettifyJSON(value)}
             original={prettifyJSON(initialValues?.value)}
             options={{
               renderSideBySide: false,
