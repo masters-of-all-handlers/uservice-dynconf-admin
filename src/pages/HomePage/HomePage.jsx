@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 import styles from "./styles.module.scss";
 
-import VarsTable from "../../components/VarsTable/VarsTable";
+import ConfigTable from "../../components/ConfigTable/ConfigTable";
 
 const {Header, Content, Footer} = Layout;
 
@@ -34,7 +34,7 @@ const HomePage = () => {
             ]}
           />
 
-          <VarsTable />
+          <ConfigTable />
         </Content>
 
         <Footer className={styles.footer}>Сделано с любовью ❤️ 2022</Footer>

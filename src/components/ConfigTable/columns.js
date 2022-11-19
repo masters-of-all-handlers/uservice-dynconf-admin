@@ -1,8 +1,8 @@
 import React from "react";
 
-import VarsTableActions from "../VarsTableActions/VarsTableActions";
+import ConfigTableRowActions from "../ConfigTableRowActions/ConfigTableRowActions";
 
-const renderActions = (_, render) => <VarsTableActions render={render} />;
+const renderActions = (_, render) => <ConfigTableRowActions render={render} />;
 
 export const columns = [
   {

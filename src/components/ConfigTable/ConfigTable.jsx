@@ -12,7 +12,7 @@ const getVariablesParams = (params) => ({
   offset: (params.pagination?.current - 1) * params.pagination?.pageSize,
 });
 
-const VariablesTable = () => {
+const ConfigTable = () => {
   const {tableParams, handleTableChange} = useTable();
 
   const {data, isFetching} = useFetchAllVariablesQuery(
@@ -42,4 +42,4 @@ const VariablesTable = () => {
   );
 };
 
-export default VariablesTable;
+export default ConfigTable;

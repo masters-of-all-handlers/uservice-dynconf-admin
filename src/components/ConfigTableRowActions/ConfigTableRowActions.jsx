@@ -11,7 +11,7 @@ import {variableAPI} from "../../services/VariableService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-const VarsTableActions = ({render: {uuid, config_name: name}}) => {
+const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
   const actionsDropdown = useDropdown();
   const deletePopconfirm = usePopconfirm();
 
@@ -116,4 +116,4 @@ const VarsTableActions = ({render: {uuid, config_name: name}}) => {
   );
 };
 
-export default VarsTableActions;
+export default ConfigTableRowActions;
