@@ -13,7 +13,7 @@ import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ClonePage from "./pages/ClonePage/ClonePage";
 
-const loggedInPart = "dashboard";
+const loggedInPart = "/dashboard";
 
 const App = () => {
   return (
