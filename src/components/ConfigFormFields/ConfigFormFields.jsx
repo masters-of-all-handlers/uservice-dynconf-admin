@@ -13,6 +13,12 @@ import React, {useState} from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 import classnames from "classnames";
 
+/* загрузка не с CDN, а с локального npm пакета */
+import loader from '@monaco-editor/loader';
+import * as monaco from 'monaco-editor';
+
+loader.config({monaco});
+
 const prettifyJSON = json => {
   try {
     return JSON.stringify(JSON.parse(json), null, 2);
@@ -111,13 +117,20 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             defaultLanguage="json"
             height="300px"
             options={{
-              insertSpaces: true,
               formatOnPaste: true,
+              formatOnType: true,
               minimap: {
                 enabled: false
               },
-              readOnly: !modeData.fields.value
+              overviewRulerLanes: 0,
+              hideCursorInOverviewRuler: true,
+              scrollbar: {
+                vertical: 'hidden'
+              },
+              overviewRulerBorder: false,
+              readOnly: !modeData.fields.value,
             }}
+            onChange={value => form.setFieldValue("value", value)}
             loading={
               <Row align="middle">
                 <Space className={styles.spinner}>
@@ -141,7 +154,14 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
               readOnly: true,
               minimap: {
                 enabled: false
-              }
+              },
+              overviewRulerLanes: 0,
+              hideCursorInOverviewRuler: true,
+              scrollbar: {
+                vertical: "hidden",
+              },
+              overviewRulerBorder: false,
+              renderOverviewRuler: false,
             }}
             loading={
               <Row align="middle">

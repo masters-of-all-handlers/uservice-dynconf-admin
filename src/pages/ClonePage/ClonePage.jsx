@@ -29,16 +29,17 @@ export default function ClonePage() {
       <Content className={styles.content}>
         <ConfigForm
           isLoading={false}
-          isSaveLoading={isLoadingVariable || isCloneLoading}
+          isSaveLoading={false && (isLoadingVariable || isCloneLoading)}
           mode="clone"
           onFinish={
             data => {
+              console.log(data);
               cloneVariable(data).then(() => {
                 message.success("Сохранено");
               })
             }
           }
-          initialValues={variableData}
+          initialValues={Object.assign(variableData||{name: "TEST"}, {name: "TEST"})}
           error={false && (variableError || cloneError)}
         />
       </Content>
