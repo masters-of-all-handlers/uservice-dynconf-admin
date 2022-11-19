@@ -4,17 +4,20 @@ import {useParams} from "react-router-dom";
 
 import MainLayout from "../MainLayout/MainLayout";
 
-import {variableAPI} from "../../services/VariableService";
+import {
+  variableAPI,
+  useGetConfigByIdQuery,
+} from "../../services/VariableService";
 import EditVarForm from "../../components/EditVarForm/EditvarForm";
 
 const EditPage = () => {
   const {uuid} = useParams();
 
   const {
-    data: variableData,
-    error: variableError,
-    isLoading: isLoadingVariable,
-  } = variableAPI.useFetchVariableByIdQuery(uuid);
+    data: configData,
+    error: configError,
+    isLoading: isConfigLoading,
+  } = useGetConfigByIdQuery(uuid);
 
   const [updateVariable, {error: updateError, isLoading: isUpdateLoading}] =
     variableAPI.useUpdateVariableMutation();
@@ -22,16 +25,16 @@ const EditPage = () => {
   return (
     <MainLayout>
       <EditVarForm
-        isLoading={isLoadingVariable}
-        isSaveLoading={isLoadingVariable || isUpdateLoading}
+        isLoading={isConfigLoading}
+        isSaveLoading={isConfigLoading || isUpdateLoading}
         title="Редактировать переменную"
         onFinish={(data) => {
           updateVariable(data).then(() => {
             message.success("Сохранено");
           });
         }}
-        initialValues={variableData}
-        error={variableError || updateError}
+        initialValues={configData}
+        error={configError || updateError}
       />
     </MainLayout>
   );
