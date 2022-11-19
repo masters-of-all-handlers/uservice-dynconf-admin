@@ -11,8 +11,7 @@ import EditVarForm from "../../components/EditVarForm/EditvarForm";
 const {Header, Content, Footer} = Layout;
 
 const EditPage = () => {
-
-  const {id: uuid} = useParams();
+  const {uuid} = useParams();
 
   const {
     data: variableData,
