@@ -25,11 +25,8 @@ export const variableAPI = createApi({
     }),
 
     fetchVariableById: build.query({
-      query: (id) => ({
-        url: "/variable",
-        params: {
-          id,
-        },
+      query: (uuid) => ({
+        url: `${configsEndpoint}/${uuid}`,
       }),
 
       providesTags: (result) => {
