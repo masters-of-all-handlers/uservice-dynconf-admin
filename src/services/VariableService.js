@@ -55,7 +55,7 @@ export const variableAPI = createApi({
 
     deleteVariableById: build.mutation({
       query: (uuid) => ({
-        url: `/variable/${uuid}`,
+        url: `/variables/${uuid}`,
         method: "DELETE",
       }),
 
