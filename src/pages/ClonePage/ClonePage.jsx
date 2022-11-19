@@ -1,10 +1,9 @@
-import {Layout, message} from "antd";
-import styles from "../EditPage/styles.module.scss";
+import {message} from "antd";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
-import {Content, Footer, Header} from "antd/es/layout/layout";
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
+import MainLayout from "../MainLayout/MainLayout";
 
 export default function ClonePage() {
   const {id: uuid} = useParams();
@@ -22,29 +21,20 @@ export default function ClonePage() {
     }
   ] = variableAPI.useCloneVariableMutation();
 
-  return <>
-    <Layout className={styles.layout}>
-      <Header className={styles.header}>Динамические конфиги
-        Userver</Header>
-      <Content className={styles.content}>
-        <ConfigForm
-          isLoading={false}
-          isSaveLoading={false && (isLoadingVariable || isCloneLoading)}
-          mode="clone"
-          onFinish={
-            data => {
-              console.log(data);
-              cloneVariable(data).then(() => {
-                message.success("Сохранено");
-              })
-            }
-          }
-          initialValues={Object.assign(variableData||{name: "TEST"}, {name: "TEST"})}
-          error={false && (variableError || cloneError)}
-        />
-      </Content>
-      <Footer className={styles.footer}>Сделано с любовью ❤️
-        2022</Footer>
-    </Layout>
-  </>;
+  return <MainLayout><ConfigForm
+    isLoading={isLoadingVariable}
+    isSaveLoading={isLoadingVariable || isCloneLoading}
+    mode="clone"
+    onFinish={
+      data => {
+        console.log(data);
+        cloneVariable(data).then(() => {
+          message.success("Сохранено");
+        })
+      }
+    }
+    initialValues={variableData}
+    error={variableError || cloneError}
+  />
+  </MainLayout>;
 }

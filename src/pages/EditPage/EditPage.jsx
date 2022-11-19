@@ -2,13 +2,10 @@ import React from 'react';
 import {
   Layout, message,
 } from 'antd';
-
-import styles from './styles.module.scss';
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
-
-const {Header, Content, Footer} = Layout;
+import MainLayout from "../MainLayout/MainLayout";
 
 const EditPage = () => {
 
@@ -27,30 +24,22 @@ const EditPage = () => {
     }
   ] = variableAPI.useUpdateVariableMutation();
 
-  return <>
-    <Layout className={styles.layout}>
-      <Header className={styles.header}>Динамические конфиги
-        Userver</Header>
-      <Content className={styles.content}>
-        <ConfigForm
-          isLoading={isLoadingVariable}
-          isSaveLoading={isLoadingVariable || isUpdateLoading}
-          mode="edit"
-          onFinish={
-            data => {
-              updateVariable(data).then(() => {
-                message.success("Сохранено");
-              })
-            }
-          }
-          initialValues={variableData}
-          error={variableError || updateError}
-        />
-      </Content>
-      <Footer className={styles.footer}>Сделано с любовью ❤️
-        2022</Footer>
-    </Layout>
-  </>;
+  return <MainLayout>
+    <ConfigForm
+      isLoading={isLoadingVariable}
+      isSaveLoading={isLoadingVariable || isUpdateLoading}
+      mode="edit"
+      onFinish={
+        data => {
+          updateVariable(data).then(() => {
+            message.success("Сохранено");
+          })
+        }
+      }
+      initialValues={variableData}
+      error={variableError || updateError}
+    />
+  </MainLayout>;
 };
 
 export default EditPage;
