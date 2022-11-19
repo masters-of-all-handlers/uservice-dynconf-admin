@@ -2,48 +2,41 @@ import React from "react";
 import {Table, Space} from "antd";
 
 import styles from "./styles.module.scss";
+import {columns} from "./columns";
 
-import VarsTableActions from "../VarsTableActions/VarsTableActions";
 import {useFetchAllVariablesQuery} from "../../services/VariableService";
+import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
-const {Column} = Table;
+const getVariablesParams = (params) => ({
+  limit: params.pagination?.pageSize,
+  offset: (params.pagination?.current - 1) * params.pagination?.pageSize,
+});
 
 const VariablesTable = () => {
-  const {data: dataVariables, isFetching: isFetchingVariables} =
+  const {tableParams, handleTableChange} = useTable();
 
-  const renderColumnActions = (_, render) => (
-    <VarsTableActions render={render} />
+  const {data, isFetching} = useFetchAllVariablesQuery(
+    getVariablesParams(tableParams)
   );
 
   return (
     <>
-      <Space direction="vertical" size="middle" className={styles.wrap}>
+      <Space className={styles.wrap} direction="vertical" size="middle">
         <Table
-          rowKey={(record) => record.uuid}
           rowClassName={styles.row}
-          dataSource={dataVariables && dataVariables.items}
-          loading={isLoadingVariables}
+          rowKey={rowKey}
+          dataSource={data?.items}
+          columns={columns}
+          loading={isFetching}
+          pagination={{
+            ...tableParams.pagination,
+            total: data?.total,
+            showTotal,
+          }}
+          onChange={handleTableChange}
           size="small"
           bordered
-        >
-          <Column title="Имя" dataIndex="config_name" key="name" width="100" />
-
-          <Column
-            title="Сервис"
-            dataIndex="service"
-            key="service"
-            ellipsis={true}
-            width="100"
-          />
-
-          <Column
-            title="Действия"
-            key="actions"
-            align="right"
-            render={renderColumnActions}
-            width="100px"
-          />
-        </Table>
+        />
       </Space>
     </>
   );

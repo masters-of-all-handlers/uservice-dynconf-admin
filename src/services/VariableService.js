@@ -10,15 +10,17 @@ export const variableAPI = createApi({
 
   endpoints: (build) => ({
     fetchAllVariables: build.query({
-      query: (limit = 10) => ({
+      query: ({limit = 10, offset = 0}) => ({
         url: "/variables",
         params: {
-          _limit: limit,
+          limit: limit,
+          offset: offset,
         },
       }),
 
-      providesTags: (result) => ["Variables"],
+      providesTags: ["Variables"],
     }),
+
     fetchVariableById: build.query({
       query: (id) => ({
         url: "/variable",

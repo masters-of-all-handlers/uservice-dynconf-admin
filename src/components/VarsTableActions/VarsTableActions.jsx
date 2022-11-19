@@ -11,7 +11,7 @@ import {variableAPI} from "../../services/VariableService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-const VarsTableActions = ({render: {uuid, name}}) => {
+const VarsTableActions = ({render: {uuid, config_name: name}}) => {
   const actionsDropdown = useDropdown();
   const deletePopconfirm = usePopconfirm();
 
@@ -28,11 +28,11 @@ const VarsTableActions = ({render: {uuid, name}}) => {
 
     if (response.hasOwnProperty("error")) {
       return message.error(
-        `При удалении переменной ${name} произошла ошибка ${response.error.status}`
+        `При удалении конфига ${name} произошла ошибка ${response.error.status}`
       );
     }
 
-    message.success(`Переменная ${name} удалена`);
+    message.success(`Конфиг ${name} удален`);
   };
 
   const handleCancelDelete = () => {
