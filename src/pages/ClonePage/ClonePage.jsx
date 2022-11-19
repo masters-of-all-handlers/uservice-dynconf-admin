@@ -28,7 +28,7 @@ export default function ClonePage() {
         Userver</Header>
       <Content className={styles.content}>
         <ConfigForm
-          isLoading={isLoadingVariable}
+          isLoading={false}
           isSaveLoading={isLoadingVariable || isCloneLoading}
           mode="clone"
           onFinish={
@@ -39,7 +39,7 @@ export default function ClonePage() {
             }
           }
           initialValues={variableData}
-          error={variableError || cloneError}
+          error={false && (variableError || cloneError)}
         />
       </Content>
       <Footer className={styles.footer}>Сделано с любовью ❤️

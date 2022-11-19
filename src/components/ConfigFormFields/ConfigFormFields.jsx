@@ -1,6 +1,6 @@
-import {Col, Form, Input, Row, Space, Spin} from "antd";
+import {AutoComplete, Col, Form, Input, Row, Space, Spin} from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
-import React from "react";
+import React, {useState} from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 import classnames from "classnames";
 
@@ -36,6 +36,11 @@ const validateJSON = (_, value) => new Promise(
 
 export default function ConfigFormFields({form, initialValues, modeData}) {
   const value = Form.useWatch("value", form);
+  const allOptions = [{value: "__default__"}, {value: "non-default!"}];
+  const [options, setOptions] = useState(allOptions);
+  const handleServiceSearch = value => {
+    setOptions(allOptions.filter(option => option.value.toLowerCase().includes(value.toLowerCase())));
+  };
   return <>
     <Row>
       <Col xs={24} md={12}>
@@ -58,14 +63,17 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           }]}
           name="service"
         >
-
-          <Input placeholder="__default__"
-                 readOnly={!modeData.fields.service}/>
+          <AutoComplete
+            options={options}
+            onSearch={handleServiceSearch}
+            placeholder="__default__"
+            readOnly={!modeData.fields.service}
+          />
         </Form.Item>
       </Col>
     </Row>
     <Row>
-      <Col xs={24} md={modeData.initialValue ? 12 : 24}>
+      <Col xs={24} md={modeData.fields.initialValue ? 12 : 24}>
         <Form.Item label="Значение"
                    rules={[{
                      required: true, message: "Введите значение",
@@ -101,7 +109,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           />
         </Form.Item>
       </Col>
-      {modeData.initialValue && <Col xs={24} md={12}>
+      {modeData.fields.initialValue && <Col xs={24} md={12}>
         <Form.Item label="Diff" className={styles.formItem}>
           <DiffEditor
             defaultLanguage="json"
