@@ -21,7 +21,8 @@ export const variableAPI = createApi({
         },
       }),
 
-      providesTags: ["Configs"],
+      providesTags: ({items}) =>
+        items ? items.map(({uuid}) => ({type: "Configs", uuid})) : ["Configs"],
     }),
 
     fetchVariableById: build.query({
@@ -29,10 +30,9 @@ export const variableAPI = createApi({
         url: `${configsEndpoint}/${uuid}`,
       }),
 
-      providesTags: (result) => {
-        return [`variable${result.id}`];
-      },
+      providesTags: (result, error, uuid) => [{type: "Configs", uuid}],
     }),
+
     updateVariable: build.mutation({
       query: ({id, ...update}) => ({
         url: "/variable",
