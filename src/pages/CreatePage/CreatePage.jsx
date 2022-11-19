@@ -1,6 +1,6 @@
 import {Layout, message} from "antd";
 import styles from "../EditPage/styles.module.scss";
-import EditVarForm from "../../components/EditVarForm/EditvarForm";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import {variableAPI} from "../../services/VariableService";
@@ -17,10 +17,10 @@ export default function CreatePage() {
       <Header className={styles.header}>Динамические конфиги
         Userver</Header>
       <Content className={styles.content}>
-        <EditVarForm
+        <ConfigForm
           isLoading={false}
           isSaveLoading={isCreateLoading}
-          title="Создать переменную"
+          mode="create"
           onFinish={data => {
             createVariable(data).then(() => {
               navigate("/");

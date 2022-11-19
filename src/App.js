@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage/HomePage';
 import EditPage from "./pages/EditPage/EditPage";
 import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import ClonePage from "./pages/ClonePage/ClonePage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route index element={<HomePage/>}/>
             <Route path="/edit/:id" element={<EditPage/>}/>
             <Route path="/create" element={<CreatePage/>}/>
+            <Route path="/clone/:id" element={<ClonePage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
           </Routes>
         </BrowserRouter>

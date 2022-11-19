@@ -1,17 +1,12 @@
-import React from 'react';
-import {
-  Layout, message,
-} from 'antd';
-
-import styles from './styles.module.scss';
+import {Layout, message} from "antd";
+import styles from "../EditPage/styles.module.scss";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import React from "react";
+import {Content, Footer, Header} from "antd/es/layout/layout";
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
 
-const {Header, Content, Footer} = Layout;
-
-const EditPage = () => {
-
+export default function ClonePage() {
   const {id: uuid} = useParams();
 
   const {
@@ -21,11 +16,11 @@ const EditPage = () => {
   } = variableAPI.useFetchVariableByIdQuery(uuid);
 
   const [
-    updateVariable, {
-      error: updateError,
-      isLoading: isUpdateLoading,
+    cloneVariable, {
+      error: cloneError,
+      isLoading: isCloneLoading,
     }
-  ] = variableAPI.useUpdateVariableMutation();
+  ] = variableAPI.useCloneVariableMutation();
 
   return <>
     <Layout className={styles.layout}>
@@ -34,23 +29,21 @@ const EditPage = () => {
       <Content className={styles.content}>
         <ConfigForm
           isLoading={isLoadingVariable}
-          isSaveLoading={isLoadingVariable || isUpdateLoading}
-          mode="edit"
+          isSaveLoading={isLoadingVariable || isCloneLoading}
+          mode="clone"
           onFinish={
             data => {
-              updateVariable(data).then(() => {
+              cloneVariable(data).then(() => {
                 message.success("Сохранено");
               })
             }
           }
           initialValues={variableData}
-          error={variableError || updateError}
+          error={variableError || cloneError}
         />
       </Content>
       <Footer className={styles.footer}>Сделано с любовью ❤️
         2022</Footer>
     </Layout>
   </>;
-};
-
-export default EditPage;
+}

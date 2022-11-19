@@ -34,7 +34,7 @@ const validateJSON = (_, value) => new Promise(
   }
 );
 
-export default function EditVarFields({form, initialValues}) {
+export default function ConfigFormFields({form, initialValues, modeData}) {
   const value = Form.useWatch("value", form);
   return <>
     <Row>
@@ -46,7 +46,7 @@ export default function EditVarFields({form, initialValues}) {
                    className={styles.formItem}
                    name="name"
         >
-          <Input placeholder="MY_NICE_VAR"/>
+          <Input placeholder="MY_NICE_VAR" readOnly={!modeData.fields.name}/>
         </Form.Item>
       </Col>
       <Col xs={24} md={12}>
@@ -59,12 +59,13 @@ export default function EditVarFields({form, initialValues}) {
           name="service"
         >
 
-          <Input placeholder="__default__"/>
+          <Input placeholder="__default__"
+                 readOnly={!modeData.fields.service}/>
         </Form.Item>
       </Col>
     </Row>
     <Row>
-      <Col xs={24} md={initialValues?.value ? 12 : 24}>
+      <Col xs={24} md={modeData.initialValue ? 12 : 24}>
         <Form.Item label="Значение"
                    rules={[{
                      required: true, message: "Введите значение",
@@ -87,7 +88,8 @@ export default function EditVarFields({form, initialValues}) {
               formatOnPaste: true,
               minimap: {
                 enabled: false
-              }
+              },
+              readOnly: !modeData.fields.value
             }}
             loading={
               <Row align="middle">
@@ -99,7 +101,7 @@ export default function EditVarFields({form, initialValues}) {
           />
         </Form.Item>
       </Col>
-      {initialValues?.value && <Col xs={24} md={12}>
+      {modeData.initialValue && <Col xs={24} md={12}>
         <Form.Item label="Diff" className={styles.formItem}>
           <DiffEditor
             defaultLanguage="json"

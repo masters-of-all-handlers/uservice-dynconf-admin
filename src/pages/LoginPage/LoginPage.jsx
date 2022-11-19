@@ -9,7 +9,7 @@ import {authAPI} from "../../services/AuthService";
 export default function LoginPage() {
   const [form,] = useForm();
   const [login, {
-    data: loginData, error: loginError, isLoading: isLoginLoading,
+    data: loginData, /*error: loginError,*/ isLoading: isLoginLoading,
   }] = authAPI.useLoginMutation();
   const handleFinish = data => {
     login(data).then(() => {
