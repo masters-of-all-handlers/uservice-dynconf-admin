@@ -7,6 +7,8 @@ import {
 } from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 
+import {DASHBOARD_CONFIGS_EDIT_URL} from "../../constants";
+
 import {variableAPI} from "../../services/VariableService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
@@ -56,7 +58,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
 
     switch (key) {
       case "edit":
-        navigate(`/edit/${uuid}`);
+        navigate(DASHBOARD_CONFIGS_EDIT_URL(uuid));
         break;
 
       case "delete":

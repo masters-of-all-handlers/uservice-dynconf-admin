@@ -1,13 +1,13 @@
-import React from 'react';
-import 'antd/dist/antd.compact.less';
-import {ConfigProvider} from 'antd';
-import ruRU from 'antd/es/locale/ru_RU';
+import React from "react";
+import "antd/dist/antd.compact.less";
+import {ConfigProvider} from "antd";
+import ruRU from "antd/es/locale/ru_RU";
 
-import {Provider} from 'react-redux';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {Provider} from "react-redux";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import {store} from './store';
-import HomePage from './pages/HomePage/HomePage';
+import {store} from "./store";
+import HomePage from "./pages/HomePage/HomePage";
 import EditPage from "./pages/EditPage/EditPage";
 import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -15,8 +15,7 @@ import ClonePage from "./pages/ClonePage/ClonePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import UserCreatePage from "./pages/UserCreatePage/UserCreatePage";
-
-const loggedInPart = "/dashboard";
+import {DASHBOARD_URL} from "./constants";
 
 const App = () => {
   return (
@@ -24,26 +23,24 @@ const App = () => {
       <ConfigProvider locale={ruRU}>
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<LoginPage/>}/>
-            <Route path={loggedInPart}>
+            <Route index path="/" element={<LandingPage />} />
+
+            <Route path="/login" element={<LoginPage />} />
+
+            <Route path={DASHBOARD_URL}>
               <Route path="configs">
-                <Route path="create" element={<CreatePage/>}/>
-                <Route path=":id/clone" element={<ClonePage/>}/>
-                <Route path=":id/edit" element={<EditPage/>}/>
-                <Route index element={<HomePage/>}/>
+                <Route path="create" element={<CreatePage />} />
+                <Route path=":uuid/clone" element={<ClonePage />} />
+                <Route path=":uuid/edit" element={<EditPage />} />
+                <Route index element={<HomePage />} />
               </Route>
+
               <Route path="users">
                 <Route path="create" element={<UserCreatePage />} />
               </Route>
-              <Route index element={<NotFoundPage/>}/>
             </Route>
-            {/* DEPRECATED */}
-            <Route index element={<HomePage/>}/>
-            <Route path="/edit/:uuid" element={<EditPage/>}/>
-            <Route path="/create" element={<CreatePage/>}/>
-            <Route path="/clone/:id" element={<ClonePage/>}/>
-            <Route path="/landing" element={<LandingPage/>}/>
-            <Route path="*" element={<NotFoundPage/>}/>
+
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </ConfigProvider>
