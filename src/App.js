@@ -1,5 +1,5 @@
 import React from 'react';
-import 'antd/dist/antd.min.css';
+import 'antd/dist/antd.compact.less';
 import {ConfigProvider} from 'antd';
 import ruRU from 'antd/es/locale/ru_RU';
 
@@ -20,12 +20,7 @@ const loggedInPart = "/dashboard";
 const App = () => {
   return (
     <Provider store={store}>
-      <ConfigProvider locale={ruRU} theme={{
-        token: {
-          colorPrimary: "rgb(241,129,39)"
-
-        }
-      }}>
+      <ConfigProvider locale={ruRU}>
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<LoginPage/>}/>
