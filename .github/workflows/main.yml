@@ -39,6 +39,23 @@ jobs:
           curl -sSL https://get.docker.com/ | sudo sh
           docker build -t ghcr.io/${{ github.repository_owner }}/uda-frontend .
           docker push ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
+      - name: pack docker
+        run: docker save -o front.tar ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
+      - run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+      - run: echo "${{ secrets.OPENVPN_FILE }}" > client.ovpn
+      - uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: ./client.ovpn
+      - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      - run: scp -o StrictHostKeyChecking=no front.tar ${{ secrets.SSH_LOGIN }}:~/frontend/front.tar
+      - name: Checkout repo
+        run: ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} sudo docker load --input ./frontend/front.tar
+
+      - name: Run service
+        run: ssh -v -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} sudo docker-compose up || echo "Docker compose not found"
+
   deploy-app-scp:
     runs-on: ubuntu-latest
     needs: [ build-app ]
