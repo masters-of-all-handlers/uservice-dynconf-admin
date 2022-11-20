@@ -1,0 +1,36 @@
+.heroSection {
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.heroSectionBg {
+  background-color: #dedede;
+  background-repeat: repeat;
+  background-image: url(../../logo.svg);
+  width: 200vw;
+  height: 200vh;
+  background-size: 9vw;
+  transform: rotate(15deg) translate(-20vw, -20vw);
+}
+
+.heroSectionFg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, .93);
+}
+
+.heroSectionRow {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroSectionLogo {
+  width: 15vw;
+  padding-right: 2rem;
+}

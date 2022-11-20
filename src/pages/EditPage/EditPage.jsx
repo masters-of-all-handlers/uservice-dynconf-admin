@@ -1,14 +1,15 @@
-import React from "react";
-import {message} from "antd";
+import React from 'react';
+import {
+  message,
+} from 'antd';
 import {useParams} from "react-router-dom";
-
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../MainLayout/MainLayout";
 
 import {
   variableAPI,
   useGetConfigByIdQuery,
 } from "../../services/VariableService";
-import EditVarForm from "../../components/EditVarForm/EditvarForm";
 
 const EditPage = () => {
   const {uuid} = useParams();
@@ -22,22 +23,20 @@ const EditPage = () => {
   const [updateVariable, {error: updateError, isLoading: isUpdateLoading}] =
     variableAPI.useUpdateVariableMutation();
 
-  return (
-    <MainLayout>
-      <EditVarForm
-        isLoading={isConfigLoading}
-        isSaveLoading={isConfigLoading || isUpdateLoading}
-        title="Редактировать переменную"
-        onFinish={(data) => {
-          updateVariable(data).then(() => {
-            message.success("Сохранено");
-          });
-        }}
-        initialValues={configData}
-        error={configError || updateError}
-      />
-    </MainLayout>
-  );
+  return <MainLayout>
+    <ConfigForm
+      isLoading={isConfigLoading}
+      isSaveLoading={isConfigLoading || isUpdateLoading}
+      mode="edit"
+      onFinish={(data) => {
+        updateVariable(data).then(() => {
+          message.success("Сохранено");
+        });
+      }}
+      initialValues={configData}
+      error={configError || updateError}
+    />
+  </MainLayout>;
 };
 
 export default EditPage;

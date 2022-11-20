@@ -2,17 +2,49 @@ import {
   Alert, Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
 } from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
-import EditVarFields from "../EditVarFields/EditVarFields";
+import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
 import React, {useEffect, useState} from "react";
 
-export default function EditVarForm({
-                                      title,
-                                      initialValues,
-                                      onFinish,
-                                      isSaveLoading,
-                                      isLoading,
-                                      error
-                                    }) {
+const modes = {
+  create: {
+    title: "Создать конфиг",
+    fields: {
+      name: true,
+      service: true,
+      value: true,
+      initialValue: false
+    }
+  },
+  edit: {
+    title: "Редактировать конфиг",
+    fields: {
+      name: false,
+      service: false,
+      value: true,
+      initialValue: true
+    }
+  },
+  clone: {
+    title: "Клонировать конфиг",
+    fields: {
+      name: false,
+      service: true,
+      value: true,
+      initialValue: true
+    }
+  }
+}
+
+export default function ConfigForm(
+  {
+    mode,
+    initialValues,
+    onFinish,
+    isSaveLoading,
+    isLoading,
+    error
+  }
+) {
 
   const [form] = Form.useForm();
   const [popconfirmOpen, setPopconfirmOpen] = useState(false);
@@ -36,6 +68,12 @@ export default function EditVarForm({
     }
   }, [initialValues, form]);
 
+  const modeData = modes[mode];
+
+  if (!modeData) {
+    return "404!";
+  }
+
   return <Form
     form={form}
     layout="vertical"
@@ -48,7 +86,7 @@ export default function EditVarForm({
     <PageHeader
       ghost={false}
       onBack={() => window.history.back()}
-      title={title}
+      title={modeData.title}
       extra={[<Popconfirm
         key="2"
         title="Сбросить форму?"
@@ -64,15 +102,17 @@ export default function EditVarForm({
       </Button>,]}
     />
     {error ? (<Alert
-        message={`Произошла ошибка ${error.status}`}
-        type="error"
-        showIcon
-        closable
-        className={styles.alert}
-      />) : (isLoading ? <Row align="middle">
+      message={`Произошла ошибка ${error.status}`}
+      type="error"
+      showIcon
+      closable
+      className={styles.alert}
+    />) : (isLoading ? <Row align="middle">
         <Space className={styles.spinner}>
-          <Spin />
+          <Spin/>
         </Space>
-      </Row> : <EditVarFields initialValues={initialValues} form={form}/>)}
+      </Row> :
+      <ConfigFormFields initialValues={initialValues} form={form}
+                        modeData={modeData}/>)}
   </Form>
 }

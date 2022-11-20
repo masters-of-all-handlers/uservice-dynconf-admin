@@ -1,0 +1,22 @@
+.layout {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoRow {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 9rem;
+  padding-right: 2rem;
+  filter: grayscale(1);
+  opacity: .25;
+}
+
+h1.notFound404 {
+  margin: 0;
+}

@@ -6,7 +6,7 @@ const configsEndpoint = "/variables";
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL
+    baseUrl: API_BASE_URL + "/admin/v1"
   }),
   tagTypes: ["Configs"],
 
@@ -49,6 +49,14 @@ export const variableAPI = createApi({
         body: variable,
       }),
 
+      invalidatesTags: ["Configs"],
+    }),
+    cloneVariable: build.mutation({
+      query: ({id, ...clone}) => ({
+        url: `/variables/${id}/clone`,
+        method: "POST",
+        body: clone
+      }),
       invalidatesTags: ["Configs"],
     }),
 
