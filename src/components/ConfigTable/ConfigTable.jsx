@@ -34,6 +34,7 @@ const ConfigTable = () => {
         showTotal,
       }}
       onChange={handleTableChange}
+      size="middle"
       bordered
     />
   );
