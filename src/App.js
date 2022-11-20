@@ -7,7 +7,7 @@ import {Provider} from "react-redux";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import {store} from "./store";
-import HomePage from "./pages/HomePage/HomePage";
+import ConfigsPage from "./pages/ConfigsPage/ConfigsPage";
 import EditPage from "./pages/EditPage/EditPage";
 import CreatePage from "./pages/CreatePage/CreatePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -35,7 +35,7 @@ const App = () => {
                   <Route path="create" element={<CreatePage/>}/>
                   <Route path=":uuid/clone" element={<ClonePage/>}/>
                   <Route path=":uuid/edit" element={<EditPage/>}/>
-                  <Route index element={<HomePage/>}/>
+                  <Route index element={<ConfigsPage />} />
                 </Route>
 
                 <Route path="users">
