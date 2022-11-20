@@ -16,6 +16,7 @@ const HomePage = () => {
   return (
     <MainLayout>
       <PageHeader
+        ghost={false}
         title="Список конфигов"
         extra={[
           <Button key="createConfig" type="primary" onClick={handleCreateClick}>
