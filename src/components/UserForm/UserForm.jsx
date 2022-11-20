@@ -1,41 +1,28 @@
 import {
-  Alert, Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
+  Alert,
+  Button, Form,
+  message,
+  PageHeader,
+  Popconfirm,
+  Row,
+  Space, Spin
 } from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
-import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
 import React, {useEffect, useState} from "react";
+import UserFormFields from "../UserFormFields/UserFormFields";
 
 const modes = {
   create: {
-    title: "Создать конфиг",
+    title: "Создание пользователя",
     fields: {
-      name: true,
-      service: true,
-      value: true,
-      initialValue: false
-    }
-  },
-  edit: {
-    title: "Редактировать конфиг",
-    fields: {
-      name: false,
-      service: false,
-      value: true,
-      initialValue: true
-    }
-  },
-  clone: {
-    title: "Клонировать конфиг",
-    fields: {
-      name: false,
-      service: true,
-      value: true,
-      initialValue: true
+      login: true,
+      password: true
     }
   }
 }
 
-export default function ConfigForm(
+
+export default function UserForm(
   {
     mode,
     initialValues,
@@ -45,7 +32,6 @@ export default function ConfigForm(
     error
   }
 ) {
-
   const [form] = Form.useForm();
   const [popconfirmOpen, setPopconfirmOpen] = useState(false);
 
@@ -112,7 +98,7 @@ export default function ConfigForm(
           <Spin/>
         </Space>
       </Row> :
-      <ConfigFormFields initialValues={initialValues} form={form}
-                        modeData={modeData}/>)}
+      <UserFormFields initialValues={initialValues} form={form}
+                      modeData={modeData}/>)}
   </Form>
 }
