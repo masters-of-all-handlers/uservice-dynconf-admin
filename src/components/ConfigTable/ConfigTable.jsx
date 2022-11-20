@@ -3,6 +3,7 @@ import {Table} from "antd";
 
 import styles from "./styles.module.scss";
 import {getColumns} from "./columns";
+import {expandedRowRender} from "./expandedRowRender";
 
 import {useGetConfigsQuery} from "../../services/VariableService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
@@ -34,6 +35,9 @@ const ConfigTable = () => {
         showTotal,
       }}
       onChange={handleTableChange}
+      expandable={{
+        expandedRowRender,
+      }}
       size="middle"
       bordered
     />
