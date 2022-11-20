@@ -18,24 +18,22 @@ const ConfigTable = () => {
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
   return (
-    <>
-      <Space className={styles.wrap} direction="vertical" size="middle">
-        <Table
-          rowClassName={styles.row}
-          rowKey={rowKey}
-          dataSource={data?.items}
-          columns={columns}
-          loading={isFetching}
-          pagination={{
-            ...tableParams.pagination,
-            total: data?.total,
-            showTotal,
-          }}
-          onChange={handleTableChange}
-          bordered
-        />
-      </Space>
-    </>
+    <Space className={styles.wrap} direction="vertical" size="middle">
+      <Table
+        rowClassName={styles.row}
+        rowKey={rowKey}
+        dataSource={data?.items}
+        columns={columns}
+        loading={isFetching}
+        pagination={{
+          ...tableParams.pagination,
+          total: data?.total,
+          showTotal,
+        }}
+        onChange={handleTableChange}
+        bordered
+      />
+    </Space>
   );
 };
 
