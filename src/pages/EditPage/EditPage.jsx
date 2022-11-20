@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Layout, message,
+  message,
 } from 'antd';
 import {variableAPI} from "../../services/VariableService";
 import {useParams} from "react-router-dom";
