@@ -14,6 +14,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import ClonePage from "./pages/ClonePage/ClonePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
+import UserCreatePage from "./pages/UserCreatePage/UserCreatePage";
 
 const loggedInPart = "/dashboard";
 
@@ -30,6 +31,9 @@ const App = () => {
                 <Route path=":id/clone" element={<ClonePage/>}/>
                 <Route path=":id/edit" element={<EditPage/>}/>
                 <Route index element={<HomePage/>}/>
+              </Route>
+              <Route path="users">
+                <Route path="create" element={<UserCreatePage />} />
               </Route>
               <Route index element={<NotFoundPage/>}/>
             </Route>
