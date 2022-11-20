@@ -40,7 +40,7 @@ const App = () => {
             </Route>
             {/* DEPRECATED */}
             <Route index element={<HomePage/>}/>
-            <Route path="/edit/:id" element={<EditPage/>}/>
+            <Route path="/edit/:uuid" element={<EditPage/>}/>
             <Route path="/create" element={<CreatePage/>}/>
             <Route path="/clone/:id" element={<ClonePage/>}/>
             <Route path="/landing" element={<LandingPage/>}/>

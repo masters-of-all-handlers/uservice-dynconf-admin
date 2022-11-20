@@ -50,7 +50,7 @@ const validateJSON = (_, value) => new Promise(
 );
 
 export default function ConfigFormFields({form, initialValues, modeData}) {
-  const value = Form.useWatch("value", form);
+  const config_value = Form.useWatch("config_value", form);
   const service = Form.useWatch("service", form);
   const allOptions = [{value: "__default__"}, {value: "non-default!"}];
   const [isNewService, setIsNewService] = useState(false);
@@ -71,7 +71,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                      required: true, message: "Введите имя переменной"
                    }]}
                    className={styles.formItem}
-                   name="name"
+                   name="config_name"
         >
           <Input placeholder="MY_NICE_VAR" readOnly={!modeData.fields.name}/>
         </Form.Item>
@@ -105,7 +105,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                    }, {
                      validator: validateJSON
                    }]}
-                   name="value"
+                   name="config_value"
                    getValueProps={value => ({
                      value: prettifyJSON(value),
                      className: classnames("ant-input", {
@@ -145,8 +145,8 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           <DiffEditor
             defaultLanguage="json"
             height="300px"
-            modified={prettifyJSON(value)}
-            original={prettifyJSON(initialValues?.value)}
+            modified={prettifyJSON(config_value)}
+            original={prettifyJSON(initialValues.config_value)}
             options={{
               renderSideBySide: false,
               originalEditable: false,
