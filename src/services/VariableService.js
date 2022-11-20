@@ -18,8 +18,10 @@ export const variableAPI = createApi({
         },
       }),
 
-      providesTags: ({items}) =>
-        items ? items.map(({uuid}) => ({type: "Configs", uuid})) : ["Configs"],
+      providesTags: (result) =>
+        result?.items
+          ? result.items.map(({uuid}) => ({type: "Configs", uuid}))
+          : ["Configs"],
     }),
 
     getConfigById: build.query({
