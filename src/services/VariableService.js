@@ -1,19 +1,17 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {API_BASE_URL} from "./constants";
-
-const configsEndpoint = "/variables";
+import {API_BASE_URL, CONFIGS_ENDPOINT} from "./constants";
 
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL + "/admin/v1"
+    baseUrl: API_BASE_URL + "/admin/v1",
   }),
   tagTypes: ["Configs"],
 
   endpoints: (build) => ({
     getConfigs: build.query({
       query: ({limit = 10, page = 1}) => ({
-        url: configsEndpoint,
+        url: CONFIGS_ENDPOINT,
         params: {
           limit: limit,
           page: page,
@@ -26,7 +24,7 @@ export const variableAPI = createApi({
 
     getConfigById: build.query({
       query: (uuid) => ({
-        url: `${configsEndpoint}/${uuid}`,
+        url: `${CONFIGS_ENDPOINT}/${uuid}`,
       }),
 
       providesTags: (result, error, uuid) => [{type: "Configs", uuid}],
@@ -34,7 +32,7 @@ export const variableAPI = createApi({
 
     updateVariable: build.mutation({
       query: ({id, ...update}) => ({
-        url: "/variable",
+        url: CONFIGS_ENDPOINT,
         method: "PATCH",
         body: update,
       }),
@@ -44,7 +42,7 @@ export const variableAPI = createApi({
 
     createVariable: build.mutation({
       query: (variable) => ({
-        url: "/variables",
+        url: CONFIGS_ENDPOINT,
         method: "POST",
         body: variable,
       }),
@@ -53,16 +51,16 @@ export const variableAPI = createApi({
     }),
     cloneVariable: build.mutation({
       query: ({id, ...clone}) => ({
-        url: `/variables/${id}/clone`,
+        url: `${CONFIGS_ENDPOINT}/${id}/clone`,
         method: "POST",
-        body: clone
+        body: clone,
       }),
       invalidatesTags: ["Configs"],
     }),
 
     deleteVariableById: build.mutation({
       query: (uuid) => ({
-        url: `/variables/${uuid}`,
+        url: `${CONFIGS_ENDPOINT}/${uuid}`,
         method: "DELETE",
       }),
 
