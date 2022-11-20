@@ -4,10 +4,14 @@ import {
   EllipsisOutlined,
   EditOutlined,
   DeleteOutlined,
+  CopyOutlined,
 } from "@ant-design/icons";
 import {useNavigate} from "react-router-dom";
 
-import {DASHBOARD_CONFIGS_EDIT_URL} from "../../constants";
+import {
+  DASHBOARD_CONFIGS_EDIT_URL,
+  DASHBOARD_CONFIGS_CLONE_URL,
+} from "../../constants";
 
 import {variableAPI} from "../../services/VariableService";
 import {useDropdown} from "../../hooks/useDropdown";
@@ -61,6 +65,10 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
         navigate(DASHBOARD_CONFIGS_EDIT_URL(uuid));
         break;
 
+      case "clone":
+        navigate(DASHBOARD_CONFIGS_CLONE_URL(uuid));
+        break;
+
       case "delete":
         deletePopconfirm.open();
         break;
@@ -75,6 +83,11 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
         key: "edit",
         label: "Редактировать",
         icon: <EditOutlined />,
+      },
+      {
+        key: "clone",
+        label: "Клонировать",
+        icon: <CopyOutlined />,
       },
       {
         key: "delete",

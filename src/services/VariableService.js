@@ -52,9 +52,10 @@ export const variableAPI = createApi({
 
       invalidatesTags: ["Configs"],
     }),
+
     cloneVariable: build.mutation({
-      query: ({id, ...clone}) => ({
-        url: `${API_CONFIGS_ENDPOINT}/${id}/clone`,
+      query: ({uuid, ...clone}) => ({
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}/clone`,
         method: "POST",
         body: clone,
       }),

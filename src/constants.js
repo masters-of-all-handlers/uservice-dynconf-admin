@@ -8,3 +8,4 @@ export const DASHBOARD_URL = "/dashboard";
 export const DASHBOARD_CONFIGS_URL = `${DASHBOARD_URL}/configs`;
 export const DASHBOARD_CONFIGS_CREATE_URL = `${DASHBOARD_URL}/configs/create`;
 export const DASHBOARD_CONFIGS_EDIT_URL = (uuid) => `${DASHBOARD_URL}/configs/${uuid}/edit`;
+export const DASHBOARD_CONFIGS_CLONE_URL = (uuid) => `${DASHBOARD_URL}/configs/${uuid}/clone`;

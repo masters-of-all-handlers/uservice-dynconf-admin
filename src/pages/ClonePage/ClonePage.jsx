@@ -6,13 +6,13 @@ import {useParams} from "react-router-dom";
 import MainLayout from "../MainLayout/MainLayout";
 
 export default function ClonePage() {
-  const {id: uuid} = useParams();
+  const {uuid} = useParams();
 
   const {
     data: variableData,
     error: variableError,
     isLoading: isLoadingVariable,
-  } = variableAPI.useFetchVariableByIdQuery(uuid);
+  } = variableAPI.useGetConfigByIdQuery(uuid);
 
   const [
     cloneVariable, {
