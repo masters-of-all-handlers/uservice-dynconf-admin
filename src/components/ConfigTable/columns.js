@@ -5,10 +5,16 @@ import TableTitleSearch from "../TableTitleSearch/TableTitleSearch";
 
 const renderActions = (_, render) => <ConfigTableRowActions render={render} />;
 
-export const getColumns = (handleSearch) => {
+export const getColumns = (handleSearch, isFetching) => {
   return [
     {
-      title: <TableTitleSearch title="Имя" onSearch={handleSearch} />,
+      title: (
+        <TableTitleSearch
+          title="Имя"
+          onSearch={handleSearch}
+          isFetching={isFetching}
+        />
+      ),
       dataIndex: "config_name",
       key: "config_name",
       width: "70%",

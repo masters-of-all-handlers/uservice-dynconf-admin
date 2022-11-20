@@ -5,12 +5,17 @@ import styles from "./styles.module.scss";
 
 const {Search} = Input;
 
-const TableTitleSearch = ({title, onSearch}) => {
+const TableTitleSearch = ({title, onSearch, isFetching}) => {
   return (
     <div className={styles.wrap}>
       <span>{title}</span>
 
-      <Search placeholder="Поиск..." allowClear onSearch={onSearch} />
+      <Search
+        placeholder="Поиск..."
+        allowClear
+        onSearch={onSearch}
+        loading={isFetching}
+      />
     </div>
   );
 };

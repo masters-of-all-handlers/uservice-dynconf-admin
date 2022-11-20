@@ -18,7 +18,7 @@ const ConfigTable = () => {
 
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
-  const columns = getColumns(handleSearch);
+  const columns = getColumns(handleSearch, isFetching);
 
   return (
     <Table
@@ -34,6 +34,7 @@ const ConfigTable = () => {
         showTotal,
       }}
       onChange={handleTableChange}
+      size="middle"
       bordered
     />
   );

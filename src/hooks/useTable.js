@@ -30,6 +30,8 @@ export function useTable(initialParams = {}) {
 
       pagination: {
         ...tableParams.pagination,
+
+        current: 1,
       },
 
       s: s,
