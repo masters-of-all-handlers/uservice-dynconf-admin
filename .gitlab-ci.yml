@@ -31,11 +31,10 @@ deploy-app-image:
     - build-app
   before_script:
     - apt-get update -y
-    - apt-get install -y curl apache2-utils
+    - apt-get install -y curl
     - curl -sSL https://get.docker.com/ | sh
     - dockerd &
   script:
-    - htpasswd -Bbc .htpasswd $BA_USER $BA_PASS
     # push to github container registry (ghcr.io)
     - echo "$CR_ALT_PASS" | docker login $CR_ALT_SERVER --username $CR_ALT_USER --password-stdin
     - docker build -t $CR_ALT_IMAGE .
