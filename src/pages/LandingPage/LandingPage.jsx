@@ -17,7 +17,7 @@ export default function LandingPage() {
             </Col>
             <Col>
               <Typography.Title
-                level={2}>userver-dynconf<br/>admin</Typography.Title>
+                level={2} className={styles.heroSectionTitle}>userver-dynconf<br/>admin</Typography.Title>
               <Space wrap>
                 <Button type="primary"
                         onClick={() => navigate("/register")}
