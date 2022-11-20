@@ -6,7 +6,7 @@ const configsEndpoint = "/variables";
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL
+    baseUrl: API_BASE_URL + "/admin/v1"
   }),
   tagTypes: ["Variables", "Configs"],
 
