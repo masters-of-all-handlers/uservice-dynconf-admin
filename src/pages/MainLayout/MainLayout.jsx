@@ -12,8 +12,10 @@ const MainLayout = ({children}) => {
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
-        <Link to="/">
-          <Logo className={styles.logo} />
+        <Link className={styles.logo} to="/">
+          <Logo className={styles.logo_img} />
+
+          <div className={styles.logo_desc}>Динамические конфиги userver</div>
         </Link>
       </Header>
 
