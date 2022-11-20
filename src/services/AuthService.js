@@ -1,10 +1,10 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {API_BASE_URL} from "./constants";
+import {API_BASE_URL} from "../constants";
 
 export const authAPI = createApi({
   reducerPath: "authAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL
+    baseUrl: API_BASE_URL,
   }),
   tagTypes: ["Ticket"],
 
@@ -13,7 +13,7 @@ export const authAPI = createApi({
       query: ({login, password}) => ({
         url: "/login",
         body: {login, password},
-        method: "POST"
+        method: "POST",
       }),
 
       providesTags: ["Ticket"],
@@ -23,9 +23,8 @@ export const authAPI = createApi({
       query: ({login, password}) => ({
         url: "/register",
         body: {login, password},
-        method: "POST"
+        method: "POST",
       }),
     }),
   }),
 });
-

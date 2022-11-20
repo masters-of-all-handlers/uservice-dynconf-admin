@@ -1,17 +1,17 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {API_BASE_URL, CONFIGS_ENDPOINT} from "./constants";
+import {API_BASE_ADMIN_URL, API_CONFIGS_ENDPOINT} from "../constants";
 
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL + "/admin/v1",
+    baseUrl: API_BASE_ADMIN_URL,
   }),
   tagTypes: ["Configs"],
 
   endpoints: (build) => ({
     getConfigs: build.query({
       query: ({limit = 10, page = 1, s = ""}) => ({
-        url: CONFIGS_ENDPOINT,
+        url: API_CONFIGS_ENDPOINT,
         params: {
           limit: limit,
           page: page,
@@ -27,7 +27,7 @@ export const variableAPI = createApi({
 
     getConfigById: build.query({
       query: (uuid) => ({
-        url: `${CONFIGS_ENDPOINT}/${uuid}`,
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
       }),
 
       providesTags: (result, error, uuid) => [{type: "Configs", uuid}],
@@ -35,7 +35,7 @@ export const variableAPI = createApi({
 
     updateVariable: build.mutation({
       query: ({id, ...update}) => ({
-        url: CONFIGS_ENDPOINT,
+        url: API_CONFIGS_ENDPOINT,
         method: "PATCH",
         body: update,
       }),
@@ -45,16 +45,17 @@ export const variableAPI = createApi({
 
     createVariable: build.mutation({
       query: (variable) => ({
-        url: CONFIGS_ENDPOINT,
+        url: API_CONFIGS_ENDPOINT,
         method: "POST",
         body: variable,
       }),
 
       invalidatesTags: ["Configs"],
     }),
+
     cloneVariable: build.mutation({
-      query: ({id, ...clone}) => ({
-        url: `${CONFIGS_ENDPOINT}/${id}/clone`,
+      query: ({uuid, ...clone}) => ({
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}/clone`,
         method: "POST",
         body: clone,
       }),
@@ -63,7 +64,7 @@ export const variableAPI = createApi({
 
     deleteVariableById: build.mutation({
       query: (uuid) => ({
-        url: `${CONFIGS_ENDPOINT}/${uuid}`,
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "DELETE",
       }),
 
