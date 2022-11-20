@@ -19,6 +19,13 @@ export const authAPI = createApi({
       providesTags: ["Ticket"],
       invalidatesTags: ["Ticket"],
     }),
+    register: build.mutation({
+      query: ({login, password}) => ({
+        url: "/register",
+        body: {login, password},
+        method: "POST"
+      }),
+    }),
   }),
 });
 
