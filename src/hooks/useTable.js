@@ -16,11 +16,27 @@ export function useTable(initialParams = {}) {
 
   const handleTableChange = (pagination) => {
     setTableParams({
-      pagination,
+      ...tableParams,
+
+      pagination: {
+        ...pagination,
+      },
     });
   };
 
-  return {tableParams, handleTableChange};
+  const handleSearch = (s) => {
+    setTableParams({
+      ...tableParams,
+
+      pagination: {
+        ...tableParams.pagination,
+      },
+
+      s: s,
+    });
+  };
+
+  return {tableParams, handleTableChange, handleSearch};
 }
 
 export const rowKey = (record) => record.uuid;

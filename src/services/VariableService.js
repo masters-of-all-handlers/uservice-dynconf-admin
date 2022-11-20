@@ -10,16 +10,19 @@ export const variableAPI = createApi({
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, page = 1}) => ({
+      query: ({limit = 10, page = 1, s = ""}) => ({
         url: CONFIGS_ENDPOINT,
         params: {
           limit: limit,
           page: page,
+          s: s,
         },
       }),
 
-      providesTags: ({items}) =>
-        items ? items.map(({uuid}) => ({type: "Configs", uuid})) : ["Configs"],
+      providesTags: (result) =>
+        result?.items
+          ? result.items.map(({uuid}) => ({type: "Configs", uuid}))
+          : ["Configs"],
     }),
 
     getConfigById: build.query({

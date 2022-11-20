@@ -2,7 +2,7 @@ import React from "react";
 import {Table, Space} from "antd";
 
 import styles from "./styles.module.scss";
-import {columns} from "./columns";
+import {getColumns} from "./columns";
 
 import {useGetConfigsQuery} from "../../services/VariableService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
@@ -10,33 +10,32 @@ import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 const getConfigsParams = (params) => ({
   limit: params.pagination?.pageSize,
   page: params.pagination?.current,
+  s: params?.s,
 });
 
 const ConfigTable = () => {
-  const {tableParams, handleTableChange} = useTable();
+  const {tableParams, handleTableChange, handleSearch} = useTable();
 
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
+  const columns = getColumns(handleSearch);
+
   return (
-    <>
-      <Space className={styles.wrap} direction="vertical" size="middle">
-        <Table
-          rowClassName={styles.row}
-          rowKey={rowKey}
-          dataSource={data?.items}
-          columns={columns}
-          loading={isFetching}
-          pagination={{
-            ...tableParams.pagination,
-            total: data?.total,
-            showTotal,
-          }}
-          onChange={handleTableChange}
-          size="small"
-          bordered
-        />
-      </Space>
-    </>
+    <Table
+      className={styles.table}
+      rowClassName={styles.row}
+      rowKey={rowKey}
+      dataSource={data?.items}
+      columns={columns}
+      loading={isFetching}
+      pagination={{
+        ...tableParams.pagination,
+        total: data?.total,
+        showTotal,
+      }}
+      onChange={handleTableChange}
+      bordered
+    />
   );
 };
 
