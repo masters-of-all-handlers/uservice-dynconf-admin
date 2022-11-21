@@ -17,14 +17,12 @@ export default function LandingPage() {
             </Col>
             <Col>
               <Typography.Title
-                level={2} className={styles.heroSectionTitle}>userver-dynconf<br/>admin</Typography.Title>
-              <Space wrap>
-                <Button type="primary"
-                        onClick={() => navigate("/register")}
-                        size="large">Зарегистрироваться</Button>
-                <Button onClick={() => navigate("/login")}
-                        size="large">Войти</Button>
-              </Space>
+                level={2}
+                className={styles.heroSectionTitle}>userver-dynconf<br/>admin</Typography.Title>
+              <Button type="primary"
+                      block
+                      onClick={() => navigate("/login")}
+                      size="large">Войти</Button>
 
             </Col>
           </Row>
