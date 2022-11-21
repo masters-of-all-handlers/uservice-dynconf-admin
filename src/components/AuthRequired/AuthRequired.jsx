@@ -1,10 +1,12 @@
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 import {AUTH_DISABLED} from "../../constants";
 import {Outlet} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 export default function AuthRequired() {
-  if (!AUTH_DISABLED && window.localStorage.getItem("uda_ticket") !== "ok") {
+  const {data} = useAuth();
+  if (!AUTH_DISABLED && !data.ticket) {
     return <NotFoundPage/>;
   }
   return <Outlet/>;

@@ -5,15 +5,25 @@ import React from "react";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {useForm} from "antd/es/form/Form";
 import {authAPI} from "../../services/AuthService";
+import useAuth from "../../hooks/useAuth";
+import {useNavigate} from "react-router-dom";
+import {DASHBOARD_CONFIGS_URL, DASHBOARD_URL} from "../../constants";
 
 export default function LoginPage() {
   const [form,] = useForm();
+  const auth = useAuth();
+  const navigate = useNavigate();
   const [login, {
-    data: loginData, /*error: loginError,*/ isLoading: isLoginLoading,
+    error: loginError, isLoading: isLoginLoading,
   }] = authAPI.useLoginMutation();
   const handleFinish = data => {
-    login(data).then(() => {
-      console.log(loginData);
+    login(data).then(({data:authData}) => {
+      if (loginError) {
+        return;
+      } else {
+        auth.login(authData);
+        navigate(DASHBOARD_CONFIGS_URL);
+      }
     });
   }
   return <Layout className={styles.layout}>
@@ -44,7 +54,8 @@ export default function LoginPage() {
             placeholder="Пароль"
           />
         </Form.Item>
-        <Button type="primary" block loading={isLoginLoading} htmlType="submit">
+        <Button type="primary" block loading={isLoginLoading}
+                htmlType="submit">
           Войти
         </Button>
       </Form>

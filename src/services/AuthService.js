@@ -26,5 +26,12 @@ export const authAPI = createApi({
         method: "POST",
       }),
     }),
+    check: build.query({
+      query: ({ticket}) => ({
+        url: "/check",
+        body: {ticket},
+        method: "POST",
+      })
+    })
   }),
 });
