@@ -7,12 +7,14 @@ import {
 } from "react";
 import {authAPI} from "../services/AuthService";
 import {Spin} from "antd";
+import {getStoredTicket} from "../utils/auth";
 
 const AuthContext = createContext({
-  data: {ticket: window.localStorage.getItem("uda_ticket")}, login(_) {
+  data: {ticket: getStoredTicket()}, login(_) {
   }, logout() {
   }
 });
+
 
 export const AuthProvider = ({children}) => {
   const [authData, setAuthData] = useState({ticket: null});
@@ -28,9 +30,7 @@ export const AuthProvider = ({children}) => {
     data: checkData,
     error: checkError,
     isCheckLoading
-  } = authAPI.useCheckQuery({
-    ticket: window.localStorage.getItem("uda_ticket")
-  });
+  } = authAPI.useCheckQuery();
   useEffect(() => {
     const savedTicket = window.localStorage.getItem("uda_ticket");
     if (checkError) {

@@ -1,10 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {API_BASE_ADMIN_URL, API_CONFIGS_ENDPOINT} from "../constants";
+import {prepareAuthHeaders} from "../utils/auth";
 
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_ADMIN_URL,
+    prepareHeaders: prepareAuthHeaders
   }),
   tagTypes: ["Configs"],
 

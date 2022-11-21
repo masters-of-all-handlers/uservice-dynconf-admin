@@ -1,10 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {API_BASE_AUTH_URL} from "../constants";
+import {prepareAuthHeaders} from "../utils/auth";
 
 export const authAPI = createApi({
   reducerPath: "authAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_AUTH_URL,
+    prepareHeaders: prepareAuthHeaders
   }),
   tagTypes: ["Ticket"],
 
@@ -27,9 +29,8 @@ export const authAPI = createApi({
       }),
     }),
     check: build.query({
-      query: ({ticket}) => ({
+      query: () => ({
         url: "/check",
-        body: {ticket},
         method: "POST",
       })
     })
