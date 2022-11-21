@@ -16,6 +16,7 @@ import classnames from "classnames";
 /* загрузка не с CDN, а с локального npm пакета */
 import loader from '@monaco-editor/loader';
 import * as monaco from 'monaco-editor';
+import {variableAPI} from "../../services/VariableService";
 
 loader.config({monaco});
 
@@ -52,7 +53,10 @@ const validateJSON = (_, value) => new Promise(
 export default function ConfigFormFields({form, initialValues, modeData}) {
   const value = Form.useWatch("value", form);
   const service = Form.useWatch("service", form);
-  const allOptions = [{value: "__default__"}, {value: "non-default!"}];
+  const {
+    data: services
+  } = variableAPI.useGetAllServicesQuery();
+  const allOptions = services ? services.items.map(s => ({value: s})) : [];
   const [isNewService, setIsNewService] = useState(false);
   const [options, setOptions] = useState(allOptions);
   const handleServiceSearch = value => {
