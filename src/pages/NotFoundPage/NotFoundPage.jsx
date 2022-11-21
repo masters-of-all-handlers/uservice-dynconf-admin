@@ -16,8 +16,11 @@ export default function NotFoundPage() {
     </Row>
     <Typography.Title level={4}>По этому адресу ничего нет</Typography.Title>
     <Space wrap>
+      <Link to="/login">
+        <Button type="primary">Войти</Button>
+      </Link>
       <Link to="/">
-        <Button type="primary">На главную</Button>
+        <Button>На главную</Button>
       </Link>
       <Button onClick={() => navigate(-1)}>Назад</Button>
     </Space>
