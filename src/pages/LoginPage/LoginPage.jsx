@@ -17,7 +17,7 @@ export default function LoginPage() {
     error: loginError, isLoading: isLoginLoading,
   }] = authAPI.useLoginMutation();
   const handleFinish = data => {
-    login(data).then(({data:authData}) => {
+    login(data).then(({data: authData}) => {
       if (loginError) {
         return;
       } else {
@@ -25,6 +25,9 @@ export default function LoginPage() {
         navigate(DASHBOARD_CONFIGS_URL);
       }
     });
+  }
+  if (auth.data.ticket) {
+    return navigate(DASHBOARD_CONFIGS_URL);
   }
   return <Layout className={styles.layout}>
     <Card
