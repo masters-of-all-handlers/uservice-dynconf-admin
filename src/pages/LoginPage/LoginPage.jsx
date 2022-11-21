@@ -7,7 +7,7 @@ import {useForm} from "antd/es/form/Form";
 import {authAPI} from "../../services/AuthService";
 import useAuth from "../../hooks/useAuth";
 import {Navigate, useNavigate} from "react-router-dom";
-import {DASHBOARD_CONFIGS_URL, DASHBOARD_URL} from "../../constants";
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
 
 export default function LoginPage() {
   const [form,] = useForm();

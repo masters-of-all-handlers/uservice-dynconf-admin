@@ -1,4 +1,4 @@
-import {Button, Col, Layout, Row, Space, Typography} from "antd";
+import {Button, Col, Layout, Row, Typography} from "antd";
 import logo from "../../logo.svg";
 import {Navigate, useNavigate} from "react-router-dom";
 import styles from "./styles.module.scss";

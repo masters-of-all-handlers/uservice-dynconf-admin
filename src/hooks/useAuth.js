@@ -21,13 +21,12 @@ export const AuthProvider = ({children}) => {
   const login = useCallback((authData) => {
     setAuthData({ticket: null, ...authData});
     window.localStorage.setItem("uda_ticket", authData.ticket);
-  });
+  }, []);
   const logout = useCallback(() => {
     setAuthData({ticket: null});
     window.localStorage.removeItem("uda_ticket");
-  });
+  }, []);
   const {
-    data: checkData,
     error: checkError,
     isLoading: isCheckLoading
   } = authAPI.useCheckQuery();
@@ -38,7 +37,7 @@ export const AuthProvider = ({children}) => {
     } else {
       setAuthData({ticket: savedTicket});
     }
-  }, []);
+  }, [checkError, logout]);
   return isCheckLoading ?
     <Spin style={{margin: "50vh auto 0", display: "block"}}/> :
     <AuthContext.Provider value={{
