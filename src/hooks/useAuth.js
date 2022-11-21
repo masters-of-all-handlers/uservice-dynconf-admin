@@ -19,7 +19,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({children}) => {
   const [authData, setAuthData] = useState({ticket: null});
   const login = useCallback((authData) => {
-    setAuthData(authData);
+    setAuthData({ticket: null, ...authData});
     window.localStorage.setItem("uda_ticket", authData.ticket);
   });
   const logout = useCallback(() => {
@@ -29,7 +29,7 @@ export const AuthProvider = ({children}) => {
   const {
     data: checkData,
     error: checkError,
-    isCheckLoading
+    isLoading: isCheckLoading
   } = authAPI.useCheckQuery();
   useEffect(() => {
     const savedTicket = window.localStorage.getItem("uda_ticket");
@@ -39,13 +39,15 @@ export const AuthProvider = ({children}) => {
       setAuthData({ticket: savedTicket});
     }
   }, []);
-  return isCheckLoading ? <Spin/> : <AuthContext.Provider value={{
-    data: authData,
-    login,
-    logout
-  }}>
-    {children}
-  </AuthContext.Provider>;
+  return isCheckLoading ?
+    <Spin style={{margin: "50vh auto 0", display: "block"}}/> :
+    <AuthContext.Provider value={{
+      data: authData,
+      login,
+      logout
+    }}>
+      {children}
+    </AuthContext.Provider>;
 }
 
 const useAuth = () => {

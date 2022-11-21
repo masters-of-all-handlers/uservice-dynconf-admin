@@ -32,7 +32,7 @@ export const authAPI = createApi({
       query: () => ({
         url: "/check",
         method: "POST",
-      })
+      }),
     })
   }),
 });

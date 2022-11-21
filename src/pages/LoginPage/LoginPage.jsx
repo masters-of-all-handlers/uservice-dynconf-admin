@@ -1,4 +1,4 @@
-import {Button, Card, Form, Input, Layout} from "antd";
+import {Button, Card, Form, Input, Layout, message} from "antd";
 import styles from "./styles.module.scss";
 import {ReactComponent as Logo} from "../../logo.svg";
 import React from "react";
@@ -6,7 +6,7 @@ import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {useForm} from "antd/es/form/Form";
 import {authAPI} from "../../services/AuthService";
 import useAuth from "../../hooks/useAuth";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {DASHBOARD_CONFIGS_URL, DASHBOARD_URL} from "../../constants";
 
 export default function LoginPage() {
@@ -14,20 +14,20 @@ export default function LoginPage() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [login, {
-    error: loginError, isLoading: isLoginLoading,
+    isLoading: isLoginLoading,
   }] = authAPI.useLoginMutation();
   const handleFinish = data => {
     login(data).then(({data: authData}) => {
-      if (loginError) {
-        return;
-      } else {
-        auth.login(authData);
+      auth.login(authData);
+      if (authData.ticket) {
         navigate(DASHBOARD_CONFIGS_URL);
       }
+    }).catch(() => {
+      message.error("Ошибка входа");
     });
   }
   if (auth.data.ticket) {
-    return navigate(DASHBOARD_CONFIGS_URL);
+    return <Navigate to={DASHBOARD_CONFIGS_URL}/>;
   }
   return <Layout className={styles.layout}>
     <Card

@@ -1,15 +1,16 @@
 import {Button, Col, Layout, Row, Space, Typography} from "antd";
 import logo from "../../logo.svg";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import styles from "./styles.module.scss";
 import useAuth from "../../hooks/useAuth";
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
+import React from "react";
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const auth = useAuth();
   if (auth.data.ticket) {
-    return navigate(DASHBOARD_CONFIGS_URL);
+    return <Navigate to={DASHBOARD_CONFIGS_URL}/>;
   }
   return <Layout>
     <section className={styles.heroSection}

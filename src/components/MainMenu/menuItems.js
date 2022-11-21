@@ -6,4 +6,10 @@ export const menuItems = [{
   prefix: DASHBOARD_CONFIGS_URL,
 }, {
   label: "Пользователи", key: "users", prefix: DASHBOARD_USERS_URL
+}, {
+  label: "Выход",
+  key: "logout",
+  style: {
+    marginLeft: "auto"
+  }
 }];

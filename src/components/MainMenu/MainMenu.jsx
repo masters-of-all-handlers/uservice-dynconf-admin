@@ -5,6 +5,7 @@ import {Menu} from "antd";
 import styles from "./styles.module.scss";
 import {menuItems} from "./menuItems";
 import {DASHBOARD_CONFIGS_URL, DASHBOARD_USERS_URL} from "../../constants";
+import useAuth from "../../hooks/useAuth";
 
 const MainMenu = () => {
   const location = useLocation();
@@ -15,6 +16,7 @@ const MainMenu = () => {
   const currentKey = current?.key;
 
   const navigate = useNavigate();
+  const {logout} = useAuth();
 
   const onMenuClick = (e) => {
     const {key} = e;
@@ -24,6 +26,10 @@ const MainMenu = () => {
         break;
       case "users":
         navigate(DASHBOARD_USERS_URL);
+        break;
+      case "logout":
+        logout();
+        navigate("/");
         break;
       default:
         break;
