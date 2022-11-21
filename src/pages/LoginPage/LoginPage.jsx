@@ -1,20 +1,33 @@
-import {Button, Card, Form, Input, Layout} from "antd";
+import {Button, Card, Form, Input, Layout, message} from "antd";
 import styles from "./styles.module.scss";
 import {ReactComponent as Logo} from "../../logo.svg";
 import React from "react";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {useForm} from "antd/es/form/Form";
 import {authAPI} from "../../services/AuthService";
+import useAuth from "../../hooks/useAuth";
+import {Navigate, useNavigate} from "react-router-dom";
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
 
 export default function LoginPage() {
   const [form,] = useForm();
+  const auth = useAuth();
+  const navigate = useNavigate();
   const [login, {
-    data: loginData, /*error: loginError,*/ isLoading: isLoginLoading,
+    isLoading: isLoginLoading,
   }] = authAPI.useLoginMutation();
   const handleFinish = data => {
-    login(data).then(() => {
-      console.log(loginData);
+    login(data).then(({data: authData}) => {
+      auth.login(authData);
+      if (authData.ticket) {
+        navigate(DASHBOARD_CONFIGS_URL);
+      }
+    }).catch(() => {
+      message.error("Ошибка входа");
     });
+  }
+  if (auth.data.ticket) {
+    return <Navigate to={DASHBOARD_CONFIGS_URL}/>;
   }
   return <Layout className={styles.layout}>
     <Card
@@ -44,7 +57,8 @@ export default function LoginPage() {
             placeholder="Пароль"
           />
         </Form.Item>
-        <Button type="primary" block loading={isLoginLoading} htmlType="submit">
+        <Button type="primary" block loading={isLoginLoading}
+                htmlType="submit">
           Войти
         </Button>
       </Form>

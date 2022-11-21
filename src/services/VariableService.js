@@ -1,10 +1,16 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {API_BASE_ADMIN_URL, API_CONFIGS_ENDPOINT} from "../constants";
+import {
+  API_BASE_ADMIN_URL,
+  API_CONFIGS_ENDPOINT,
+  API_SERVICES_ENDPOINT
+} from "../constants";
+import {prepareAuthHeaders} from "../utils/auth";
 
 export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_ADMIN_URL,
+    prepareHeaders: prepareAuthHeaders
   }),
   tagTypes: ["Configs"],
 
@@ -40,7 +46,7 @@ export const variableAPI = createApi({
         body: update,
       }),
 
-      invalidatesTags: ["Configs"],
+      invalidatesTags: ["Configs", "Services"],
     }),
 
     createVariable: build.mutation({
@@ -50,7 +56,7 @@ export const variableAPI = createApi({
         body: variable,
       }),
 
-      invalidatesTags: ["Configs"],
+      invalidatesTags: ["Configs", "Services"],
     }),
 
     cloneVariable: build.mutation({
@@ -59,7 +65,7 @@ export const variableAPI = createApi({
         method: "POST",
         body: clone,
       }),
-      invalidatesTags: ["Configs"],
+      invalidatesTags: ["Configs", "Services"],
     }),
 
     deleteVariableById: build.mutation({
@@ -69,6 +75,13 @@ export const variableAPI = createApi({
       }),
 
       invalidatesTags: ["Configs"],
+    }),
+    getAllServices: build.query({
+      query: () => ({
+        url: API_SERVICES_ENDPOINT,
+      }),
+
+      providesTags: ["Services"],
     }),
   }),
 });

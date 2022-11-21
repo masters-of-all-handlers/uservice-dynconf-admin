@@ -7,7 +7,7 @@ import {rtkQueryErrorLogger} from "../middlewares/rtkQueryErrorLogger";
 export const store = configureStore({
   reducer: {
     [variableAPI.reducerPath]: variableAPI.reducer,
-    [authAPI.reducerPath]: authAPI.reducer
+    [authAPI.reducerPath]: authAPI.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
