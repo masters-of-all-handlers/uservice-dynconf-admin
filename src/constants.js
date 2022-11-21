@@ -1,7 +1,8 @@
 // API
-export const API_BASE_URL = "http://10.21.0.234:8083";
-export const API_BASE_ADMIN_URL = `${API_BASE_URL}/admin/v1`;
-export const API_CONFIGS_ENDPOINT = "/variables";
+export const API_BASE_URL = "http://83.222.9.227:8083";
+export const API_BASE_AUTH_URL = "http://83.222.9.227";
+export const API_BASE_ADMIN_URL = `${API_BASE_URL}/admin/v2`;
+export const API_CONFIGS_ENDPOINT = "/configs";
 
 // Routes
 export const DASHBOARD_URL = "/dashboard";

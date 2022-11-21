@@ -13,6 +13,12 @@ import React, {useState} from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 import classnames from "classnames";
 
+/* загрузка не с CDN, а с локального npm пакета */
+import loader from '@monaco-editor/loader';
+import * as monaco from 'monaco-editor';
+
+loader.config({monaco});
+
 const prettifyJSON = json => {
   try {
     return JSON.stringify(JSON.parse(json), null, 2);
