@@ -34,8 +34,8 @@ export const variableAPI = createApi({
     }),
 
     updateVariable: build.mutation({
-      query: ({id, ...update}) => ({
-        url: API_CONFIGS_ENDPOINT,
+      query: ({uuid, ...update}) => ({
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "PATCH",
         body: update,
       }),

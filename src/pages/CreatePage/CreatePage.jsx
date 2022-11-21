@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import MainLayout from "../MainLayout/MainLayout";
 
 import {variableAPI} from "../../services/VariableService";
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
 
 export default function CreatePage() {
   const [createVariable, {isLoading: isCreateLoading}] =
@@ -19,7 +20,7 @@ export default function CreatePage() {
         mode="create"
         onFinish={(data) => {
           createVariable(data).then(() => {
-            navigate("/");
+            navigate(DASHBOARD_CONFIGS_URL);
             message.success("Сохранено");
           });
         }}

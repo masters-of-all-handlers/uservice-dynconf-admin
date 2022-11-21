@@ -8,13 +8,18 @@ export default function UserCreatePage() {
   const [register, {isLoading: isRegisterLoading, error: registerError}] =
     authAPI.useRegisterMutation();
   return <MainLayout>
-    <UserForm mode="create" onFinish={data => {
-      register(data).then(() => {
-        message.success("Сохранено");
-      });
-    }
-    } isLoading={false}
-              isSaveLoading={isRegisterLoading} error={registerError}
-              initialValues={{}}/>
+    <UserForm
+      mode="create"
+      onFinish={
+        data => {
+          register(data).then(() => {
+            message.success("Сохранено");
+          });
+        }
+      }
+      isLoading={false}
+      isSaveLoading={isRegisterLoading} error={registerError}
+      initialValues={{}}
+    />
   </MainLayout>
 }

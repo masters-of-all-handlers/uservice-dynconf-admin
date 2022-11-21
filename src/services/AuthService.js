@@ -1,10 +1,10 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {API_BASE_URL} from "../constants";
+import {API_BASE_AUTH_URL} from "../constants";
 
 export const authAPI = createApi({
   reducerPath: "authAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE_URL,
+    baseUrl: API_BASE_AUTH_URL,
   }),
   tagTypes: ["Ticket"],
 

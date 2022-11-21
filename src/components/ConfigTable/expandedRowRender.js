@@ -19,6 +19,6 @@ export const expandedRowRender = (record) => (
       overviewRulerBorder: false,
       readOnly: true,
     }}
-    value={JSON.stringify(JSON.parse(record.value), null, 2)}
+    value={JSON.stringify(JSON.parse(record.config_value), null, 2)}
   />
 );

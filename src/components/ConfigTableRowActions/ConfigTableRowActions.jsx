@@ -17,7 +17,9 @@ import {variableAPI} from "../../services/VariableService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
+const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
+  // костыли))))
+  name = config_name || name;
   const actionsDropdown = useDropdown();
   const deletePopconfirm = usePopconfirm();
 
@@ -82,12 +84,12 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
       {
         key: "edit",
         label: "Редактировать",
-        icon: <EditOutlined />,
+        icon: <EditOutlined/>,
       },
       {
         key: "clone",
         label: "Клонировать",
-        icon: <CopyOutlined />,
+        icon: <CopyOutlined/>,
       },
       {
         key: "delete",
@@ -107,7 +109,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
             Удалить
           </Popconfirm>
         ),
-        icon: <DeleteOutlined />,
+        icon: <DeleteOutlined/>,
         danger: true,
       },
     ],
@@ -123,7 +125,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name: name}}) => {
     >
       <Button
         type="text"
-        icon={<EllipsisOutlined />}
+        icon={<EllipsisOutlined/>}
         size="small"
         onClick={actionsDropdown.open}
       />

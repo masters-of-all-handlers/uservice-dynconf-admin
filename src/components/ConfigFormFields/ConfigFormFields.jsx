@@ -13,6 +13,12 @@ import React, {useState} from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 import classnames from "classnames";
 
+/* загрузка не с CDN, а с локального npm пакета */
+import loader from '@monaco-editor/loader';
+import * as monaco from 'monaco-editor';
+
+loader.config({monaco});
+
 const prettifyJSON = json => {
   try {
     return JSON.stringify(JSON.parse(json), null, 2);
@@ -44,7 +50,7 @@ const validateJSON = (_, value) => new Promise(
 );
 
 export default function ConfigFormFields({form, initialValues, modeData}) {
-  const config_value = Form.useWatch("config_value", form);
+  const value = Form.useWatch("value", form);
   const service = Form.useWatch("service", form);
   const allOptions = [{value: "__default__"}, {value: "non-default!"}];
   const [isNewService, setIsNewService] = useState(false);
@@ -65,7 +71,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                      required: true, message: "Введите имя переменной"
                    }]}
                    className={styles.formItem}
-                   name="config_name"
+                   name="name"
         >
           <Input placeholder="MY_NICE_VAR" readOnly={!modeData.fields.name}/>
         </Form.Item>
@@ -99,7 +105,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                    }, {
                      validator: validateJSON
                    }]}
-                   name="config_value"
+                   name="value"
                    getValueProps={value => ({
                      value: prettifyJSON(value),
                      className: classnames("ant-input", {
@@ -139,8 +145,8 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           <DiffEditor
             defaultLanguage="json"
             height="300px"
-            modified={prettifyJSON(config_value)}
-            original={prettifyJSON(initialValues.config_value)}
+            modified={prettifyJSON(value)}
+            original={prettifyJSON(initialValues.value)}
             options={{
               renderSideBySide: false,
               originalEditable: false,

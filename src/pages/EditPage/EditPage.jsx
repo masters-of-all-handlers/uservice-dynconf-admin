@@ -29,11 +29,16 @@ const EditPage = () => {
       isSaveLoading={isConfigLoading || isUpdateLoading}
       mode="edit"
       onFinish={(data) => {
-        updateVariable(data).then(() => {
+        updateVariable({uuid, ...data}).then(() => {
           message.success("Сохранено");
         });
       }}
-      initialValues={configData}
+      initialValues={{
+        ...configData,
+        // костыли))))
+        name: configData?.config_name || configData?.name,
+        value: configData?.config_value
+      }}
       error={configError || updateError}
     />
   </MainLayout>;
