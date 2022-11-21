@@ -15,8 +15,8 @@ export const getColumns = (handleSearch, isFetching) => {
           isFetching={isFetching}
         />
       ),
-      dataIndex: "config_name",
-      key: "config_name",
+      dataIndex: "name",
+      key: "name",
       width: "70%",
     },
     {

@@ -2,11 +2,13 @@ import {message} from "antd";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
 import {variableAPI} from "../../services/VariableService";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import MainLayout from "../MainLayout/MainLayout";
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
 
 export default function ClonePage() {
   const {uuid} = useParams();
+  const navigate = useNavigate();
 
   const {
     data: variableData,
@@ -27,13 +29,22 @@ export default function ClonePage() {
     mode="clone"
     onFinish={
       data => {
-        console.log(data);
-        cloneVariable(data).then(() => {
-          message.success("Сохранено");
+        cloneVariable({uuid, service_name: data.service}).then(() => {
+          if (!cloneError) {
+            message.success("Сохранено");
+            navigate(DASHBOARD_CONFIGS_URL);
+          }
         })
       }
     }
-    initialValues={variableData}
+    initialValues={
+      {
+        ...variableData,
+        // костыли))))
+        name: variableData?.config_name || variableData?.name,
+        value: variableData?.config_value
+      }
+    }
     error={variableError || cloneError}
   />
   </MainLayout>;
