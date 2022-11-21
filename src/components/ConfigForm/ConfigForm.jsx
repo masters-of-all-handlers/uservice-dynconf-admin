@@ -29,8 +29,8 @@ const modes = {
     fields: {
       name: false,
       service: true,
-      value: true,
-      initialValue: true
+      value: false,
+      initialValue: false
     }
   }
 }
