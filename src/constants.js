@@ -10,3 +10,5 @@ export const DASHBOARD_CONFIGS_URL = `${DASHBOARD_URL}/configs`;
 export const DASHBOARD_CONFIGS_CREATE_URL = `${DASHBOARD_URL}/configs/create`;
 export const DASHBOARD_CONFIGS_EDIT_URL = (uuid) => `${DASHBOARD_URL}/configs/${uuid}/edit`;
 export const DASHBOARD_CONFIGS_CLONE_URL = (uuid) => `${DASHBOARD_URL}/configs/${uuid}/clone`;
+
+export const DASHBOARD_USERS_URL = `${DASHBOARD_URL}/users/create`;
