@@ -18,7 +18,7 @@ export default function NotFoundPage() {
       <LogoSection
         title="404"
         description="Похоже вы заблудились :("
-        logoType="gray"
+        logoStyle="gray"
       >
         <Space className={styles.buttons}>
           <Button onClick={handleBackClick}>Назад</Button>
