@@ -18,13 +18,13 @@ const {Header, Content, Footer} = Layout;
 
 const getRootUrl = (ticket) => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
 
-const MainLayout = ({style, children}) => {
+const MainLayout = ({type, children}) => {
   const {
     data: {ticket},
   } = useAuth();
 
   const layoutClassNames = classNames(styles.layout, {
-    [styles.layout_branded]: style === "branded",
+    [styles.layout_branded]: type === "branded",
   });
 
   return (
