@@ -1,33 +1,47 @@
 import React from "react";
 import {Layout} from "antd";
 import {Link} from "react-router-dom";
+import classNames from "classnames";
 
 import styles from "./styles.module.scss";
-import {DASHBOARD_CONFIGS_URL} from "../../constants";
 
-import {ReactComponent as Logo} from "../../logo.svg";
-import MainMenu from "../../components/MainMenu/MainMenu";
+import {
+  DASHBOARD_CONFIGS_URL,
+  SITE_NAME,
+  SITE_COPYRIGHT,
+} from "../../constants";
 import useAuth from "../../hooks/useAuth";
+import MainMenu from "../../components/MainMenu/MainMenu";
+import Logo from "../../components/Logo/Logo";
 
 const {Header, Content, Footer} = Layout;
 
-const MainLayout = ({children}) => {
-  const {data} = useAuth();
+const getRootUrl = (ticket) => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
+
+const MainLayout = ({type, children}) => {
+  const {
+    data: {ticket},
+  } = useAuth();
+
+  const layoutClassNames = classNames(styles.layout, {
+    [styles.layout_branded]: type === "branded",
+  });
+
   return (
-    <Layout className={styles.layout}>
+    <Layout className={layoutClassNames}>
       <Header className={styles.header}>
-        <Link className={styles.logo}
-              to={data.ticket ? DASHBOARD_CONFIGS_URL : "/"}>
-          <Logo className={styles.logo_img}/>
-          <div className={styles.logo_desc}>Динамические конфиги userver</div>
+        <Link className={styles.logo} to={getRootUrl(ticket)}>
+          <Logo className={styles.logo_img} />
+
+          <div className={styles.logo_desc}>{SITE_NAME}</div>
         </Link>
-        <MainMenu/>
+
+        <MainMenu />
       </Header>
 
       <Content className={styles.content}>{children}</Content>
 
-      <Footer className={styles.footer}>&copy; 2022<br/>Сделано с любовью
-        командой "Мастера на все ручки" ❤️</Footer>
+      <Footer className={styles.footer}>{SITE_COPYRIGHT}</Footer>
     </Layout>
   );
 };
