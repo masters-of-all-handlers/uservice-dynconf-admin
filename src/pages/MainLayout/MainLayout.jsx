@@ -26,8 +26,7 @@ const MainLayout = ({children}) => {
 
       <Content className={styles.content}>{children}</Content>
 
-      <Footer className={styles.footer}>&copy; 2022<br/>Сделано с любовью
-        командой "Мастера на все ручки" ❤️</Footer>
+      <Footer className={styles.footer}>2022 ❤️Сделано с любовью</Footer>
     </Layout>
   );
 };
