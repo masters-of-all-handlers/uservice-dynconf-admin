@@ -36,7 +36,7 @@ const MainLayout = ({type, children}) => {
           <div className={styles.logo_desc}>{SITE_NAME}</div>
         </Link>
 
-        {Boolean(ticket) && <MainMenu />}
+        <MainMenu />
       </Header>
 
       <Content className={styles.content}>{children}</Content>
