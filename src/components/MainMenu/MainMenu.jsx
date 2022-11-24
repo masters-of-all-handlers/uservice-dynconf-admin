@@ -1,6 +1,7 @@
 import React from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Menu} from "antd";
+import {MenuOutlined} from "@ant-design/icons";
 
 import styles from "./styles.module.scss";
 import {menuItemsAuth} from "./menuItemsAuth";
@@ -64,6 +65,7 @@ const MainMenu = () => {
       selectedKeys={[currentKey]}
       onClick={onMenuClick}
       items={menuItems}
+      overflowedIndicator={<MenuOutlined />}
     />
   );
 };
