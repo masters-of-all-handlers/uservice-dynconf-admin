@@ -35,7 +35,7 @@
   padding: 0 1rem;
 
   @include media(">=sm") {
-    padding: 0 2rem;
+    padding: 0 3rem;
   }
 }
 
@@ -64,21 +64,26 @@
 .content {
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 1rem;
 
   @include media(">=sm") {
-    padding: 2rem;
+    max-width: 65rem;
+    margin: 0 auto;
+    padding: 2rem 3rem;
   }
 }
 
 .footer {
+  width: 100%;
+  padding: 1rem;
   text-align: center;
   color: #666;
   background-color: transparent;
 
-  padding: 1rem;
-
   @include media(">=sm") {
-    padding: 2rem;
+    max-width: 65rem;
+    margin: 0 auto;
+    padding: 1rem 3rem;
   }
 }
