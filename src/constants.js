@@ -16,3 +16,7 @@ export const DASHBOARD_USERS_URL = `${DASHBOARD_URL}/users/create`;
 
 // Auth
 export const AUTH_DISABLED = false;
+
+// Common
+export const SITE_NAME = "Динамические конфиги userver";
+export const SITE_COPYRIGHT = "Сделано с любовью ❤️ 2022";
