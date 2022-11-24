@@ -10,9 +10,9 @@ import {
   SITE_NAME,
   SITE_COPYRIGHT,
 } from "../../constants";
-import {ReactComponent as Logo} from "../../logo.svg";
 import useAuth from "../../hooks/useAuth";
 import MainMenu from "../../components/MainMenu/MainMenu";
+import Logo from "../../components/Logo/Logo";
 
 const {Header, Content, Footer} = Layout;
 
