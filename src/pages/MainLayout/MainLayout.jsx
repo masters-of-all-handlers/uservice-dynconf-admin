@@ -15,17 +15,17 @@ import MainMenu from "../../components/MainMenu/MainMenu";
 
 const {Header, Content, Footer} = Layout;
 
+const getRootUrl = (ticket) => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
+
 const MainLayout = ({children}) => {
   const {
     data: {ticket},
   } = useAuth();
 
-  const rootUrl = () => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
-
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
-        <Link className={styles.logo} to={rootUrl}>
+        <Link className={styles.logo} to={getRootUrl(ticket)}>
           <Logo className={styles.logo_img} />
 
           <div className={styles.logo_desc}>{SITE_NAME}</div>
