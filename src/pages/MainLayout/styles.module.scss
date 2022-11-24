@@ -1,3 +1,5 @@
+@use "../../scss/include-media.scss" as *;
+
 .layout {
   min-height: 100vh;
 
@@ -22,9 +24,18 @@
         url(../../logo.svg);
       background-position: 0 0;
       background-repeat: repeat;
-      background-size: 9vw;
+      background-size: 6rem;
       transform: rotate(15deg);
     }
+  }
+}
+
+.header {
+  display: flex;
+  padding: 0 1rem;
+
+  @include media(">=sm") {
+    padding: 0 2rem;
   }
 }
 
@@ -38,25 +49,36 @@
   }
 
   &_desc {
-    display: flex;
-    align-items: center;
+    display: none;
+
     color: #fff;
     line-height: 1.2;
+
+    @include media(">=sm") {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  padding: 24px 50px;
+  padding: 1rem;
+
+  @include media(">=sm") {
+    padding: 2rem;
+  }
 }
 
 .footer {
   text-align: center;
   color: #666;
   background-color: transparent;
-}
 
-.header {
-  display: flex;
+  padding: 1rem;
+
+  @include media(">=sm") {
+    padding: 2rem;
+  }
 }
