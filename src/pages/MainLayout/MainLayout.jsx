@@ -20,15 +20,18 @@ const MainLayout = ({children}) => {
     data: {ticket},
   } = useAuth();
 
+  const rootUrl = () => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
+
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
-        <Link className={styles.logo} to={ticket ? DASHBOARD_CONFIGS_URL : "/"}>
+        <Link className={styles.logo} to={rootUrl}>
           <Logo className={styles.logo_img} />
 
           <div className={styles.logo_desc}>{SITE_NAME}</div>
         </Link>
-        <MainMenu />
+
+        {Boolean(ticket) && <MainMenu />}
       </Header>
 
       <Content className={styles.content}>{children}</Content>
