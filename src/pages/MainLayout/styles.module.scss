@@ -1,5 +1,31 @@
 .layout {
   min-height: 100vh;
+
+  &_branded {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      z-index: -1;
+      background-color: #f0f2f5;
+      background-image: linear-gradient(
+          rgba(255, 255, 255, 0.93),
+          rgba(255, 255, 255, 0.93)
+        ),
+        url(../../logo.svg);
+      background-position: 0 0;
+      background-repeat: repeat;
+      background-size: 9vw;
+      transform: rotate(15deg);
+    }
+  }
 }
 
 .logo {
@@ -28,6 +54,7 @@
 .footer {
   text-align: center;
   color: #666;
+  background-color: transparent;
 }
 
 .header {

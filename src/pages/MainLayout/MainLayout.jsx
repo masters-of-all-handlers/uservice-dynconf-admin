@@ -1,6 +1,7 @@
 import React from "react";
 import {Layout} from "antd";
 import {Link} from "react-router-dom";
+import classNames from "classnames";
 
 import styles from "./styles.module.scss";
 
@@ -17,13 +18,17 @@ const {Header, Content, Footer} = Layout;
 
 const getRootUrl = (ticket) => (Boolean(ticket) ? DASHBOARD_CONFIGS_URL : "/");
 
-const MainLayout = ({children}) => {
+const MainLayout = ({style, children}) => {
   const {
     data: {ticket},
   } = useAuth();
 
+  const layoutClassNames = classNames(styles.layout, {
+    [styles.layout_branded]: style === "branded",
+  });
+
   return (
-    <Layout className={styles.layout}>
+    <Layout className={layoutClassNames}>
       <Header className={styles.header}>
         <Link className={styles.logo} to={getRootUrl(ticket)}>
           <Logo className={styles.logo_img} />
