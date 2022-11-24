@@ -14,6 +14,8 @@ export const DASHBOARD_CONFIGS_CLONE_URL = (uuid) => `${DASHBOARD_URL}/configs/$
 
 export const DASHBOARD_USERS_URL = `${DASHBOARD_URL}/users/create`;
 
+export const LOGIN_URL = "/login";
+
 // Auth
 export const AUTH_DISABLED = false;
 
