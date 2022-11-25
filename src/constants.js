@@ -1,7 +1,7 @@
 // API
-export const API_BASE_URL = "http://83.222.9.227";
-export const API_BASE_AUTH_URL = `${API_BASE_URL}:8080`;
-export const API_BASE_ADMIN_URL = `${API_BASE_URL}:8083/admin/v2`;
+export const API_BASE_URL = "http://83.222.9.227:8080";
+export const API_BASE_AUTH_URL = `${API_BASE_URL}`;
+export const API_BASE_ADMIN_URL = `${API_BASE_URL}/admin/v2`;
 export const API_CONFIGS_ENDPOINT = "/configs";
 export const API_SERVICES_ENDPOINT = "/services";
 
