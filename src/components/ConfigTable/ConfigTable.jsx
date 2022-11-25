@@ -15,11 +15,11 @@ const getConfigsParams = (params) => ({
 });
 
 const ConfigTable = () => {
-  const {tableParams, handleTableChange, handleSearch} = useTable();
+  const {tableParams, handleTableChange, searchByConfigName} = useTable();
 
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
-  const columns = getColumns(handleSearch, isFetching);
+  const columns = getColumns(searchByConfigName, isFetching);
 
   return (
     <Table

@@ -47,18 +47,6 @@
     max-width: 64px;
     padding: 10px;
   }
-
-  &_desc {
-    display: none;
-
-    color: #fff;
-    line-height: 1.2;
-
-    @include media(">=sm") {
-      display: flex;
-      align-items: center;
-    }
-  }
 }
 
 .content {

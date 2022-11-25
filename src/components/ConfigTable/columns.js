@@ -5,13 +5,14 @@ import TableTitleSearch from "../TableTitleSearch/TableTitleSearch";
 
 const renderActions = (_, render) => <ConfigTableRowActions render={render} />;
 
-export const getColumns = (handleSearch, isFetching) => {
+export const getColumns = (searchByConfigName, isFetching) => {
   return [
     {
       title: (
         <TableTitleSearch
           title="Имя"
-          onSearch={handleSearch}
+          onSearch={searchByConfigName.handle}
+          value={searchByConfigName.value}
           isFetching={isFetching}
         />
       ),
