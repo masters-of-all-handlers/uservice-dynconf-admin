@@ -59,8 +59,10 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     }
   };
 
-  const handleMenuClick = (e) => {
-    const {key} = e;
+  const handleMenuItemClick = (e) => {
+    const {key, domEvent} = e;
+
+    domEvent.stopPropagation();
 
     switch (key) {
       case "edit":
@@ -79,18 +81,26 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     }
   };
 
+  const handleMenuClick = (e) => {
+    e.stopPropagation();
+
+    actionsDropdown.open();
+  };
+
   const menu = {
     items: [
       {
         key: "edit",
         label: "Редактировать",
-        icon: <EditOutlined/>,
+        icon: <EditOutlined />,
       },
+
       {
         key: "clone",
         label: "Клонировать",
-        icon: <CopyOutlined/>,
+        icon: <CopyOutlined />,
       },
+
       {
         key: "delete",
         label: (
@@ -109,11 +119,12 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
             Удалить
           </Popconfirm>
         ),
-        icon: <DeleteOutlined/>,
+        icon: <DeleteOutlined />,
         danger: true,
       },
     ],
-    onClick: handleMenuClick,
+
+    onClick: handleMenuItemClick,
   };
 
   return (
@@ -125,9 +136,9 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     >
       <Button
         type="text"
-        icon={<EllipsisOutlined/>}
+        icon={<EllipsisOutlined />}
         size="small"
-        onClick={actionsDropdown.open}
+        onClick={handleMenuClick}
       />
     </Dropdown>
   );

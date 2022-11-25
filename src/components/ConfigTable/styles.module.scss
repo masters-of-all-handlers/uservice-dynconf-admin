@@ -3,7 +3,11 @@
 }
 
 .row {
-  &:hover > td {
-    background-color: #eee !important;
+  &:hover {
+    cursor: pointer;
+
+    & > td {
+      background-color: #eee !important;
+    }
   }
 }

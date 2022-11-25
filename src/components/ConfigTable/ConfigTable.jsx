@@ -47,6 +47,7 @@ const ConfigTable = () => {
       onChange={handleTableChange}
       expandable={{
         expandedRowRender,
+        expandRowByClick: true,
       }}
       size="middle"
       bordered
