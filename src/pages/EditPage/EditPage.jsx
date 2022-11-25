@@ -3,8 +3,8 @@ import {message} from "antd";
 import {useParams} from "react-router-dom";
 
 import {
-  userverAPI,
   useGetConfigByIdQuery,
+  useUpdateConfigMutation,
 } from "../../services/UserverService";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../../layouts/MainLayout/MainLayout";
@@ -12,28 +12,26 @@ import MainLayout from "../../layouts/MainLayout/MainLayout";
 const EditPage = () => {
   const {uuid} = useParams();
 
-  const {
-    data: configData,
-    isLoading: isConfigLoading,
-  } = useGetConfigByIdQuery(uuid);
+  const {data: dataConfigById, isLoading: isLoadingConfigById} =
+    useGetConfigByIdQuery(uuid);
 
-  const [updateVariable, {isLoading: isUpdateLoading}] =
-  userverAPI.useUpdateVariableMutation();
+  const [updateConfig, {isLoading: isLoadingUpdateConfig}] =
+    useUpdateConfigMutation();
 
-  const initialValues = configData ? {
-    ...configData,
+  const initialValues = dataConfigById ? {
+    ...dataConfigById,
     // костыли))))
-    name: configData.config_name || configData.name,
-    value: configData.config_value
+    name: dataConfigById.config_name || dataConfigById.name,
+    value: dataConfigById.config_value
   } : null;
 
   return <MainLayout>
     <ConfigForm
-      isLoading={isConfigLoading}
-      isSaveLoading={isConfigLoading || isUpdateLoading}
+      isLoading={isLoadingConfigById}
+      isSaveLoading={isLoadingConfigById || isLoadingUpdateConfig}
       mode="edit"
       onFinish={async data => {
-        const {error} = await updateVariable({uuid, ...data});
+        const {error} = await updateConfig({uuid, data});
         if (!error) {
           message.success("Сохранено");
         }

@@ -40,21 +40,21 @@ export const userverAPI = createApi({
       providesTags: (result, error, uuid) => [{type: "Configs", uuid}],
     }),
 
-    updateVariable: build.mutation({
-      query: ({uuid, ...update}) => ({
-        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
-        method: "PATCH",
-        body: update,
+    createConfig: build.mutation({
+      query: (data) => ({
+        url: API_CONFIGS_ENDPOINT,
+        method: "POST",
+        body: data,
       }),
 
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    createConfig: build.mutation({
-      query: (config) => ({
-        url: API_CONFIGS_ENDPOINT,
-        method: "POST",
-        body: config,
+    updateConfig: build.mutation({
+      query: ({uuid, data}) => ({
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
+        method: "PATCH",
+        body: data,
       }),
 
       invalidatesTags: ["Configs", "Services"],
@@ -92,6 +92,7 @@ export const {
   useGetConfigsQuery,
   useGetConfigByIdQuery,
   useCreateConfigMutation,
+  useUpdateConfigMutation,
   useDeleteConfigByIdMutation,
 
   useGetServicesQuery,
