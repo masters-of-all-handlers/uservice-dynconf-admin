@@ -78,7 +78,7 @@ export const userverAPI = createApi({
       invalidatesTags: ["Configs"],
     }),
 
-    getAllServices: build.query({
+    getServices: build.query({
       query: () => ({
         url: API_SERVICES_ENDPOINT,
       }),
@@ -92,4 +92,5 @@ export const {
   useGetConfigsQuery,
   useGetConfigByIdQuery,
   useDeleteConfigByIdMutation,
+  useGetServicesQuery,
 } = userverAPI;
