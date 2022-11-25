@@ -96,7 +96,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           >
             <Input
               placeholder="MY_NICE_VAR"
-              readOnly={!modeData.fields.config_name}
+              disabled={!modeData.fields.config_name}
             />
           </Form.Item>
         </Col>
@@ -125,7 +125,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
               onSearch={handleServiceSearch}
               onSelect={handleServiceSelect}
               placeholder="__default__"
-              readOnly={!modeData.fields.service_name}
+              disabled={!modeData.fields.service_name}
             />
           </Form.Item>
         </Col>
