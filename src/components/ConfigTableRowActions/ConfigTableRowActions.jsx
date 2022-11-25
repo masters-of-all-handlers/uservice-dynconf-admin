@@ -13,7 +13,7 @@ import {
   DASHBOARD_CONFIGS_CLONE_URL,
 } from "../../constants";
 
-import {variableAPI} from "../../services/UserverService";
+import {userverAPI} from "../../services/UserverService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
@@ -26,7 +26,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
   const navigate = useNavigate();
 
   const [deleteVariableById, {isLoading: isLoadingDeleteVariableById}] =
-    variableAPI.useDeleteVariableByIdMutation();
+  userverAPI.useDeleteVariableByIdMutation();
 
   const handleConfirmDelete = async () => {
     const response = await deleteVariableById(uuid);

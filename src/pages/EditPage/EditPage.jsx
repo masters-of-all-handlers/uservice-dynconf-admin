@@ -3,7 +3,7 @@ import {message} from "antd";
 import {useParams} from "react-router-dom";
 
 import {
-  variableAPI,
+  userverAPI,
   useGetConfigByIdQuery,
 } from "../../services/UserverService";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
@@ -18,7 +18,7 @@ const EditPage = () => {
   } = useGetConfigByIdQuery(uuid);
 
   const [updateVariable, {isLoading: isUpdateLoading}] =
-    variableAPI.useUpdateVariableMutation();
+  userverAPI.useUpdateVariableMutation();
 
   const initialValues = configData ? {
     ...configData,

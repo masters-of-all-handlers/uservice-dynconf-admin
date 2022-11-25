@@ -6,8 +6,8 @@ import {
 } from "../constants";
 import {prepareAuthHeaders} from "../utils/auth";
 
-export const variableAPI = createApi({
-  reducerPath: "variableAPI",
+export const userverAPI = createApi({
+  reducerPath: "userverAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_ADMIN_URL,
     prepareHeaders: prepareAuthHeaders,
@@ -87,4 +87,4 @@ export const variableAPI = createApi({
   }),
 });
 
-export const {useGetConfigsQuery, useGetConfigByIdQuery} = variableAPI;
+export const {useGetConfigsQuery, useGetConfigByIdQuery} = userverAPI;

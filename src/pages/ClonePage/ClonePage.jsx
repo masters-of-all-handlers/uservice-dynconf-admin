@@ -3,7 +3,7 @@ import {message} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
-import {variableAPI} from "../../services/UserverService";
+import {userverAPI} from "../../services/UserverService";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 
@@ -14,13 +14,13 @@ export default function ClonePage() {
   const {
     data: variableData,
     isLoading: isLoadingVariable,
-  } = variableAPI.useGetConfigByIdQuery(uuid);
+  } = userverAPI.useGetConfigByIdQuery(uuid);
 
   const [
     cloneVariable, {
       isLoading: isCloneLoading,
     }
-  ] = variableAPI.useCloneVariableMutation();
+  ] = userverAPI.useCloneVariableMutation();
 
   const initialValues = variableData ? {
     ...variableData,
