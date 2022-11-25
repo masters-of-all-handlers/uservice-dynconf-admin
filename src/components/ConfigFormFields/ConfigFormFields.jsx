@@ -146,7 +146,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             ]}
             name="config_value"
             getValueProps={(value) => ({
-              value: prettifyJSON(value),
+              config_value: prettifyJSON(value),
               className: classnames("ant-input", {
                 "ant-input-status-error": !isJSONValid(value),
               }),
@@ -168,7 +168,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                   vertical: "hidden",
                 },
                 overviewRulerBorder: false,
-                readOnly: !modeData.fields.value,
+                readOnly: !modeData.fields.config_value,
               }}
               loading={
                 <Row align="middle">
