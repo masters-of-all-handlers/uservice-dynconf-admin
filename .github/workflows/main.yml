@@ -57,6 +57,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - run: |
+            mkdir -p ~/.ssh
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} \
               < .github/workflows/restart-docker.sh "$IMAGE_NAME:$IMAGE_TAG" "80:80"
