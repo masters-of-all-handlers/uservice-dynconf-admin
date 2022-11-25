@@ -59,5 +59,4 @@ jobs:
       - run:
           run: |
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} \
-            < .github/workflows/restart-docker.sh "$IMAGE_NAME:$IMAGE_TAG" "80:80"
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} < .github/workflows/restart-docker.sh "$IMAGE_NAME:$IMAGE_TAG" "80:80"
