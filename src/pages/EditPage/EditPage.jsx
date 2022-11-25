@@ -33,8 +33,10 @@ const EditPage = () => {
     const {error} = await updateConfig({uuid, data});
 
     if (!error) {
-      // ToDo добавить имя конфига в сообщение
-      message.success("Конфиг успешно обновлен!");
+      message.success(
+        `Конфиг ${data.config_name} успешно обновлен в сервисе ${data.service_name}`,
+        7
+      );
 
       navigate(DASHBOARD_CONFIGS_URL);
     }
