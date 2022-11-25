@@ -50,11 +50,11 @@ export const userverAPI = createApi({
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    createVariable: build.mutation({
-      query: (variable) => ({
+    createConfig: build.mutation({
+      query: (config) => ({
         url: API_CONFIGS_ENDPOINT,
         method: "POST",
-        body: variable,
+        body: config,
       }),
 
       invalidatesTags: ["Configs", "Services"],
@@ -91,6 +91,8 @@ export const userverAPI = createApi({
 export const {
   useGetConfigsQuery,
   useGetConfigByIdQuery,
+  useCreateConfigMutation,
   useDeleteConfigByIdMutation,
+
   useGetServicesQuery,
 } = userverAPI;
