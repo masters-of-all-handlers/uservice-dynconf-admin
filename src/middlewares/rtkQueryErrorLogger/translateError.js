@@ -4,7 +4,7 @@ export const translateError = (message) => {
       "Конфиг с таким именем уже существует для этого сервиса",
 
     "Service with that config_name already exists":
-      "Сервис с таким именем конфига уже существует",
+      "Конфиг с таким именем уже существует в этом сервисе",
   };
 
   return translate[message] ? translate[message] : message;
