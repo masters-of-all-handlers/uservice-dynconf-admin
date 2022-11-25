@@ -2,7 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 
 import {userverAPI} from "../services/UserverService";
 import {authAPI} from "../services/AuthService";
-import {rtkQueryErrorLogger} from "../middlewares/rtkQueryErrorLogger";
+import {rtkQueryErrorLogger} from "../middlewares/rtkQueryErrorLogger/rtkQueryErrorLogger";
 
 export const store = configureStore({
   reducer: {
@@ -11,5 +11,9 @@ export const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authAPI.middleware, userverAPI.middleware, rtkQueryErrorLogger),
+    getDefaultMiddleware().concat(
+      authAPI.middleware,
+      userverAPI.middleware,
+      rtkQueryErrorLogger
+    ),
 });
