@@ -28,8 +28,8 @@ jobs:
     env:
       CYPRESS_TEST_HOST: http://localhost:3000/
       PM2_PORT: 3000
-      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      ADMIN_USERNAME: "${{ secrets.ADMIN_USERNAME }}"
+      ADMIN_PASSWORD: "${{ secrets.ADMIN_PASSWORD }}"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
