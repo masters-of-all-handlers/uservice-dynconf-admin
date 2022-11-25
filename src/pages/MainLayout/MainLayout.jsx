@@ -5,11 +5,7 @@ import classNames from "classnames";
 
 import styles from "./styles.module.scss";
 
-import {
-  DASHBOARD_CONFIGS_URL,
-  SITE_NAME,
-  SITE_COPYRIGHT,
-} from "../../constants";
+import {DASHBOARD_CONFIGS_URL, SITE_COPYRIGHT} from "../../constants";
 import useAuth from "../../hooks/useAuth";
 import MainMenu from "../../components/MainMenu/MainMenu";
 import Logo from "../../components/Logo/Logo";
