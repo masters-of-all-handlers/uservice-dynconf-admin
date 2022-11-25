@@ -1,5 +1,5 @@
 import {
-  Alert, Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
+  Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
 } from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
@@ -67,7 +67,7 @@ export default function ConfigForm(
       form.resetFields();
       setInitialValuesLoaded(true);
     }
-  }, [initialValues]);
+  }, [initialValuesLoaded, form, initialValues]);
 
   const modeData = modes[mode];
 
