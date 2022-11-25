@@ -1,46 +1,38 @@
 import React from "react";
 import {Button, Dropdown, Popconfirm, message} from "antd";
+import {useNavigate} from "react-router-dom";
 import {
   EllipsisOutlined,
   EditOutlined,
   DeleteOutlined,
   CopyOutlined,
 } from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
 
 import {
   DASHBOARD_CONFIGS_EDIT_URL,
   DASHBOARD_CONFIGS_CLONE_URL,
 } from "../../constants";
-
 import {useDeleteConfigByIdMutation} from "../../services/UserverService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
-  // костыли))))
-  name = config_name || name;
+const ConfigTableRowActions = ({render: {uuid, config_name}}) => {
   const actionsDropdown = useDropdown();
   const deletePopconfirm = usePopconfirm();
-
   const navigate = useNavigate();
 
   const [deleteConfigById, {isLoading: isLoadingDeleteConfigById}] =
     useDeleteConfigByIdMutation();
 
   const handleConfirmDelete = async () => {
-    const response = await deleteConfigById(uuid);
+    const {error} = await deleteConfigById(uuid);
 
     deletePopconfirm.close();
     actionsDropdown.close();
 
-    if (response.hasOwnProperty("error")) {
-      return message.error(
-        `При удалении конфига ${name} произошла ошибка ${response.error.status}`
-      );
+    if (!error) {
+      message.success(`Конфиг ${config_name} успешно удален`);
     }
-
-    message.success(`Конфиг ${name} удален`);
   };
 
   const handleCancelDelete = () => {
@@ -105,7 +97,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
         key: "delete",
         label: (
           <Popconfirm
-            title={`Удалить ${name}?`}
+            title={`Удалить ${config_name}?`}
             open={deletePopconfirm.isOpen}
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}

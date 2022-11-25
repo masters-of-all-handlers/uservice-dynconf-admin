@@ -20,8 +20,8 @@ export const getColumns = (
           isFetching={isFetching}
         />
       ),
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "config_name",
+      key: "config_name",
       width: "50%",
     },
     {
@@ -33,8 +33,8 @@ export const getColumns = (
           isFetching={isFetching}
         />
       ),
-      dataIndex: "service",
-      key: "service",
+      dataIndex: "service_name",
+      key: "service_name",
       width: "50%",
       ellipsis: true,
     },

@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+
 import {
   API_BASE_ADMIN_URL,
   API_CONFIGS_ENDPOINT,
@@ -16,13 +17,13 @@ export const userverAPI = createApi({
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, page = 1, s = "", s_services = ""}) => ({
+      query: ({limit, page, config, service}) => ({
         url: API_CONFIGS_ENDPOINT,
         params: {
           limit,
           page,
-          s,
-          s_services,
+          config,
+          service,
         },
       }),
 

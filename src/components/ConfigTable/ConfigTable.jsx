@@ -8,11 +8,11 @@ import {expandedRowRender} from "./expandedRowRender";
 import {useGetConfigsQuery} from "../../services/UserverService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
-const getConfigsParams = (params) => ({
-  limit: params.pagination?.pageSize,
-  page: params.pagination?.current,
-  s: params?.s,
-  s_services: params?.s_services,
+const getConfigsParams = ({pagination, config, service}) => ({
+  limit: pagination?.pageSize,
+  page: pagination?.current,
+  config,
+  service,
 });
 
 const ConfigTable = () => {

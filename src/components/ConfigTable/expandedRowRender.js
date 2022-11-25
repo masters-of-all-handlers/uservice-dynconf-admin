@@ -1,13 +1,11 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
 
-export const expandedRowRender = (record) => (
+export const expandedRowRender = ({config_value}) => (
   <Editor
     defaultLanguage="json"
     height="150px"
     options={{
-      formatOnPaste: true,
-      formatOnType: false,
       minimap: {
         enabled: false,
       },
@@ -19,6 +17,6 @@ export const expandedRowRender = (record) => (
       overviewRulerBorder: false,
       readOnly: true,
     }}
-    value={JSON.stringify(JSON.parse(record.config_value), null, 2)}
+    value={JSON.stringify(JSON.parse(config_value), null, 2)}
   />
 );

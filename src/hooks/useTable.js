@@ -7,7 +7,8 @@ const defaultParams = {
     showSizeChanger: true,
   },
 
-  s: "",
+  config: "",
+  service: "",
 };
 
 const setLocalStorage = (params) => {
@@ -43,7 +44,7 @@ export function useTable() {
     setTableParams(newTableParams);
   };
 
-  const handleSearchByConfigName = (s) => {
+  const handleSearchByConfigName = (config) => {
     const oldTableParams = getLocalStorage();
     const newTableParams = {
       ...oldTableParams,
@@ -54,14 +55,14 @@ export function useTable() {
         current: 1,
       },
 
-      s,
+      config,
     };
 
     setLocalStorage(newTableParams);
     setTableParams(newTableParams);
   };
 
-  const handleSearchByServiceName = (s_services) => {
+  const handleSearchByServiceName = (service) => {
     const oldTableParams = getLocalStorage();
     const newTableParams = {
       ...oldTableParams,
@@ -72,7 +73,7 @@ export function useTable() {
         current: 1,
       },
 
-      s_services,
+      service,
     };
 
     setLocalStorage(newTableParams);
@@ -85,12 +86,12 @@ export function useTable() {
 
     searchByConfigName: {
       handle: handleSearchByConfigName,
-      value: tableParams.s,
+      value: tableParams.config,
     },
 
     searchByServiceName: {
       handle: handleSearchByServiceName,
-      value: tableParams.s_services,
+      value: tableParams.service,
     },
   };
 }
