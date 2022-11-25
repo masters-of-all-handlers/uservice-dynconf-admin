@@ -4,12 +4,11 @@ import {useForm} from "antd/es/form/Form";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {Navigate, useNavigate} from "react-router-dom";
 
-import MainLayout from "../MainLayout/MainLayout";
-
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
 import {useLoginMutation} from "../../services/AuthService";
 import useAuth from "../../hooks/useAuth";
 import LogoSection from "../../components/LogoSection/LogoSection";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 const loginPrefix = <UserOutlined className="site-form-item-icon" />;
 const loginRules = [{required: true, message: "Введите имя пользователя"}];

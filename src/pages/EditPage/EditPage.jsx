@@ -1,15 +1,13 @@
-import React from 'react';
-import {
-  message,
-} from 'antd';
+import React from "react";
+import {message} from "antd";
 import {useParams} from "react-router-dom";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
-import MainLayout from "../MainLayout/MainLayout";
 
 import {
   variableAPI,
   useGetConfigByIdQuery,
 } from "../../services/VariableService";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 const EditPage = () => {
   const {uuid} = useParams();

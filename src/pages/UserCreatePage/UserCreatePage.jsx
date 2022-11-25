@@ -1,8 +1,9 @@
-import MainLayout from "../MainLayout/MainLayout";
 import React from "react";
-import UserForm from "../../components/UserForm/UserForm";
 import {message} from "antd";
+
 import {authAPI} from "../../services/AuthService";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
+import UserForm from "../../components/UserForm/UserForm";
 
 export default function UserCreatePage() {
   const [register, {isLoading: isRegisterLoading}] =

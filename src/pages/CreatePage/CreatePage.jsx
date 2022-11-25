@@ -1,12 +1,11 @@
-import {message} from "antd";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
+import {message} from "antd";
 import {useNavigate} from "react-router-dom";
 
-import MainLayout from "../MainLayout/MainLayout";
-
-import {variableAPI} from "../../services/VariableService";
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
+import {variableAPI} from "../../services/VariableService";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function CreatePage() {
   const [createVariable, {isLoading: isCreateLoading}] =
