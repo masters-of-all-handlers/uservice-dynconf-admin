@@ -6,7 +6,7 @@ describe("Главная страница", () => {
       .visit("/")
   })
 
-  it("Переход на вход с главной страницы ", () => {
+  it("Переход на вход", () => {
     cy.get("button.ant-btn-primary").click().then(() => {
       cy.location().should(loc => {
         expect(loc.pathname).to.eq("/login");
