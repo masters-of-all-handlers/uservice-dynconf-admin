@@ -32,8 +32,6 @@ const MainLayout = ({type, children}) => {
       <Header className={styles.header}>
         <Link className={styles.logo} to={getRootUrl(ticket)}>
           <Logo className={styles.logo_img} />
-
-          <div className={styles.logo_desc}>{SITE_NAME}</div>
         </Link>
 
         <MainMenu />
