@@ -62,7 +62,7 @@ export const userverAPI = createApi({
     }),
 
     cloneConfig: build.mutation({
-      query: ({uuid, ...data}) => ({
+      query: ({uuid, data}) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}/clone`,
         method: "POST",
         body: data,
