@@ -1,44 +1,75 @@
 import {useState} from "react";
 
-export function useTable(initialParams = {}) {
-  const defaultParams = {
-    ...initialParams,
+const defaultParams = {
+  pagination: {
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+  },
 
-    pagination: {
-      current: 1,
-      pageSize: 10,
-      showSizeChanger: true,
-      ...initialParams?.pagination,
-    },
-  };
+  s: "",
+};
+
+const setLocalStorage = (params) => {
+  const paramsJSON = JSON.stringify(params);
+
+  localStorage.setItem("tableParams", paramsJSON);
+};
+
+const getLocalStorage = () => {
+  const paramsJSON = localStorage.getItem("tableParams");
+  const params = paramsJSON ? JSON.parse(paramsJSON) : defaultParams;
+
+  return params;
+};
+
+export function useTable() {
+  const defaultParams = getLocalStorage();
 
   const [tableParams, setTableParams] = useState(defaultParams);
 
   const handleTableChange = (pagination) => {
-    setTableParams({
-      ...tableParams,
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
 
       pagination: {
+        ...oldTableParams.pagination,
         ...pagination,
       },
-    });
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
   };
 
-  const handleSearch = (s) => {
-    setTableParams({
-      ...tableParams,
+  const handleSearchByConfigName = (s) => {
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
 
       pagination: {
-        ...tableParams.pagination,
+        ...oldTableParams.pagination,
 
         current: 1,
       },
 
       s: s,
-    });
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
   };
 
-  return {tableParams, handleTableChange, handleSearch};
+  return {
+    tableParams,
+    handleTableChange,
+
+    searchByConfigName: {
+      handle: handleSearchByConfigName,
+      value: tableParams.s,
+    },
+  };
 }
 
 export const rowKey = (record) => record.uuid;

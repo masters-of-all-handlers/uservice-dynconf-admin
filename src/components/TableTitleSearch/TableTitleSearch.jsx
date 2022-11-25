@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {Input} from "antd";
 
 import styles from "./styles.module.scss";
 
 const {Search} = Input;
 
-const TableTitleSearch = ({title, onSearch, isFetching}) => {
+const TableTitleSearch = ({title, onSearch, value, isFetching}) => {
   return (
     <div className={styles.wrap}>
       <span>{title}</span>
@@ -13,6 +13,7 @@ const TableTitleSearch = ({title, onSearch, isFetching}) => {
       <Search
         placeholder="Поиск..."
         allowClear
+        defaultValue={value}
         onSearch={onSearch}
         loading={isFetching}
       />
