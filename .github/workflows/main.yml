@@ -41,12 +41,6 @@ jobs:
           npx cypress info || (npx cypress install && npx cypress info)
           npx pm2 serve build $PM2_PORT --spa
           npx wait-on $CYPRESS_TEST_HOST --log && npm run test:in
-      - uses: dorny/test-reporter@v1
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          name: Cypress тесты            # Name of the check run which will be created
-          path: tests/junit/cypress-*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
 
   publish-docker-image:
     runs-on: ubuntu-latest
