@@ -42,12 +42,12 @@ export default function ConfigForm(
     onFinish,
     isSaveLoading,
     isLoading,
-    error
   }
 ) {
 
   const [form] = Form.useForm();
   const [popconfirmOpen, setPopconfirmOpen] = useState(false);
+  const [initialValuesLoaded, setInitialValuesLoaded] = useState(false);
 
   const handlePopconfirmCancel = () => {
     setPopconfirmOpen(false);
@@ -63,10 +63,11 @@ export default function ConfigForm(
   }
 
   useEffect(() => {
-    if (initialValues) {
+    if (!initialValuesLoaded && initialValues) {
       form.resetFields();
+      setInitialValuesLoaded(true);
     }
-  }, [initialValues, form]);
+  }, [initialValues]);
 
   const modeData = modes[mode];
 
@@ -101,18 +102,12 @@ export default function ConfigForm(
         Сохранить
       </Button>,]}
     />
-    {error ? (<Alert
-      message={`Произошла ошибка ${error.status}`}
-      type="error"
-      showIcon
-      closable
-      className={styles.alert}
-    />) : (isLoading ? <Row align="middle">
+    {isLoading ? <Row align="middle">
         <Space className={styles.spinner}>
           <Spin/>
         </Space>
       </Row> :
-      <ConfigFormFields initialValues={initialValues} form={form}
-                        modeData={modeData}/>)}
+      <ConfigFormFields initialValues={initialValues || {}} form={form}
+                        modeData={modeData}/>}
   </Form>
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   message,
 } from 'antd';
@@ -16,30 +16,31 @@ const EditPage = () => {
 
   const {
     data: configData,
-    error: configError,
     isLoading: isConfigLoading,
   } = useGetConfigByIdQuery(uuid);
 
-  const [updateVariable, {error: updateError, isLoading: isUpdateLoading}] =
+  const [updateVariable, {isLoading: isUpdateLoading}] =
     variableAPI.useUpdateVariableMutation();
+
+  const initialValues = configData ? {
+    ...configData,
+    // костыли))))
+    name: configData.config_name || configData.name,
+    value: configData.config_value
+  } : null;
 
   return <MainLayout>
     <ConfigForm
       isLoading={isConfigLoading}
       isSaveLoading={isConfigLoading || isUpdateLoading}
       mode="edit"
-      onFinish={(data) => {
-        updateVariable({uuid, ...data}).then(() => {
+      onFinish={async data => {
+        const {error} = await updateVariable({uuid, ...data});
+        if (!error) {
           message.success("Сохранено");
-        });
+        }
       }}
-      initialValues={{
-        ...configData,
-        // костыли))))
-        name: configData?.config_name || configData?.name,
-        value: configData?.config_value
-      }}
-      error={configError || updateError}
+      initialValues={initialValues}
     />
   </MainLayout>;
 };
