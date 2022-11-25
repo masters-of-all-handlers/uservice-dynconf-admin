@@ -17,6 +17,7 @@ export default function CreatePage() {
     const {error} = await createConfig(data);
 
     if (!error) {
+      // ToDo добавить имя конфига в сообщение
       message.success("Конфиг успешно создан!");
 
       navigate(DASHBOARD_CONFIGS_URL);
