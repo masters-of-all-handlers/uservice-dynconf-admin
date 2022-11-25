@@ -8,25 +8,29 @@ import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function CreatePage() {
+  const navigate = useNavigate();
+
   const [createConfig, {isLoading: isLoadingCreateConfig}] =
     useCreateConfigMutation();
 
-  const navigate = useNavigate();
+  const handleOnFinish = async (data) => {
+    const {error} = await createConfig(data);
+
+    if (!error) {
+      message.success("Конфиг успешно создан!");
+
+      navigate(DASHBOARD_CONFIGS_URL);
+    }
+  };
 
   return (
     <MainLayout>
       <ConfigForm
+        initialValues={null}
+        mode="create"
         isLoading={false}
         isSaveLoading={isLoadingCreateConfig}
-        mode="create"
-        onFinish={async data => {
-          const {error} = await createConfig(data);
-          if (!error) {
-            navigate(DASHBOARD_CONFIGS_URL);
-            message.success("Сохранено");
-          }
-        }}
-        initialValues={null}
+        onFinish={handleOnFinish}
       />
     </MainLayout>
   );
