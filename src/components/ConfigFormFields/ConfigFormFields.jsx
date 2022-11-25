@@ -146,7 +146,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             ]}
             name="config_value"
             getValueProps={(value) => ({
-              config_value: prettifyJSON(value),
+              value: prettifyJSON(value),
               className: classnames("ant-input", {
                 "ant-input-status-error": !isJSONValid(value),
               }),
