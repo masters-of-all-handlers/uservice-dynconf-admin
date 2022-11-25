@@ -1,3 +1,5 @@
+import {API_CONFIGS_ENDPOINT} from "../../../src/constants";
+
 describe("Страница списка конфигов", () => {
   beforeEach(() => {
     cy.login();
@@ -5,10 +7,9 @@ describe("Страница списка конфигов", () => {
   })
 
   it("Переход на создание конфига", () => {
-    cy.get("button.ant-btn-primary").click().then(() => {
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq("/dashboard/configs/create");
-      });
+    cy.get("button.ant-btn-primary").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/dashboard/configs/create");
     });
   });
 
@@ -28,6 +29,23 @@ describe("Страница списка конфигов", () => {
         cy.location().should(loc => {
           expect(loc.pathname).to.match(/^\/dashboard\/configs\/[0-9a-f\-]{36}\/clone$/);
         });
+      });
+    });
+  });
+
+  it("Удаление конфига со страницы списка", () => {
+
+    cy.intercept(
+      {
+        method: "DELETE",
+        url: API_CONFIGS_ENDPOINT + "*",
+      },
+      []
+    ).as("deleteConfig");
+
+    cy.get(".ant-dropdown-trigger").first().click().then(() => {
+      cy.get(".ant-dropdown-menu-title-content").contains("Удалить").click().then(() => {
+        console.log("ok!");
       });
     });
   });
