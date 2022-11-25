@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {
   API_BASE_ADMIN_URL,
   API_CONFIGS_ENDPOINT,
-  API_SERVICES_ENDPOINT
+  API_SERVICES_ENDPOINT,
 } from "../constants";
 import {prepareAuthHeaders} from "../utils/auth";
 
@@ -10,18 +10,19 @@ export const variableAPI = createApi({
   reducerPath: "variableAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_ADMIN_URL,
-    prepareHeaders: prepareAuthHeaders
+    prepareHeaders: prepareAuthHeaders,
   }),
-  tagTypes: ["Configs"],
+  tagTypes: ["Configs", "Services"],
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, page = 1, s = ""}) => ({
+      query: ({limit = 10, page = 1, s = "", s_services = ""}) => ({
         url: API_CONFIGS_ENDPOINT,
         params: {
-          limit: limit,
-          page: page,
-          s: s,
+          limit,
+          page,
+          s,
+          s_services,
         },
       }),
 

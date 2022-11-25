@@ -12,14 +12,24 @@ const getConfigsParams = (params) => ({
   limit: params.pagination?.pageSize,
   page: params.pagination?.current,
   s: params?.s,
+  s_services: params?.s_services,
 });
 
 const ConfigTable = () => {
-  const {tableParams, handleTableChange, searchByConfigName} = useTable();
+  const {
+    tableParams,
+    handleTableChange,
+    searchByConfigName,
+    searchByServiceName,
+  } = useTable();
 
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
-  const columns = getColumns(searchByConfigName, isFetching);
+  const columns = getColumns(
+    isFetching,
+    searchByConfigName,
+    searchByServiceName
+  );
 
   return (
     <Table

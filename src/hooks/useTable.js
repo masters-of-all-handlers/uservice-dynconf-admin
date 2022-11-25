@@ -54,7 +54,25 @@ export function useTable() {
         current: 1,
       },
 
-      s: s,
+      s,
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
+  };
+
+  const handleSearchByServiceName = (s_services) => {
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
+
+      pagination: {
+        ...oldTableParams.pagination,
+
+        current: 1,
+      },
+
+      s_services,
     };
 
     setLocalStorage(newTableParams);
@@ -68,6 +86,11 @@ export function useTable() {
     searchByConfigName: {
       handle: handleSearchByConfigName,
       value: tableParams.s,
+    },
+
+    searchByServiceName: {
+      handle: handleSearchByServiceName,
+      value: tableParams.s_services,
     },
   };
 }

@@ -5,7 +5,11 @@ import TableTitleSearch from "../TableTitleSearch/TableTitleSearch";
 
 const renderActions = (_, render) => <ConfigTableRowActions render={render} />;
 
-export const getColumns = (searchByConfigName, isFetching) => {
+export const getColumns = (
+  isFetching,
+  searchByConfigName,
+  searchByServiceName
+) => {
   return [
     {
       title: (
@@ -18,13 +22,20 @@ export const getColumns = (searchByConfigName, isFetching) => {
       ),
       dataIndex: "name",
       key: "name",
-      width: "70%",
+      width: "50%",
     },
     {
-      title: "Сервис",
+      title: (
+        <TableTitleSearch
+          title="Сервис"
+          onSearch={searchByServiceName.handle}
+          value={searchByServiceName.value}
+          isFetching={isFetching}
+        />
+      ),
       dataIndex: "service",
       key: "service",
-      width: "30%",
+      width: "50%",
       ellipsis: true,
     },
     {
