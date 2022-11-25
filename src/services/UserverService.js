@@ -52,7 +52,7 @@ export const userverAPI = createApi({
     }),
 
     updateConfig: build.mutation({
-      query: ({uuid, ...data}) => ({
+      query: ({uuid, data}) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "PATCH",
         body: data,

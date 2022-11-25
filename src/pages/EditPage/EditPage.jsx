@@ -20,15 +20,6 @@ const EditPage = () => {
   const [updateConfig, {isLoading: isLoadingUpdateConfig}] =
     useUpdateConfigMutation();
 
-  const initialValues = dataConfigById
-    ? {
-        ...dataConfigById,
-        // ToDo синхронизировать параметры с новом API
-        name: dataConfigById.config_name || dataConfigById.name,
-        value: dataConfigById.config_value,
-      }
-    : null;
-
   const handleOnFinish = async (data) => {
     const {error} = await updateConfig({uuid, data});
 
@@ -45,7 +36,7 @@ const EditPage = () => {
   return (
     <MainLayout>
       <ConfigForm
-        initialValues={initialValues}
+        initialValues={dataConfigById}
         mode="edit"
         isLoading={isLoadingConfigById}
         isSaveLoading={isLoadingConfigById || isLoadingUpdateConfig}
