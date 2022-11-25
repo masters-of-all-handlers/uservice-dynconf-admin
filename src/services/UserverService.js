@@ -51,7 +51,7 @@ export const userverAPI = createApi({
     }),
 
     updateConfig: build.mutation({
-      query: ({uuid, data}) => ({
+      query: ({uuid, ...data}) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "PATCH",
         body: data,
@@ -60,11 +60,11 @@ export const userverAPI = createApi({
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    cloneVariable: build.mutation({
-      query: ({uuid, ...clone}) => ({
+    cloneConfig: build.mutation({
+      query: ({uuid, ...data}) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}/clone`,
         method: "POST",
-        body: clone,
+        body: data,
       }),
       invalidatesTags: ["Configs", "Services"],
     }),
@@ -93,6 +93,7 @@ export const {
   useGetConfigByIdQuery,
   useCreateConfigMutation,
   useUpdateConfigMutation,
+  useCloneConfigMutation,
   useDeleteConfigByIdMutation,
 
   useGetServicesQuery,
