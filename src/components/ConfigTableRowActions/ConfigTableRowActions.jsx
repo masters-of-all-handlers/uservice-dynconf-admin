@@ -13,7 +13,7 @@ import {
   DASHBOARD_CONFIGS_CLONE_URL,
 } from "../../constants";
 
-import {variableAPI} from "../../services/VariableService";
+import {variableAPI} from "../../services/UserverService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 

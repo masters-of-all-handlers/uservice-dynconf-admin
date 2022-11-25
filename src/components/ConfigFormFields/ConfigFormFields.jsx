@@ -16,7 +16,7 @@ import classnames from "classnames";
 /* загрузка не с CDN, а с локального npm пакета */
 import loader from '@monaco-editor/loader';
 import * as monaco from 'monaco-editor';
-import {variableAPI} from "../../services/VariableService";
+import {variableAPI} from "../../services/UserverService";
 
 loader.config({monaco});
 

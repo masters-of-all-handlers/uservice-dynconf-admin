@@ -5,7 +5,7 @@ import styles from "./styles.module.scss";
 import {getColumns} from "./columns";
 import {expandedRowRender} from "./expandedRowRender";
 
-import {useGetConfigsQuery} from "../../services/VariableService";
+import {useGetConfigsQuery} from "../../services/UserverService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
 const getConfigsParams = (params) => ({

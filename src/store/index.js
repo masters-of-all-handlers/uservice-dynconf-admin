@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 
-import {variableAPI} from "../services/VariableService";
+import {variableAPI} from "../services/UserverService";
 import {authAPI} from "../services/AuthService";
 import {rtkQueryErrorLogger} from "../middlewares/rtkQueryErrorLogger";
 

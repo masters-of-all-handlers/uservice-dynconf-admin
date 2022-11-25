@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 import {
   variableAPI,
   useGetConfigByIdQuery,
-} from "../../services/VariableService";
+} from "../../services/UserverService";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 

@@ -3,7 +3,7 @@ import {message} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
-import {variableAPI} from "../../services/VariableService";
+import {variableAPI} from "../../services/UserverService";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 
