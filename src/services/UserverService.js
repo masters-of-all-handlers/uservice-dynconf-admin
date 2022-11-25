@@ -69,7 +69,7 @@ export const userverAPI = createApi({
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    deleteVariableById: build.mutation({
+    deleteConfigById: build.mutation({
       query: (uuid) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "DELETE",
@@ -77,6 +77,7 @@ export const userverAPI = createApi({
 
       invalidatesTags: ["Configs"],
     }),
+
     getAllServices: build.query({
       query: () => ({
         url: API_SERVICES_ENDPOINT,
@@ -87,4 +88,8 @@ export const userverAPI = createApi({
   }),
 });
 
-export const {useGetConfigsQuery, useGetConfigByIdQuery} = userverAPI;
+export const {
+  useGetConfigsQuery,
+  useGetConfigByIdQuery,
+  useDeleteConfigByIdMutation,
+} = userverAPI;

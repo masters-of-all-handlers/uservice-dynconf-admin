@@ -13,7 +13,7 @@ import {
   DASHBOARD_CONFIGS_CLONE_URL,
 } from "../../constants";
 
-import {userverAPI} from "../../services/UserverService";
+import {useDeleteConfigByIdMutation} from "../../services/UserverService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
@@ -25,11 +25,11 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
 
   const navigate = useNavigate();
 
-  const [deleteVariableById, {isLoading: isLoadingDeleteVariableById}] =
-  userverAPI.useDeleteVariableByIdMutation();
+  const [deleteConfigById, {isLoading: isLoadingDeleteConfigById}] =
+    useDeleteConfigByIdMutation();
 
   const handleConfirmDelete = async () => {
-    const response = await deleteVariableById(uuid);
+    const response = await deleteConfigById(uuid);
 
     deletePopconfirm.close();
     actionsDropdown.close();
@@ -111,7 +111,7 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
             onCancel={handleCancelDelete}
             okText="Да"
             okButtonProps={{
-              loading: isLoadingDeleteVariableById,
+              loading: isLoadingDeleteConfigById,
               danger: true,
             }}
             cancelText="Нет"
