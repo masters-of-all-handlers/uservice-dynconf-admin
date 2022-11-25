@@ -22,11 +22,13 @@ module.exports = defineConfig(
       defaultCommandTimeout: 5000,
       setupNodeEvents(on, config) {
         on('file:preprocessor', webpackPreprocessor(options))
-      }
+      },
+      baseUrl: process.env.CYPRESS_TEST_HOST
     },
     reporter: '../node_modules/cypress-multi-reporters',
     reporterOptions: {
       configFile: 'cypress-reporter.config.json'
-    }
+    },
+    env: process.env,
   }
 )
