@@ -12,40 +12,45 @@ export default function ClonePage() {
 
   const {
     data: variableData,
-    error: variableError,
     isLoading: isLoadingVariable,
   } = variableAPI.useGetConfigByIdQuery(uuid);
 
   const [
     cloneVariable, {
-      error: cloneError,
       isLoading: isCloneLoading,
     }
   ] = variableAPI.useCloneVariableMutation();
+
+  const initialValues = variableData ? {
+    ...variableData,
+    // костыли))))
+    name: variableData?.config_name || variableData?.name,
+    value: variableData?.config_value
+  } : null;
 
   return <MainLayout><ConfigForm
     isLoading={isLoadingVariable}
     isSaveLoading={isLoadingVariable || isCloneLoading}
     mode="clone"
     onFinish={
-      data => {
-        cloneVariable({uuid, service_name: data.service}).then(() => {
-          if (!cloneError) {
-            message.success("Сохранено");
-            navigate(DASHBOARD_CONFIGS_URL);
-          }
-        })
+      async data => {
+        if (initialValues.name === data.name && initialValues.service === data.service) {
+          return message.error("Пожалуйста, измените название сервиса и/или конфига");
+        }
+        const {error} = await cloneVariable({
+          uuid,
+          service: data.service,
+          config_name: data.name,
+          config_value: data.value
+        });
+
+        if (!error) {
+          message.success("Сохранено");
+          navigate(DASHBOARD_CONFIGS_URL);
+        }
       }
     }
-    initialValues={
-      {
-        ...variableData,
-        // костыли))))
-        name: variableData?.config_name || variableData?.name,
-        value: variableData?.config_value
-      }
-    }
-    error={variableError || cloneError}
+    initialValues={initialValues}
   />
   </MainLayout>;
 }

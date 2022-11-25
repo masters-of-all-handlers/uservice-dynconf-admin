@@ -5,21 +5,22 @@ import {message} from "antd";
 import {authAPI} from "../../services/AuthService";
 
 export default function UserCreatePage() {
-  const [register, {isLoading: isRegisterLoading, error: registerError}] =
+  const [register, {isLoading: isRegisterLoading}] =
     authAPI.useRegisterMutation();
   return <MainLayout>
     <UserForm
       mode="create"
       onFinish={
-        data => {
-          register(data).then(() => {
+        async data => {
+          const {error} = await register(data);
+          if (!error) {
             message.success("Сохранено");
-          });
+          }
         }
       }
       isLoading={false}
-      isSaveLoading={isRegisterLoading} error={registerError}
-      initialValues={{}}
+      isSaveLoading={isRegisterLoading}
+      initialValues={null}
     />
   </MainLayout>
 }

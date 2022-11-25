@@ -1,5 +1,5 @@
 import {
-  Alert, Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
+  Button, Form, message, PageHeader, Popconfirm, Row, Space, Spin
 } from "antd";
 import styles from "../../pages/EditPage/styles.module.scss";
 import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
@@ -27,10 +27,10 @@ const modes = {
   clone: {
     title: "Клонировать конфиг",
     fields: {
-      name: false,
+      name: true,
       service: true,
-      value: false,
-      initialValue: false
+      value: true,
+      initialValue: true
     }
   }
 }
@@ -42,12 +42,12 @@ export default function ConfigForm(
     onFinish,
     isSaveLoading,
     isLoading,
-    error
   }
 ) {
 
   const [form] = Form.useForm();
   const [popconfirmOpen, setPopconfirmOpen] = useState(false);
+  const [initialValuesLoaded, setInitialValuesLoaded] = useState(false);
 
   const handlePopconfirmCancel = () => {
     setPopconfirmOpen(false);
@@ -63,10 +63,11 @@ export default function ConfigForm(
   }
 
   useEffect(() => {
-    if (initialValues) {
+    if (!initialValuesLoaded && initialValues) {
       form.resetFields();
+      setInitialValuesLoaded(true);
     }
-  }, [initialValues, form]);
+  }, [initialValuesLoaded, form, initialValues]);
 
   const modeData = modes[mode];
 
@@ -101,18 +102,12 @@ export default function ConfigForm(
         Сохранить
       </Button>,]}
     />
-    {error ? (<Alert
-      message={`Произошла ошибка ${error.status}`}
-      type="error"
-      showIcon
-      closable
-      className={styles.alert}
-    />) : (isLoading ? <Row align="middle">
+    {isLoading ? <Row align="middle">
         <Space className={styles.spinner}>
           <Spin/>
         </Space>
       </Row> :
-      <ConfigFormFields initialValues={initialValues} form={form}
-                        modeData={modeData}/>)}
+      <ConfigFormFields initialValues={initialValues || {}} form={form}
+                        modeData={modeData}/>}
   </Form>
 }

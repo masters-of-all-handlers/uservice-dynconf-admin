@@ -18,13 +18,14 @@ export default function CreatePage() {
         isLoading={false}
         isSaveLoading={isCreateLoading}
         mode="create"
-        onFinish={(data) => {
-          createVariable(data).then(() => {
+        onFinish={async data => {
+          const {error} = await createVariable(data);
+          if (!error) {
             navigate(DASHBOARD_CONFIGS_URL);
             message.success("Сохранено");
-          });
+          }
         }}
-        initialValues={{}}
+        initialValues={null}
       />
     </MainLayout>
   );
