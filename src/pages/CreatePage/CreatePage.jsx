@@ -1,6 +1,6 @@
 import {message} from "antd";
 import ConfigForm from "../../components/ConfigForm/ConfigForm";
-import React, {useState} from "react";
+import React from "react";
 import {useNavigate} from "react-router-dom";
 
 import MainLayout from "../MainLayout/MainLayout";
