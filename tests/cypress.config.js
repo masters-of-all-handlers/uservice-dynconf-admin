@@ -18,7 +18,7 @@ module.exports = defineConfig(
     video: false,
     watchForFileChanges: true,
     e2e: {
-      defaultCommandTimeout: 5000,
+      defaultCommandTimeout: 10000,
       setupNodeEvents(on, config) {
         on('file:preprocessor', webpackPreprocessor(options))
       },
