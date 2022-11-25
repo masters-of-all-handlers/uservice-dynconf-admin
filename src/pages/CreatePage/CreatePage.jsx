@@ -17,8 +17,10 @@ export default function CreatePage() {
     const {error} = await createConfig(data);
 
     if (!error) {
-      // ToDo добавить имя конфига в сообщение
-      message.success("Конфиг успешно создан!");
+      message.success(
+        `Конфиг ${data.config_name} успешно создан в сервисе ${data.service_name}`,
+        7
+      );
 
       navigate(DASHBOARD_CONFIGS_URL);
     }
