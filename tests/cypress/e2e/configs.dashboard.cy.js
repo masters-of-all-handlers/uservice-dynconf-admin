@@ -1,7 +1,34 @@
-import {API_CONFIGS_ENDPOINT} from "../../../src/constants";
+import {
+  API_BASE_ADMIN_URL,
+  API_CONFIGS_ENDPOINT
+} from "../../../src/constants";
+import {deleteConfig, getConfig, getConfigs} from "./configs.db";
 
 describe("Страница списка конфигов", () => {
   beforeEach(() => {
+    cy.intercept(
+      {
+        method: "GET",
+        url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}*`,
+      },
+      (req) => {
+        req.reply({statusCode: 200, body: {items: getConfigs()}});
+      }
+    ).as("getConfigs");
+    cy.intercept(
+      {
+        method: "GET",
+        url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*`,
+      },
+      (req) => {
+        const match = req.url.match(/(.*)\/([0-9a-f\-]{36})\/?$/);
+        if (!match) {
+          return req.continue();
+        }
+        const config = getConfig(match[2]);
+        req.reply({statusCode: 200, body: config});
+      }
+    ).as("getConfig");
     cy.login();
     cy.visit("/dashboard/configs");
   })
@@ -14,22 +41,18 @@ describe("Страница списка конфигов", () => {
   });
 
   it("Переход на редактирование конфига со страницы списка", () => {
-    cy.get(".ant-dropdown-trigger").first().click().then(() => {
-      cy.get(".ant-dropdown-menu-title-content").contains("Редактировать").click().then(() => {
-        cy.location().should(loc => {
-          expect(loc.pathname).to.match(/^\/dashboard\/configs\/[0-9a-f\-]{36}\/edit$/);
-        });
-      });
+    cy.get(".ant-dropdown-trigger").first().click();
+    cy.get(".ant-dropdown-menu-title-content").contains("Редактировать").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.match(/^\/dashboard\/configs\/[0-9a-f\-]{36}\/edit$/);
     });
   });
 
   it("Переход на клонирование конфига со страницы списка", () => {
-    cy.get(".ant-dropdown-trigger").first().click().then(() => {
-      cy.get(".ant-dropdown-menu-title-content").contains("Клонировать").click().then(() => {
-        cy.location().should(loc => {
-          expect(loc.pathname).to.match(/^\/dashboard\/configs\/[0-9a-f\-]{36}\/clone$/);
-        });
-      });
+    cy.get(".ant-dropdown-trigger").first().click();
+    cy.get(".ant-dropdown-menu-title-content").contains("Клонировать").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.match(/^\/dashboard\/configs\/[0-9a-f\-]{36}\/clone$/);
     });
   });
 
@@ -38,16 +61,17 @@ describe("Страница списка конфигов", () => {
     cy.intercept(
       {
         method: "DELETE",
-        url: API_CONFIGS_ENDPOINT + "*",
+        url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*`
       },
-      []
+      (req) => {
+        deleteConfig(req.url.match(/(.*)\/([0-9a-f\-]{36})\/?$/)[2]);
+        req.reply({statusCode: 204});
+      }
     ).as("deleteConfig");
 
-    cy.get(".ant-dropdown-trigger").first().click().then(() => {
-      cy.get(".ant-dropdown-menu-title-content").contains("Удалить").click().then(() => {
-        console.log("ok!");
-      });
-    });
+    cy.get(".ant-dropdown-trigger").first().click();
+    cy.get(".ant-dropdown-menu-title-content").contains("Удалить").click();
+    cy.get(".ant-popover-buttons .ant-btn-dangerous").first().click();
+    cy.get(".ant-table-row").should("have.length", getConfigs().length);
   });
-
 });
