@@ -27,10 +27,10 @@ const modes = {
   clone: {
     title: "Клонировать конфиг",
     fields: {
-      name: false,
+      name: true,
       service: true,
-      value: false,
-      initialValue: false
+      value: true,
+      initialValue: true
     }
   }
 }
