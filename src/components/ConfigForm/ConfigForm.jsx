@@ -1,18 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {
-  Button,
-  Form,
-  message,
-  PageHeader,
-  Popconfirm,
-  Row,
-  Space,
-  Spin,
-} from "antd";
+import React from "react";
+import {Button, Form, message, PageHeader, Popconfirm} from "antd";
 
 import formModes from "./formModes";
-import styles from "./styles.module.scss";
 
+import Spinner from "../Spinner/Spinner";
 import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
 
 import {usePopconfirm} from "../../hooks/usePopconfirm";
@@ -21,24 +12,15 @@ const handleOnFinishFailed = () => {
   message.error("Обнаружены ошибки в полях");
 };
 
-export default function ConfigForm({
+const ConfigForm = ({
   mode,
   initialValues,
   onFinish,
   isSaveLoading,
-  isLoading,
-}) {
+  isLoadingConfigById,
+}) => {
   const [form] = Form.useForm();
   const clearPopconfirm = usePopconfirm();
-
-  const [initialValuesLoaded, setInitialValuesLoaded] = useState(false);
-
-  useEffect(() => {
-    if (!initialValuesLoaded && initialValues) {
-      form.resetFields();
-      setInitialValuesLoaded(true);
-    }
-  }, [initialValuesLoaded, form, initialValues]);
 
   const modeData = formModes[mode];
 
@@ -52,53 +34,54 @@ export default function ConfigForm({
     form.resetFields();
   };
 
-  return (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={onFinish}
-      onFinishFailed={handleOnFinishFailed}
-      initialValues={initialValues}
+  const pageHeaderExtra = [
+    <Popconfirm
+      key="clearForm"
+      title="Сбросить форму?"
+      open={clearPopconfirm.isOpen}
+      onConfirm={handleConfirmClear}
+      onCancel={clearPopconfirm.close}
     >
-      <PageHeader
-        ghost={false}
-        onBack={() => window.history.back()}
-        title={modeData.title}
-        extra={[
-          <Popconfirm
-            key="clearForm"
-            title="Сбросить форму?"
-            open={clearPopconfirm.isOpen}
-            onConfirm={handleConfirmClear}
-            onCancel={clearPopconfirm.close}
-          >
-            <Button onClick={clearPopconfirm.open}>Cброс</Button>
-          </Popconfirm>,
+      <Button onClick={clearPopconfirm.open}>Cброс</Button>
+    </Popconfirm>,
 
-          <Button
-            key="saveConfig"
-            type="primary"
-            htmlType="submit"
-            loading={isSaveLoading}
-          >
-            Сохранить
-          </Button>,
-        ]}
-      />
+    <Button
+      key="saveConfig"
+      type="primary"
+      htmlType="submit"
+      loading={isSaveLoading}
+    >
+      Сохранить
+    </Button>,
+  ];
 
-      {isLoading ? (
-        <Row align="middle">
-          <Space className={styles.spinner}>
-            <Spin />
-          </Space>
-        </Row>
+  return (
+    <>
+      {isLoadingConfigById ? (
+        <Spinner />
       ) : (
-        <ConfigFormFields
-          initialValues={initialValues || {}}
+        <Form
           form={form}
-          modeData={modeData}
-        />
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={handleOnFinishFailed}
+          initialValues={initialValues}
+        >
+          <PageHeader
+            ghost={false}
+            onBack={() => window.history.back()}
+            title={modeData.title}
+            extra={pageHeaderExtra}
+          />
+          <ConfigFormFields
+            initialValues={initialValues}
+            form={form}
+            modeData={modeData}
+          />
+        </Form>
       )}
-    </Form>
+    </>
   );
-}
+};
+
+export default ConfigForm;
