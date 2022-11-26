@@ -4,40 +4,34 @@ describe("Верхнее меню", () => {
     cy.visit("/dashboard/configs/create");
   })
 
-  it("Переход на список конфигов", () => {
-    cy
+  it("Переход на список конфигов", async () => {
+    await cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Конфиги")
-      .click()
-      .then(() => {
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq("/dashboard/configs");
-        });
-      });
+      .click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/dashboard/configs");
+    });
   });
 
-  it("Переход на создание пользователя", () => {
-    cy
+  it("Переход на создание пользователя", async () => {
+    await cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Пользователи")
-      .click()
-      .then(() => {
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq("/dashboard/users/create");
-        });
-      });
+      .click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/dashboard/users/create");
+    });
   });
 
-  it("Выход из аккаунта", () => {
-    cy
+  it("Выход из аккаунта", async () => {
+    await cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Выход")
-      .click()
-      .then(() => {
-        cy.location().should(loc => {
-          expect(loc.pathname).to.eq("/");
-        });
-      });
+      .click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/");
+    });
   });
 
 });

@@ -7,9 +7,9 @@ describe("Страница создания пользователя", () => {
       .visit("/dashboard/users/create")
   })
 
-  it("Пустое поле - ошибка", () => {
-    cy.get("input").first().type("newuser");
-    cy.get("button.ant-btn-primary").click();
+  it("Пустое поле - ошибка", async () => {
+    await cy.get("input").first().type("newuser");
+    await cy.get("button.ant-btn-primary").click();
     cy.get(".ant-message").should("contain.text", "ошибки в полях");
   });
 

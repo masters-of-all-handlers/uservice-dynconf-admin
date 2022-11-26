@@ -6,11 +6,10 @@ describe("Главная страница", () => {
       .visit("/")
   })
 
-  it("Переход на вход", () => {
-    cy.get("button.ant-btn-primary").click().then(() => {
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq("/login");
-      });
+  it("Переход на вход", async () => {
+    await cy.get("button.ant-btn-primary").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/login");
     });
   });
 });

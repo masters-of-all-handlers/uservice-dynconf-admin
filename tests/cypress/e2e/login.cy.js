@@ -6,23 +6,21 @@ describe("Страница входа", () => {
       .visit("/login")
   })
 
-  it("При ошибке входа нет никакого перехода", () => {
-    cy.get("input[placeholder='Имя пользователя']").type("error");
-    cy.get("input[placeholder='Пароль']").type("error");
-    cy.get("button.ant-btn-primary").click().then(() => {
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq("/login");
-      });
+  it("При ошибке входа нет никакого перехода", async () => {
+    await cy.get("input[placeholder='Имя пользователя']").type("error");
+    await cy.get("input[placeholder='Пароль']").type("error");
+    await cy.get("button.ant-btn-primary").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/login");
     });
   });
 
-  it("При успешном входе переход в админку", () => {
-    cy.get("input[placeholder='Имя пользователя']").type(Cypress.env("ADMIN_USERNAME"));
-    cy.get("input[placeholder='Пароль']").type(Cypress.env("ADMIN_PASSWORD"));
-    cy.get("button.ant-btn-primary").click().then(() => {
-      cy.location().should(loc => {
-        expect(loc.pathname).to.eq("/dashboard/configs");
-      });
+  it("При успешном входе переход в админку", async () => {
+    await cy.get("input[placeholder='Имя пользователя']").type(Cypress.env("ADMIN_USERNAME"));
+    await cy.get("input[placeholder='Пароль']").type(Cypress.env("ADMIN_PASSWORD"));
+    await cy.get("button.ant-btn-primary").click();
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/dashboard/configs");
     });
   });
 

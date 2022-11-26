@@ -15,7 +15,8 @@ let configs = [
   },
 ];
 
-let services = ["service name", "service name 2"];
+let services = ["service name", "service name 2"]
+  .map(service_name => ({service_name}));
 
 export const getConfigs = () => {
   return configs;
