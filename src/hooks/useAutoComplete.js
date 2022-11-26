@@ -1,4 +1,4 @@
-import {useState, useCallback} from "react";
+import {useState} from "react";
 
 const getAllOptions = ({data, fieldName}) => {
   return data ? data?.items.map((item) => ({value: item[fieldName]})) : [];

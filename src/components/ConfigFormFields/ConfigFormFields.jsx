@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 
 /* загрузка не с CDN, а с локального npm пакета */
 import loader from "@monaco-editor/loader";
 import * as monaco from "monaco-editor";
-import {AutoComplete, Col, Form, Input, Row, Typography} from "antd";
+import {AutoComplete, Form, Input} from "antd";
 
 import styles from "./styles.module.scss";
 import {rules, getValuePropsConfigValue} from "./fieldParams";
@@ -35,9 +35,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
   const {hasInitialValue} = modeData;
 
   const serviceNameHelp = serviceNameAutoComplete.isNewItem && (
-    <Typography.Text type="primary">
-      Будет создан новый сервис:&nbsp;{service_name}
-    </Typography.Text>
+    <p>Будет создан новый сервис:&nbsp;{service_name}</p>
   );
 
   return (
