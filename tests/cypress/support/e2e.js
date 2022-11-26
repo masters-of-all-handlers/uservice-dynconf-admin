@@ -5,6 +5,7 @@ import {
   API_CONFIGS_ENDPOINT, API_SERVICES_ENDPOINT
 } from "../../../src/constants";
 import {
+  cloneConfig,
   createConfig, deleteConfig,
   getConfig,
   getConfigs,
@@ -79,4 +80,14 @@ Cypress.Commands.add("stubConfigsAPI", () => {
       req.reply({statusCode: 204});
     }
   ).as("deleteConfig");
+  cy.intercept(
+    {
+      method: "POST",
+      url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*/clone`
+    },
+    req => {
+      cloneConfig(req.body);
+      req.reply({statusCode: 201});
+    }
+  ).as("cloneConfig");
 });

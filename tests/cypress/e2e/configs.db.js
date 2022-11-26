@@ -3,13 +3,13 @@ import {v4} from "uuid";
 let configs = [
   {
     config_name: "config 1",
-    service: "__default__",
+    service_name: "__default__",
     uuid: "00000000-0000-0000-0000-000000000001",
     config_value: 1
   },
   {
     config_name: "config 2",
-    service: "__default2__",
+    service_name: "__default2__",
     uuid: "00000000-0000-0000-0000-000000000002",
     config_value: 2
   },
@@ -32,6 +32,10 @@ export const deleteConfig = (uuid) => {
 
 export const createConfig = (data) => {
   configs.push({...data, uuid: v4()});
+}
+
+export const cloneConfig = () => {
+  console.log('cloneConfig', arguments);
 }
 
 export const getServices = () => {
