@@ -1,56 +1,47 @@
-import {message} from "antd";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
-import {variableAPI} from "../../services/VariableService";
+import {message} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
-import MainLayout from "../MainLayout/MainLayout";
+
 import {DASHBOARD_CONFIGS_URL} from "../../constants";
+import {
+  useGetConfigByIdQuery,
+  useCloneConfigMutation,
+} from "../../services/UserverService";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function ClonePage() {
-  const {uuid} = useParams();
   const navigate = useNavigate();
+  const {uuid} = useParams();
 
-  const {
-    data: variableData,
-    isLoading: isLoadingVariable,
-  } = variableAPI.useGetConfigByIdQuery(uuid);
+  const {data: dataConfigById, isLoading: isLoadingConfigById} =
+    useGetConfigByIdQuery(uuid);
 
-  const [
-    cloneVariable, {
-      isLoading: isCloneLoading,
+  const [cloneConfig, {isLoading: isLoadingCloneConfig}] =
+    useCloneConfigMutation();
+
+  const handleOnFinish = async (data) => {
+    const {error} = await cloneConfig({
+      uuid,
+      data,
+    });
+
+    if (!error) {
+      message.success(`Конфиг ${data.config_name} успешно клонирован`);
+
+      navigate(DASHBOARD_CONFIGS_URL);
     }
-  ] = variableAPI.useCloneVariableMutation();
+  };
 
-  const initialValues = variableData ? {
-    ...variableData,
-    // костыли))))
-    name: variableData?.config_name || variableData?.name,
-    value: variableData?.config_value
-  } : null;
-
-  return <MainLayout><ConfigForm
-    isLoading={isLoadingVariable}
-    isSaveLoading={isLoadingVariable || isCloneLoading}
-    mode="clone"
-    onFinish={
-      async data => {
-        if (initialValues.name === data.name && initialValues.service === data.service) {
-          return message.error("Пожалуйста, измените название сервиса и/или конфига");
-        }
-        const {error} = await cloneVariable({
-          uuid,
-          service: data.service,
-          config_name: data.name,
-          config_value: data.value
-        });
-
-        if (!error) {
-          message.success("Сохранено");
-          navigate(DASHBOARD_CONFIGS_URL);
-        }
-      }
-    }
-    initialValues={initialValues}
-  />
-  </MainLayout>;
+  return (
+    <MainLayout>
+      <ConfigForm
+        initialValues={dataConfigById}
+        mode="clone"
+        isLoading={isLoadingConfigById}
+        isSaveLoading={isLoadingConfigById || isLoadingCloneConfig}
+        onFinish={handleOnFinish}
+      />
+    </MainLayout>
+  );
 }

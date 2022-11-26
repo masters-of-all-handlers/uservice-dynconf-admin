@@ -1,24 +1,22 @@
 import {v4} from "uuid";
 
-let configs = [
-  {
-    config_name: "config 1",
-    service: "__default__",
-    uuid: "00000000-0000-0000-0000-000000000001",
-    config_value: 1
-  },
-  {
-    config_name: "config 2",
-    service: "__default2__",
-    uuid: "00000000-0000-0000-0000-000000000002",
-    config_value: 2
-  },
-];
+let configs = [];
+for (let i = 0; i < 150; ++i) {
+  configs.push({
+    config_name: `config ${i.toString()}`,
+    config_value: i,
+    service_name: `__default${(i % 2 || "").toString()}__`,
+    uuid: v4()
+  })
+}
 
-let services = ["service name", "service name 2"];
+let services = ["service name", "service name 2"]
+  .map(service_name => ({service_name}));
 
-export const getConfigs = () => {
-  return configs;
+export const getConfigs = ({config, service} = {}) => {
+  return configs
+    .filter(conf => !config || conf.config_name.includes(config))
+    .filter(conf => !service || conf.service_name.includes(service));
 }
 
 export const getConfig = (uuid) => {
@@ -31,6 +29,26 @@ export const deleteConfig = (uuid) => {
 
 export const createConfig = (data) => {
   configs.push({...data, uuid: v4()});
+}
+
+const findConfig = (data) => {
+  return configs.findIndex(conf => conf.config_name === data.config_name && conf.service_name === data.service_name);
+}
+
+export const cloneConfig = (data) => {
+  const existing = findConfig(data);
+  if (existing > -1) {
+    Object.assign(configs[existing], data);
+  } else {
+    configs.push({...data, uuid: v4()});
+  }
+}
+
+export const editConfig = (data) => {
+  const existing = findConfig(data);
+  if (existing > -1) {
+    Object.assign(configs[existing], data);
+  }
 }
 
 export const getServices = () => {

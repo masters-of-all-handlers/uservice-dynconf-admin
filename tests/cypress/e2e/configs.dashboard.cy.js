@@ -1,20 +1,21 @@
+import {getConfigs} from "./configs.db";
 import {
-  API_BASE_ADMIN_URL,
-  API_CONFIGS_ENDPOINT
+  DASHBOARD_CONFIGS_CREATE_URL,
+  DASHBOARD_CONFIGS_URL
 } from "../../../src/constants";
-import {deleteConfig, getConfig, getConfigs} from "./configs.db";
+import {testConfigsLength} from "./utils";
 
 describe("Страница списка конфигов", () => {
   beforeEach(() => {
     cy.stubConfigsAPI();
     cy.login();
-    cy.visit("/dashboard/configs");
+    cy.visit(DASHBOARD_CONFIGS_URL);
   })
 
   it("Переход на создание конфига", () => {
     cy.get("button.ant-btn-primary").click();
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq("/dashboard/configs/create");
+      expect(loc.pathname).to.eq(DASHBOARD_CONFIGS_CREATE_URL);
     });
   });
 
@@ -34,10 +35,39 @@ describe("Страница списка конфигов", () => {
     });
   });
 
-  it("Удаление конфига со страницы списка", () => {
+  it("Удаление конфига", () => {
     cy.get(".ant-dropdown-trigger").first().click();
     cy.get(".ant-dropdown-menu-title-content").contains("Удалить").click();
     cy.get(".ant-popover-buttons .ant-btn-dangerous").first().click();
-    cy.get(".ant-table-row").should("have.length", getConfigs().length);
+    testConfigsLength(getConfigs().length);
+  });
+
+  it("Поиск по конфигу", () => {
+    cy.contains("th", "Имя").find(".ant-input").first().type("config 2{Enter}");
+    const testLength = () => {
+      testConfigsLength(getConfigs({config: "config 2"}).length);
+    }
+    testLength();
+    cy.reload();
+    testLength();
+  });
+
+  it("Поиск по сервису", () => {
+    cy.contains("th", "Сервис").find(".ant-input").first().type("default1{Enter}");
+    const testLength = () => {
+      testConfigsLength(getConfigs({service: "default1"}).length);
+    }
+    testLength();
+    cy.reload();
+    testLength();
+  });
+
+  it("Изменение размера страницы (пагинация)", () => {
+    const targetLength = 20;
+    cy.get(".ant-pagination-options .ant-select-selector").first().click();
+    cy.contains(".ant-select-item-option-content", `${targetLength}`).click();
+    cy.get(".ant-table-row").should("have.length", targetLength);
+    cy.reload();
+    cy.get(".ant-table-row").should("have.length", targetLength);
   });
 });
