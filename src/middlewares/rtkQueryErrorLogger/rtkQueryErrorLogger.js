@@ -4,8 +4,7 @@ import {message} from "antd";
 import {translateError} from "./translateError";
 
 export const rtkQueryErrorLogger = (api) => (next) => (action) => {
-  // костыли)))
-  if (action?.type.includes("authAPI")) {
+  if (action?.meta?.arg?.endpointName === "check") {
     return next(action);
   }
 
@@ -19,7 +18,12 @@ export const rtkQueryErrorLogger = (api) => (next) => (action) => {
       ? translateError(data.message)
       : translateError(error);
 
-    message.error(`${errorStatus} | ${errorMessage}`);
+    let messageForUser = `Произошла ошибка ${errorStatus}`;
+    if (errorMessage) {
+      messageForUser += ` | ${errorMessage}`
+    }
+
+    message.error(messageForUser);
   }
 
   return next(action);
