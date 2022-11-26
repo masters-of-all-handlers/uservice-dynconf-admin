@@ -25,8 +25,7 @@ const EditPage = () => {
 
     if (!error) {
       message.success(
-        `Конфиг ${data.config_name} успешно обновлен в сервисе ${data.service_name}`,
-        7
+        `Конфиг ${data.config_name} успешно обновлен в сервисе ${data.service_name}`
       );
 
       navigate(DASHBOARD_CONFIGS_URL);

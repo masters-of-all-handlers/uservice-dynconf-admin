@@ -19,7 +19,7 @@ export const rtkQueryErrorLogger = (api) => (next) => (action) => {
       ? translateError(data.message)
       : translateError(error);
 
-    message.error(`${errorStatus} | ${errorMessage}`, 7);
+    message.error(`${errorStatus} | ${errorMessage}`);
   }
 
   return next(action);

@@ -27,7 +27,7 @@ export default function ClonePage() {
     });
 
     if (!error) {
-      message.success(`Конфиг ${data.config_name} успешно клонирован`, 7);
+      message.success(`Конфиг ${data.config_name} успешно клонирован`);
 
       navigate(DASHBOARD_CONFIGS_URL);
     }
