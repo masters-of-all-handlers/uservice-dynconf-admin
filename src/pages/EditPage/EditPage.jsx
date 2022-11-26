@@ -37,7 +37,7 @@ const EditPage = () => {
       <ConfigForm
         initialValues={dataConfigById}
         mode="edit"
-        isLoading={isLoadingConfigById}
+        isLoadingConfigById={isLoadingConfigById}
         isSaveLoading={isLoadingConfigById || isLoadingUpdateConfig}
         onFinish={handleOnFinish}
       />

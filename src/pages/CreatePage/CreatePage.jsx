@@ -30,7 +30,7 @@ export default function CreatePage() {
       <ConfigForm
         initialValues={null}
         mode="create"
-        isLoading={false}
+        isLoadingConfigById={false}
         isSaveLoading={isLoadingCreateConfig}
         onFinish={handleOnFinish}
       />

@@ -38,7 +38,7 @@ export default function ClonePage() {
       <ConfigForm
         initialValues={dataConfigById}
         mode="clone"
-        isLoading={isLoadingConfigById}
+        isLoadingConfigById={isLoadingConfigById}
         isSaveLoading={isLoadingConfigById || isLoadingCloneConfig}
         onFinish={handleOnFinish}
       />
