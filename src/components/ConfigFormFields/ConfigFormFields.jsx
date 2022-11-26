@@ -14,6 +14,7 @@ import Spinner from "../Spinner/Spinner";
 
 import {useGetServicesQuery} from "../../services/UserverService";
 import {prettifyJSON} from "../../utils/json";
+import {useAutoComplete} from "../../hooks/useAutoComplete";
 
 loader.config({monaco});
 
@@ -23,33 +24,21 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
 
   const {data: servicesData} = useGetServicesQuery();
 
+  const serviceNameAutoComplete = useAutoComplete({
+    data: servicesData,
+    fieldName: "service_name",
+  });
+
   const hasNotConfigNameField = !modeData.hasFields.config_name;
   const hasNotConfigValueField = !modeData.hasFields.config_value;
   const hasNotServiceNameField = !modeData.hasFields.service_name;
   const {hasInitialValue} = modeData;
 
-  const allOptions = servicesData
-    ? servicesData.items.map(({service_name}) => ({value: service_name}))
-    : [];
-
-  const [isNewService, setIsNewService] = useState(false);
-  const [options, setOptions] = useState(allOptions);
-
-  const handleServiceSearch = (value) => {
-    const filtered = allOptions.filter((option) =>
-      option.value.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setOptions(filtered);
-
-    setIsNewService(
-      !filtered.filter((option) => option.value === value).length
-    );
-  };
-
-  const handleServiceSelect = (value) => {
-    setIsNewService(!options.filter((option) => option.value === value).length);
-  };
+  const serviceNameHelp = serviceNameAutoComplete.isNewItem && (
+    <Typography.Text type="primary">
+      Будет создан новый сервис:&nbsp;{service_name}
+    </Typography.Text>
+  );
 
   return (
     <>
@@ -71,18 +60,12 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             label="Сервис"
             name="service_name"
             rules={rules.serviceName}
-            help={
-              isNewService && (
-                <Typography.Text type="primary">
-                  Будет создан сервис&nbsp;{service_name}
-                </Typography.Text>
-              )
-            }
+            help={serviceNameHelp}
           >
             <AutoComplete
-              options={options}
-              onSearch={handleServiceSearch}
-              onSelect={handleServiceSelect}
+              options={serviceNameAutoComplete.options}
+              onSearch={serviceNameAutoComplete.handleOnSearch}
+              onSelect={serviceNameAutoComplete.handleOnSelect}
               placeholder="__default__"
               disabled={hasNotServiceNameField}
             />
