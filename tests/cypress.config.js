@@ -18,15 +18,16 @@ module.exports = defineConfig(
     video: false,
     watchForFileChanges: true,
     e2e: {
-      supportFile: false,
-      defaultCommandTimeout: 5000,
+      defaultCommandTimeout: 10000,
       setupNodeEvents(on, config) {
         on('file:preprocessor', webpackPreprocessor(options))
-      }
+      },
+      baseUrl: process.env.CYPRESS_TEST_HOST
     },
     reporter: '../node_modules/cypress-multi-reporters',
     reporterOptions: {
       configFile: 'cypress-reporter.config.json'
-    }
+    },
+    env: process.env,
   }
 )
