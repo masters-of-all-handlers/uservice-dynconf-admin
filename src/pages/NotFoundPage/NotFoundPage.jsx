@@ -1,25 +1,49 @@
-import {Button, Col, Layout, Row, Space, Typography} from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import {Button, Space} from "antd";
+
 import styles from "./styles.module.scss";
-import {ReactComponent as Logo} from "../../logo.svg";
+
+import {LOGIN_URL} from "../../constants";
+import useAuth from "../../hooks/useAuth";
+import LogoSection from "../../components/LogoSection/LogoSection";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
-  return <Layout className={styles.layout}>
-    <Row align="middle" className={styles.logoRow}>
-      <Col>
-        <Logo className={styles.logo}/>
-      </Col>
-      <Col>
-        <Typography.Title className={styles.notFound404}>404</Typography.Title>
-      </Col>
-    </Row>
-    <Typography.Title level={4}>По этому адресу ничего нет</Typography.Title>
-    <Space wrap>
-      <Link to="/">
-        <Button type="primary">На главную</Button>
-      </Link>
-      <Button onClick={() => navigate(-1)}>Назад</Button>
-    </Space>
-  </Layout>
+
+  const {
+    data: {ticket},
+  } = useAuth();
+
+  const isNotAuth = Boolean(ticket) === false;
+  const rootType = isNotAuth ? "default" : "primary";
+
+  const handleBackClick = () => navigate(-1);
+  const handleRootClick = () => navigate("/");
+  const handleLoginClick = () => navigate(LOGIN_URL);
+
+  return (
+    <MainLayout type="branded">
+      <LogoSection
+        title="404"
+        description="Похоже вы заблудились :("
+        logoStyle="gray"
+      >
+        <Space className={styles.buttons}>
+          <Button onClick={handleBackClick}>Назад</Button>
+
+          <Button onClick={handleRootClick} type={rootType}>
+            На главную
+          </Button>
+
+          {isNotAuth && (
+            <Button onClick={handleLoginClick} type="primary">
+              Вход
+            </Button>
+          )}
+        </Space>
+      </LogoSection>
+    </MainLayout>
+  );
 }

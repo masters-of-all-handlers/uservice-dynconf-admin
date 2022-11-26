@@ -1,0 +1,19 @@
+@use "../../scss/include-media.scss" as *;
+
+.fields {
+  padding: 24px 0;
+}
+
+.editorItem {
+  @include media(">=md") {
+    display: inline-block;
+    width: 45%;
+  }
+
+  & + & {
+    @include media(">=md") {
+      width: calc(55% - 20px);
+      margin-left: 20px;
+    }
+  }
+}

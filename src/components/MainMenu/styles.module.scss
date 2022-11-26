@@ -1,3 +1,5 @@
 .menu {
-  flex-grow: 1;
+  flex: auto;
+  min-width: 0;
+  padding-left: 1rem;
 }

@@ -1,8 +1,12 @@
 name: main
-run-name: Деплой админки
+run-name: Основной сценарий
 
 on:
   push
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/uda-frontend
+  IMAGE_TAG: latest
 
 jobs:
   build-app:
@@ -17,9 +21,34 @@ jobs:
         with:
           name: app-build
           path: build/**
-  deploy-docker-image:
+
+  run-e2e-tests:
     runs-on: ubuntu-latest
     needs: [ build-app ]
+    env:
+      CYPRESS_TEST_HOST: http://localhost:3000/
+      PM2_PORT: 3000
+      ADMIN_USERNAME: "${{ secrets.ADMIN_USERNAME }}"
+      ADMIN_PASSWORD: "${{ secrets.ADMIN_PASSWORD }}"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-build
+          path: build/
+      - run: |
+          npm install --only=dev
+          npx cypress info || (npx cypress install && npx cypress info)
+          npx pm2 serve build $PM2_PORT --spa
+          npx wait-on $CYPRESS_TEST_HOST --log && npm run test:in
+
+  publish-docker-image:
+    runs-on: ubuntu-latest
+    needs: [ build-app, run-e2e-tests ]
+    if: success() && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v2
@@ -33,34 +62,22 @@ jobs:
           path: build/
       - run: |
           curl -sSL https://get.docker.com/ | sudo sh
-          docker build -t ghcr.io/${{ github.repository_owner }}/uda-frontend .
-          docker push ghcr.io/${{ github.repository_owner }}/uda-frontend:latest
-  deploy-app-scp:
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME:$IMAGE_TAG
+
+  deploy-docker-image:
     runs-on: ubuntu-latest
-    needs: [ build-app ]
+    needs: [ publish-docker-image ]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: docker/login-action@v2
         with:
-          name: app-build
-          path: build/
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
-      - run: echo "${{ secrets.OPENVPN_FILE }}" > client.ovpn
-      - uses: "kota65535/github-openvpn-connect-action@v2"
-        with:
-          config_file: ./client.ovpn
-      - run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      - run: scp -o StrictHostKeyChecking=no tmp.nginx.conf ${{ secrets.SSH_LOGIN }}:~/frontend/nginx.conf
-      - run: scp -o StrictHostKeyChecking=no -r build ${{ secrets.SSH_LOGIN }}:~/frontend/
-      - run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} sudo -i service nginx restart
-  clean:
-    runs-on: ubuntu-latest
-    needs:
-      - deploy-docker-image
-      - deploy-app-scp
-    steps:
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: app-build
+            mkdir -p ~/.ssh
+            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa 
+            sudo chmod 600 ~/.ssh/id_rsa
+            scp -o StrictHostKeyChecking=no .github/workflows/restart-docker.sh ${{ secrets.SSH_LOGIN }}:~/restart-docker.sh
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} "bash restart-docker.sh $IMAGE_NAME:$IMAGE_TAG 8082 80 && rm restart-docker.sh"

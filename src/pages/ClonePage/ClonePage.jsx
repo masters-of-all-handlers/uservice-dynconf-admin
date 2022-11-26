@@ -1,40 +1,47 @@
-import {message} from "antd";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
-import {variableAPI} from "../../services/VariableService";
-import {useParams} from "react-router-dom";
-import MainLayout from "../MainLayout/MainLayout";
+import {message} from "antd";
+import {useNavigate, useParams} from "react-router-dom";
+
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
+import {
+  useGetConfigByIdQuery,
+  useCloneConfigMutation,
+} from "../../services/UserverService";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function ClonePage() {
-  const {id: uuid} = useParams();
+  const navigate = useNavigate();
+  const {uuid} = useParams();
 
-  const {
-    data: variableData,
-    error: variableError,
-    isLoading: isLoadingVariable,
-  } = variableAPI.useFetchVariableByIdQuery(uuid);
+  const {data: dataConfigById, isLoading: isLoadingConfigById} =
+    useGetConfigByIdQuery(uuid);
 
-  const [
-    cloneVariable, {
-      error: cloneError,
-      isLoading: isCloneLoading,
+  const [cloneConfig, {isLoading: isLoadingCloneConfig}] =
+    useCloneConfigMutation();
+
+  const handleOnFinish = async (data) => {
+    const {error} = await cloneConfig({
+      uuid,
+      data,
+    });
+
+    if (!error) {
+      message.success(`Конфиг ${data.config_name} успешно клонирован`);
+
+      navigate(DASHBOARD_CONFIGS_URL);
     }
-  ] = variableAPI.useCloneVariableMutation();
+  };
 
-  return <MainLayout><ConfigForm
-    isLoading={isLoadingVariable}
-    isSaveLoading={isLoadingVariable || isCloneLoading}
-    mode="clone"
-    onFinish={
-      data => {
-        console.log(data);
-        cloneVariable(data).then(() => {
-          message.success("Сохранено");
-        })
-      }
-    }
-    initialValues={variableData}
-    error={variableError || cloneError}
-  />
-  </MainLayout>;
+  return (
+    <MainLayout>
+      <ConfigForm
+        initialValues={dataConfigById}
+        mode="clone"
+        isLoadingConfigById={isLoadingConfigById}
+        isSaveLoading={isLoadingConfigById || isLoadingCloneConfig}
+        onFinish={handleOnFinish}
+      />
+    </MainLayout>
+  );
 }

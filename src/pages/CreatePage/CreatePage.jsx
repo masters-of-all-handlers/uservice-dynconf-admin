@@ -1,29 +1,38 @@
-import {message} from "antd";
-import ConfigForm from "../../components/ConfigForm/ConfigForm";
 import React from "react";
+import {message} from "antd";
 import {useNavigate} from "react-router-dom";
 
-import MainLayout from "../MainLayout/MainLayout";
-
-import {variableAPI} from "../../services/VariableService";
+import {DASHBOARD_CONFIGS_URL} from "../../constants";
+import {useCreateConfigMutation} from "../../services/UserverService";
+import ConfigForm from "../../components/ConfigForm/ConfigForm";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function CreatePage() {
-  const [createVariable, {isLoading: isCreateLoading}] =
-    variableAPI.useCreateVariableMutation();
   const navigate = useNavigate();
+
+  const [createConfig, {isLoading: isLoadingCreateConfig}] =
+    useCreateConfigMutation();
+
+  const handleOnFinish = async (data) => {
+    const {error} = await createConfig(data);
+
+    if (!error) {
+      message.success(
+        `Конфиг ${data.config_name} успешно создан в сервисе ${data.service_name}`
+      );
+
+      navigate(DASHBOARD_CONFIGS_URL);
+    }
+  };
+
   return (
     <MainLayout>
       <ConfigForm
-        isLoading={false}
-        isSaveLoading={isCreateLoading}
+        initialValues={null}
         mode="create"
-        onFinish={(data) => {
-          createVariable(data).then(() => {
-            navigate("/");
-            message.success("Сохранено");
-          });
-        }}
-        initialValues={{}}
+        isLoadingConfigById={false}
+        isSaveLoading={isLoadingCreateConfig}
+        onFinish={handleOnFinish}
       />
     </MainLayout>
   );

@@ -1,177 +1,105 @@
-import {
-  AutoComplete,
-  Col,
-  Form,
-  Input,
-  Row,
-  Space,
-  Spin,
-  Typography
-} from "antd";
-import styles from "../../pages/EditPage/styles.module.scss";
-import React, {useState} from "react";
+import React from "react";
 import Editor, {DiffEditor} from "@monaco-editor/react";
-import classnames from "classnames";
 
 /* загрузка не с CDN, а с локального npm пакета */
-import loader from '@monaco-editor/loader';
-import * as monaco from 'monaco-editor';
+import loader from "@monaco-editor/loader";
+import * as monaco from "monaco-editor";
+import {AutoComplete, Form, Input} from "antd";
+
+import styles from "./styles.module.scss";
+import {rules, getValuePropsConfigValue} from "./fieldParams";
+import {editorOptions, diffEditorOptions} from "./editorOptions";
+
+import Spinner from "../Spinner/Spinner";
+
+import {useGetServicesQuery} from "../../services/UserverService";
+import {prettifyJSON} from "../../utils/json";
+import {useAutoComplete} from "../../hooks/useAutoComplete";
 
 loader.config({monaco});
 
-const prettifyJSON = json => {
-  try {
-    return JSON.stringify(JSON.parse(json), null, 2);
-  } catch (e) {
-    if (json) {
-      return json;
-    }
-    return "";
-  }
-};
-
-const isJSONValid = (json) => {
-  try {
-    JSON.parse(json);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-const validateJSON = (_, value) => new Promise(
-  (resolve, reject) => {
-    if (isJSONValid(value)) {
-      resolve();
-    } else {
-      reject("Значение должно быть валидным JSON");
-    }
-  }
-);
-
 export default function ConfigFormFields({form, initialValues, modeData}) {
   const config_value = Form.useWatch("config_value", form);
-  const service = Form.useWatch("service", form);
-  const allOptions = [{value: "__default__"}, {value: "non-default!"}];
-  const [isNewService, setIsNewService] = useState(false);
-  const [options, setOptions] = useState(allOptions);
-  const handleServiceSearch = value => {
-    const filtered = allOptions.filter(option => option.value.toLowerCase().includes(value.toLowerCase()));
-    setOptions(filtered);
-    setIsNewService(!filtered.filter(option => option.value === value).length);
-  };
-  const handleServiceSelect = value => {
-    setIsNewService(!options.filter(option => option.value === value).length);
-  }
-  return <>
-    <Row>
-      <Col xs={24} md={12}>
-        <Form.Item label="Имя переменной"
-                   rules={[{
-                     required: true, message: "Введите имя переменной"
-                   }]}
-                   className={styles.formItem}
-                   name="config_name"
-        >
-          <Input placeholder="MY_NICE_VAR" readOnly={!modeData.fields.name}/>
-        </Form.Item>
-      </Col>
-      <Col xs={24} md={12}>
+  const service_name = Form.useWatch("service_name", form);
+
+  const {data: servicesData} = useGetServicesQuery();
+
+  const serviceNameAutoComplete = useAutoComplete({
+    data: servicesData,
+    fieldName: "service_name",
+  });
+
+  const hasNotConfigNameField = !modeData.hasFields.config_name;
+  const hasNotConfigValueField = !modeData.hasFields.config_value;
+  const hasNotServiceNameField = !modeData.hasFields.service_name;
+  const {hasInitialValue} = modeData;
+
+  const serviceNameHelp = serviceNameAutoComplete.isNewItem && (
+    <p>Будет создан новый сервис:&nbsp;{service_name}</p>
+  );
+
+  return (
+    <div className={styles.fields}>
+      <Form.Item
+        label="Имя переменной"
+        name="config_name"
+        rules={rules.configName}
+        wrapperCol={{
+          span: 9,
+        }}
+      >
+        <Input placeholder="MY_NICE_VAR" disabled={hasNotConfigNameField} />
+      </Form.Item>
+
+      <Form.Item
+        label="Сервис"
+        name="service_name"
+        rules={rules.serviceName}
+        help={serviceNameHelp}
+        wrapperCol={{
+          span: 9,
+        }}
+      >
+        <AutoComplete
+          options={serviceNameAutoComplete.options}
+          onSearch={serviceNameAutoComplete.handleOnSearch}
+          onSelect={serviceNameAutoComplete.handleOnSelect}
+          placeholder="__default__"
+          disabled={hasNotServiceNameField}
+        />
+      </Form.Item>
+
+      <Form.Item label="Значение">
         <Form.Item
-          className={styles.formItem}
-          label="Сервис"
-          rules={[{
-            required: true, message: "Введите название сервиса"
-          }]}
-          name="service"
-          help={isNewService && <Typography.Text type="primary">Будет создан
-            сервис&nbsp;{service}</Typography.Text>}
+          className={styles.editorItem}
+          name="config_value"
+          rules={rules.configValue}
+          getValueProps={getValuePropsConfigValue}
         >
-          <AutoComplete
-            options={options}
-            onSearch={handleServiceSearch}
-            onSelect={handleServiceSelect}
-            placeholder="__default__"
-            readOnly={!modeData.fields.service}
-          />
-        </Form.Item>
-      </Col>
-    </Row>
-    <Row>
-      <Col xs={24} md={modeData.fields.initialValue ? 12 : 24}>
-        <Form.Item label="Значение"
-                   rules={[{
-                     required: true, message: "Введите значение",
-                   }, {
-                     validator: validateJSON
-                   }]}
-                   name="config_value"
-                   getValueProps={value => ({
-                     value: prettifyJSON(value),
-                     className: classnames("ant-input", {
-                       "ant-input-status-error": !isJSONValid(value)
-                     })
-                   })}
-                   className={styles.formItem}>
           <Editor
             defaultLanguage="json"
             height="300px"
             options={{
-              formatOnPaste: true,
-              formatOnType: false,
-              minimap: {
-                enabled: false
-              },
-              overviewRulerLanes: 0,
-              hideCursorInOverviewRuler: true,
-              scrollbar: {
-                vertical: 'hidden'
-              },
-              overviewRulerBorder: false,
-              readOnly: !modeData.fields.value,
+              ...editorOptions,
+              readOnly: hasNotConfigValueField,
             }}
-            loading={
-              <Row align="middle">
-                <Space className={styles.spinner}>
-                  <Spin/>
-                </Space>
-              </Row>
-            }
+            loading={<Spinner />}
           />
         </Form.Item>
-      </Col>
-      {modeData.fields.initialValue && <Col xs={24} md={12}>
-        <Form.Item label="Diff" className={styles.formItem}>
-          <DiffEditor
-            defaultLanguage="json"
-            height="300px"
-            modified={prettifyJSON(config_value)}
-            original={prettifyJSON(initialValues.config_value)}
-            options={{
-              renderSideBySide: false,
-              originalEditable: false,
-              readOnly: true,
-              minimap: {
-                enabled: false
-              },
-              overviewRulerLanes: 0,
-              hideCursorInOverviewRuler: true,
-              scrollbar: {
-                vertical: "hidden",
-              },
-              overviewRulerBorder: false,
-              renderOverviewRuler: false,
-            }}
-            loading={
-              <Row align="middle">
-                <Space className={styles.spinner}>
-                  <Spin/>
-                </Space>
-              </Row>
-            }
-          />
-        </Form.Item>
-      </Col>}
-    </Row>
-  </>
+
+        {hasInitialValue && (
+          <Form.Item className={styles.editorItem}>
+            <DiffEditor
+              defaultLanguage="json"
+              height="300px"
+              modified={prettifyJSON(config_value)}
+              original={prettifyJSON(initialValues.config_value)}
+              options={diffEditorOptions}
+              loading={<Spinner />}
+            />
+          </Form.Item>
+        )}
+      </Form.Item>
+    </div>
+  );
 }

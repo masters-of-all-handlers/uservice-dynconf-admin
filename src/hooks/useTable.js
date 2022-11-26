@@ -1,26 +1,99 @@
 import {useState} from "react";
 
-export function useTable(initialParams = {}) {
-  const defaultParams = {
-    ...initialParams,
+const defaultParams = {
+  pagination: {
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+  },
 
-    pagination: {
-      current: 1,
-      pageSize: 10,
-      showSizeChanger: true,
-      ...initialParams?.pagination,
-    },
-  };
+  config: "",
+  service: "",
+};
+
+const setLocalStorage = (params) => {
+  const paramsJSON = JSON.stringify(params);
+
+  localStorage.setItem("tableParams", paramsJSON);
+};
+
+const getLocalStorage = () => {
+  const paramsJSON = localStorage.getItem("tableParams");
+  const params = paramsJSON ? JSON.parse(paramsJSON) : defaultParams;
+
+  return params;
+};
+
+export function useTable() {
+  const defaultParams = getLocalStorage();
 
   const [tableParams, setTableParams] = useState(defaultParams);
 
   const handleTableChange = (pagination) => {
-    setTableParams({
-      pagination,
-    });
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
+
+      pagination: {
+        ...oldTableParams.pagination,
+        ...pagination,
+      },
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
   };
 
-  return {tableParams, handleTableChange};
+  const handleSearchByConfigName = (config) => {
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
+
+      pagination: {
+        ...oldTableParams.pagination,
+
+        current: 1,
+      },
+
+      config,
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
+  };
+
+  const handleSearchByServiceName = (service) => {
+    const oldTableParams = getLocalStorage();
+    const newTableParams = {
+      ...oldTableParams,
+
+      pagination: {
+        ...oldTableParams.pagination,
+
+        current: 1,
+      },
+
+      service,
+    };
+
+    setLocalStorage(newTableParams);
+    setTableParams(newTableParams);
+  };
+
+  return {
+    tableParams,
+    handleTableChange,
+
+    searchByConfigName: {
+      handle: handleSearchByConfigName,
+      value: tableParams.config,
+    },
+
+    searchByServiceName: {
+      handle: handleSearchByServiceName,
+      value: tableParams.service,
+    },
+  };
 }
 
 export const rowKey = (record) => record.uuid;

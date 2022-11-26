@@ -1,42 +1,57 @@
 import React from "react";
-import {Table, Space} from "antd";
+import {Table} from "antd";
 
 import styles from "./styles.module.scss";
-import {columns} from "./columns";
+import {getColumns} from "./columns";
+import {expandedRowRender} from "./expandedRowRender";
 
-import {useGetConfigsQuery} from "../../services/VariableService";
+import {useGetConfigsQuery} from "../../services/UserverService";
 import {useTable, rowKey, showTotal} from "../../hooks/useTable";
 
-const getConfigsParams = (params) => ({
-  limit: params.pagination?.pageSize,
-  page: params.pagination?.current,
+const getConfigsParams = ({pagination, config, service}) => ({
+  limit: pagination?.pageSize,
+  page: pagination?.current,
+  config,
+  service,
 });
 
 const ConfigTable = () => {
-  const {tableParams, handleTableChange} = useTable();
+  const {
+    tableParams,
+    handleTableChange,
+    searchByConfigName,
+    searchByServiceName,
+  } = useTable();
 
   const {data, isFetching} = useGetConfigsQuery(getConfigsParams(tableParams));
 
+  const columns = getColumns(
+    isFetching,
+    searchByConfigName,
+    searchByServiceName
+  );
+
   return (
-    <>
-      <Space className={styles.wrap} direction="vertical" size="middle">
-        <Table
-          rowClassName={styles.row}
-          rowKey={rowKey}
-          dataSource={data?.items}
-          columns={columns}
-          loading={isFetching}
-          pagination={{
-            ...tableParams.pagination,
-            total: data?.total,
-            showTotal,
-          }}
-          onChange={handleTableChange}
-          size="small"
-          bordered
-        />
-      </Space>
-    </>
+    <Table
+      className={styles.table}
+      rowClassName={styles.row}
+      rowKey={rowKey}
+      dataSource={data?.items}
+      columns={columns}
+      loading={isFetching}
+      pagination={{
+        ...tableParams.pagination,
+        total: data?.total,
+        showTotal,
+      }}
+      onChange={handleTableChange}
+      expandable={{
+        expandedRowRender,
+        expandRowByClick: true,
+      }}
+      size="middle"
+      bordered
+    />
   );
 };
 
