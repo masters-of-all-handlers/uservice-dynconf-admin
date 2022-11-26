@@ -5,7 +5,7 @@ import {
   PageHeader,
   Popconfirm,
 } from "antd";
-import styles from "../../pages/EditPage/styles.module.scss";
+import styles from "./styles.module.scss";
 import React, {useEffect, useState} from "react";
 import UserFormFields from "../UserFormFields/UserFormFields";
 import Spinner from "../Spinner/Spinner";

@@ -4,7 +4,7 @@ import {
   Input,
   Row,
 } from "antd";
-import styles from "../../pages/EditPage/styles.module.scss";
+import styles from "./styles.module.scss";
 import React from "react";
 
 export default function UserFormFields({modeData}) {
