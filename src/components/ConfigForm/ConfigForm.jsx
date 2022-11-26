@@ -10,40 +10,15 @@ import {
   Spin,
 } from "antd";
 
-import styles from "../../pages/EditPage/styles.module.scss";
+import formModes from "./formModes";
+import styles from "./styles.module.scss";
 
 import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
 
-const modes = {
-  create: {
-    title: "Создать конфиг",
-    fields: {
-      config_name: true,
-      service_name: true,
-      config_value: true,
-      initialValue: false,
-    },
-  },
+import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-  edit: {
-    title: "Редактировать конфиг",
-    fields: {
-      config_name: false,
-      service_name: false,
-      config_value: true,
-      initialValue: true,
-    },
-  },
-
-  clone: {
-    title: "Клонировать конфиг",
-    fields: {
-      config_name: true,
-      service_name: true,
-      config_value: true,
-      initialValue: true,
-    },
-  },
+const handleOnFinishFailed = () => {
+  message.error("Обнаружены ошибки в полях");
 };
 
 export default function ConfigForm({
@@ -54,21 +29,9 @@ export default function ConfigForm({
   isLoading,
 }) {
   const [form] = Form.useForm();
-  const [popconfirmOpen, setPopconfirmOpen] = useState(false);
+  const clearPopconfirm = usePopconfirm();
+
   const [initialValuesLoaded, setInitialValuesLoaded] = useState(false);
-
-  const handlePopconfirmCancel = () => {
-    setPopconfirmOpen(false);
-  };
-
-  const handlePopconfirmConfirm = () => {
-    setPopconfirmOpen(false);
-    form.resetFields();
-  };
-
-  const handlePopconfirmOpen = () => {
-    setPopconfirmOpen(true);
-  };
 
   useEffect(() => {
     if (!initialValuesLoaded && initialValues) {
@@ -77,20 +40,24 @@ export default function ConfigForm({
     }
   }, [initialValuesLoaded, form, initialValues]);
 
-  const modeData = modes[mode];
+  const modeData = formModes[mode];
 
   if (!modeData) {
-    return "404!";
+    return message.error(`Режим работы формы ${mode} не существует`);
   }
+
+  const handleConfirmClear = () => {
+    clearPopconfirm.close();
+
+    form.resetFields();
+  };
 
   return (
     <Form
       form={form}
       layout="vertical"
       onFinish={onFinish}
-      onFinishFailed={() => {
-        message.error("Обнаружены ошибки в полях");
-      }}
+      onFinishFailed={handleOnFinishFailed}
       initialValues={initialValues}
     >
       <PageHeader
@@ -99,16 +66,17 @@ export default function ConfigForm({
         title={modeData.title}
         extra={[
           <Popconfirm
-            key="2"
+            key="clearForm"
             title="Сбросить форму?"
-            open={popconfirmOpen}
-            onConfirm={handlePopconfirmConfirm}
-            onCancel={handlePopconfirmCancel}
+            open={clearPopconfirm.isOpen}
+            onConfirm={handleConfirmClear}
+            onCancel={clearPopconfirm.close}
           >
-            <Button onClick={handlePopconfirmOpen}>Cброс</Button>
+            <Button onClick={clearPopconfirm.open}>Cброс</Button>
           </Popconfirm>,
+
           <Button
-            key="1"
+            key="saveConfig"
             type="primary"
             htmlType="submit"
             loading={isSaveLoading}
@@ -117,6 +85,7 @@ export default function ConfigForm({
           </Button>,
         ]}
       />
+
       {isLoading ? (
         <Row align="middle">
           <Space className={styles.spinner}>
