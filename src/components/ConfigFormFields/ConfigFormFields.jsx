@@ -15,12 +15,12 @@ import {
 } from "antd";
 
 import styles from "./styles.module.scss";
-import {rules} from "./fieldParams";
+import {rules, getValuePropsConfigValue} from "./fieldParams";
 
 import Spinner from "../Spinner/Spinner";
 
 import {useGetServicesQuery} from "../../services/UserverService";
-import {prettifyJSON, isJSONValid} from "../../utils/json";
+import {prettifyJSON} from "../../utils/json";
 
 loader.config({monaco});
 
@@ -104,12 +104,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             label="Значение"
             name="config_value"
             rules={rules.configValue}
-            getValueProps={(value) => ({
-              value: prettifyJSON(value),
-              className: classnames("ant-input", {
-                "ant-input-status-error": !isJSONValid(value),
-              }),
-            })}
+            getValueProps={getValuePropsConfigValue}
           >
             <Editor
               defaultLanguage="json"
