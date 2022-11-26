@@ -30,6 +30,11 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
 
   const {data: servicesData} = useGetServicesQuery();
 
+  const hasNotConfigNameField = !modeData.hasFields.config_name;
+  const hasNotConfigValueField = !modeData.hasFields.config_value;
+  const hasNotServiceNameField = !modeData.hasFields.service_name;
+  const {hasInitialValue} = modeData;
+
   const allOptions = servicesData
     ? servicesData.items.map(({service_name}) => ({value: service_name}))
     : [];
@@ -63,10 +68,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             name="config_name"
             rules={rules.configName}
           >
-            <Input
-              placeholder="MY_NICE_VAR"
-              disabled={!modeData.fields.config_name}
-            />
+            <Input placeholder="MY_NICE_VAR" disabled={hasNotConfigNameField} />
           </Form.Item>
         </Col>
 
@@ -89,14 +91,14 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
               onSearch={handleServiceSearch}
               onSelect={handleServiceSelect}
               placeholder="__default__"
-              disabled={!modeData.fields.service_name}
+              disabled={hasNotServiceNameField}
             />
           </Form.Item>
         </Col>
       </Row>
 
       <Row>
-        <Col xs={24} md={modeData.fields.initialValue ? 12 : 24}>
+        <Col xs={24} md={hasInitialValue ? 12 : 24}>
           <Form.Item
             className={styles.formItem}
             label="Значение"
@@ -124,7 +126,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                   vertical: "hidden",
                 },
                 overviewRulerBorder: false,
-                readOnly: !modeData.fields.config_value,
+                readOnly: hasNotConfigValueField,
               }}
               loading={
                 <Row align="middle">
@@ -137,7 +139,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           </Form.Item>
         </Col>
 
-        {modeData.fields.initialValue && (
+        {hasInitialValue && (
           <Col xs={24} md={12}>
             <Form.Item label="Diff" className={styles.formItem}>
               <DiffEditor
