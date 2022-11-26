@@ -1,16 +1,20 @@
 import {getConfigs} from "./configs.db";
+import {
+  DASHBOARD_CONFIGS_CREATE_URL,
+  DASHBOARD_CONFIGS_URL
+} from "../../../src/constants";
 
 describe("Страница списка конфигов", () => {
   beforeEach(() => {
     cy.stubConfigsAPI();
     cy.login();
-    cy.visit("/dashboard/configs");
+    cy.visit(DASHBOARD_CONFIGS_URL);
   })
 
   it("Переход на создание конфига", () => {
     cy.get("button.ant-btn-primary").click();
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq("/dashboard/configs/create");
+      expect(loc.pathname).to.eq(DASHBOARD_CONFIGS_CREATE_URL);
     });
   });
 

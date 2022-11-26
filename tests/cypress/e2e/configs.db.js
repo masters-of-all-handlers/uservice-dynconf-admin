@@ -34,8 +34,24 @@ export const createConfig = (data) => {
   configs.push({...data, uuid: v4()});
 }
 
-export const cloneConfig = () => {
-  console.log('cloneConfig', arguments);
+const findConfig = (data) => {
+  return configs.findIndex(conf => conf.config_name === data.config_name && conf.service_name === data.service_name);
+}
+
+export const cloneConfig = (data) => {
+  const existing = findConfig(data);
+  if (existing > -1) {
+    Object.assign(configs[existing], data);
+  } else {
+    configs.push({...data, uuid: v4()});
+  }
+}
+
+export const editConfig = (data) => {
+  const existing = findConfig(data);
+  if (existing > -1) {
+    Object.assign(configs[existing], data);
+  }
 }
 
 export const getServices = () => {

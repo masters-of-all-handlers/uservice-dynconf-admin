@@ -6,7 +6,7 @@ import {
 } from "../../../src/constants";
 import {
   cloneConfig,
-  createConfig, deleteConfig,
+  createConfig, deleteConfig, editConfig,
   getConfig,
   getConfigs,
   getServices
@@ -80,6 +80,16 @@ Cypress.Commands.add("stubConfigsAPI", () => {
       req.reply({statusCode: 204});
     }
   ).as("deleteConfig");
+  cy.intercept(
+    {
+      method: "PATCH",
+      url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*`
+    },
+    (req) => {
+      editConfig(req.url.match(/(.*)\/([0-9a-f\-]{36})\/?$/)[2]);
+      req.reply({statusCode: 200});
+    }
+  ).as("editConfig");
   cy.intercept(
     {
       method: "POST",

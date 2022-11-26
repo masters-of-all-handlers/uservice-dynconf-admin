@@ -1,7 +1,7 @@
 import {getConfig} from "./configs.db";
 import {testFormReset} from "./utils";
 import {
-  DASHBOARD_CONFIGS_CLONE_URL,
+  DASHBOARD_CONFIGS_EDIT_URL,
   DASHBOARD_CONFIGS_URL
 } from "../../../src/constants";
 
@@ -15,25 +15,23 @@ describe("Страница клонирования конфига", () => {
     cy.login();
     cy.stubConfigsAPI();
     cy
-      .visit(DASHBOARD_CONFIGS_CLONE_URL(config.uuid));
+      .visit(DASHBOARD_CONFIGS_EDIT_URL(config.uuid));
     cy.wait("@getConfig");
     cy.wait("@getServices");
   });
 
-  it("Все поля заполнены - успешное клонирование", () => {
-    const suffix = new Date().toString();
-    cy.get("#config_name").type(suffix);
-    cy.get("#service_name").type("new_service");
+  it("Все поля заполнены - успешное редактирование", () => {
+    cy.get("#config_name").should("have.attr", "disabled", "disabled");
+    cy.get("#service_name").should("have.attr", "disabled", "disabled");
     cy.get("button.ant-btn-primary").click();
-    cy.get(".ant-message").should("contain.text", "успешно клонирован");
+    cy.get(".ant-message").should("contain.text", "успешно обновлен");
     cy.location().should(loc => {
       expect(loc.pathname).to.equal(DASHBOARD_CONFIGS_URL);
     });
-    cy.contains(`${config.config_name}${suffix}`).should("exist");
   });
 
   it("Пустое поле - ошибка", () => {
-    cy.get("#config_name").clear();
+    cy.get(".monaco-editor").first().type("{selectAll}{backspace}");
     cy.get("button.ant-btn-primary").click();
     cy.get(".ant-message").should("contain.text", "ошибки в полях");
   });

@@ -1,6 +1,6 @@
 import {
   API_BASE_ADMIN_URL, API_CONFIGS_ENDPOINT,
-  API_SERVICES_ENDPOINT
+  API_SERVICES_ENDPOINT, DASHBOARD_CONFIGS_CREATE_URL, DASHBOARD_CONFIGS_URL
 } from "../../../src/constants";
 import {createConfig, getServices} from "./configs.db";
 import {testFormReset} from "./utils";
@@ -12,7 +12,7 @@ describe("Страница создания конфига", () => {
     cy.login();
     cy.stubConfigsAPI();
     cy
-      .visit("/dashboard/configs/create")
+      .visit(DASHBOARD_CONFIGS_CREATE_URL)
   });
 
   it("Все поля заполнены - успешное создание", () => {
@@ -22,7 +22,7 @@ describe("Страница создания конфига", () => {
     cy.get("button.ant-btn-primary").click();
     cy.get(".ant-message").should("contain.text", "успешно создан");
     cy.location().should(loc => {
-      expect(loc.pathname).to.equal("/dashboard/configs");
+      expect(loc.pathname).to.equal(DASHBOARD_CONFIGS_URL);
     });
     cy.contains("CONFIG_NAME").should("exist");
   });
