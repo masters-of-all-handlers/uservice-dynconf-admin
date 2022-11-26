@@ -41,74 +41,67 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
   );
 
   return (
-    <>
-      <Row>
-        <Col xs={24} md={12}>
-          <Form.Item
-            className={styles.formItem}
-            label="Имя переменной"
-            name="config_name"
-            rules={rules.configName}
-          >
-            <Input placeholder="MY_NICE_VAR" disabled={hasNotConfigNameField} />
-          </Form.Item>
-        </Col>
+    <div className={styles.fields}>
+      <Form.Item
+        label="Имя переменной"
+        name="config_name"
+        rules={rules.configName}
+        wrapperCol={{
+          span: 9,
+        }}
+      >
+        <Input placeholder="MY_NICE_VAR" disabled={hasNotConfigNameField} />
+      </Form.Item>
 
-        <Col xs={24} md={12}>
-          <Form.Item
-            className={styles.formItem}
-            label="Сервис"
-            name="service_name"
-            rules={rules.serviceName}
-            help={serviceNameHelp}
-          >
-            <AutoComplete
-              options={serviceNameAutoComplete.options}
-              onSearch={serviceNameAutoComplete.handleOnSearch}
-              onSelect={serviceNameAutoComplete.handleOnSelect}
-              placeholder="__default__"
-              disabled={hasNotServiceNameField}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
+      <Form.Item
+        label="Сервис"
+        name="service_name"
+        rules={rules.serviceName}
+        help={serviceNameHelp}
+        wrapperCol={{
+          span: 9,
+        }}
+      >
+        <AutoComplete
+          options={serviceNameAutoComplete.options}
+          onSearch={serviceNameAutoComplete.handleOnSearch}
+          onSelect={serviceNameAutoComplete.handleOnSelect}
+          placeholder="__default__"
+          disabled={hasNotServiceNameField}
+        />
+      </Form.Item>
 
-      <Row>
-        <Col xs={24} md={hasInitialValue ? 12 : 24}>
-          <Form.Item
-            className={styles.formItem}
-            label="Значение"
-            name="config_value"
-            rules={rules.configValue}
-            getValueProps={getValuePropsConfigValue}
-          >
-            <Editor
+      <Form.Item label="Значение">
+        <Form.Item
+          className={styles.editorItem}
+          name="config_value"
+          rules={rules.configValue}
+          getValueProps={getValuePropsConfigValue}
+        >
+          <Editor
+            defaultLanguage="json"
+            height="300px"
+            options={{
+              ...editorOptions,
+              readOnly: hasNotConfigValueField,
+            }}
+            loading={<Spinner />}
+          />
+        </Form.Item>
+
+        {hasInitialValue && (
+          <Form.Item className={styles.editorItem}>
+            <DiffEditor
               defaultLanguage="json"
               height="300px"
-              options={{
-                ...editorOptions,
-                readOnly: hasNotConfigValueField,
-              }}
+              modified={prettifyJSON(config_value)}
+              original={prettifyJSON(initialValues.config_value)}
+              options={diffEditorOptions}
               loading={<Spinner />}
             />
           </Form.Item>
-        </Col>
-
-        {hasInitialValue && (
-          <Col xs={24} md={12}>
-            <Form.Item label="Diff" className={styles.formItem}>
-              <DiffEditor
-                defaultLanguage="json"
-                height="300px"
-                modified={prettifyJSON(config_value)}
-                original={prettifyJSON(initialValues.config_value)}
-                options={diffEditorOptions}
-                loading={<Spinner />}
-              />
-            </Form.Item>
-          </Col>
         )}
-      </Row>
-    </>
+      </Form.Item>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form, message, PageHeader, Popconfirm} from "antd";
 
-import formModes from "./formModes";
+import {formModes, formItemLayout} from "./formParams";
 
 import Spinner from "../Spinner/Spinner";
 import ConfigFormFields from "../ConfigFormFields/ConfigFormFields";
@@ -61,8 +61,9 @@ const ConfigForm = ({
         <Spinner />
       ) : (
         <Form
+          {...formItemLayout}
           form={form}
-          layout="vertical"
+          layout="horizontal"
           onFinish={onFinish}
           onFinishFailed={handleOnFinishFailed}
           initialValues={initialValues}
