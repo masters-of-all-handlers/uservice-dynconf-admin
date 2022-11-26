@@ -15,7 +15,7 @@ import {
   Typography,
 } from "antd";
 
-import styles from "../../pages/EditPage/styles.module.scss";
+import styles from "./styles.module.scss";
 
 import {useGetServicesQuery} from "../../services/UserverService";
 
