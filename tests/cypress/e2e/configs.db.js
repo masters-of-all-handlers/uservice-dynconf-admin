@@ -1,3 +1,5 @@
+import {v4} from "uuid";
+
 let configs = [
   {
     config_name: "config 1",
@@ -13,6 +15,8 @@ let configs = [
   },
 ];
 
+let services = ["service name", "service name 2"];
+
 export const getConfigs = () => {
   return configs;
 }
@@ -23,4 +27,12 @@ export const getConfig = (uuid) => {
 
 export const deleteConfig = (uuid) => {
   configs = configs.filter(item => item.uuid !== uuid);
+}
+
+export const createConfig = (data) => {
+  configs.push({...data, uuid: v4()});
+}
+
+export const getServices = () => {
+  return services;
 }
