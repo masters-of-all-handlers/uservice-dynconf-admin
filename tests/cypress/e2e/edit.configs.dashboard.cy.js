@@ -1,4 +1,4 @@
-import {getConfig} from "./configs.db";
+import {getConfig, getConfigs} from "./configs.db";
 import {testFormReset} from "./utils";
 import {
   DASHBOARD_CONFIGS_EDIT_URL,
@@ -7,17 +7,15 @@ import {
 
 /* eslint-disable testing-library/-async-utils */
 /// <reference types="cypress" />
-describe("Страница клонирования конфига", () => {
+describe("Страница редактирования конфига", () => {
 
-  const config = getConfig("00000000-0000-0000-0000-000000000001");
+  const config = getConfigs()[0];
 
   beforeEach(() => {
-    cy.login();
     cy.stubConfigsAPI();
+    cy.login();
     cy
       .visit(DASHBOARD_CONFIGS_EDIT_URL(config.uuid));
-    cy.wait("@getConfig");
-    cy.wait("@getServices");
   });
 
   it("Все поля заполнены - успешное редактирование", () => {
@@ -31,13 +29,15 @@ describe("Страница клонирования конфига", () => {
   });
 
   it("Пустое поле - ошибка", () => {
-    cy.get(".monaco-editor").first().type("{selectAll}{backspace}");
+    cy.contains(".ant-form-item", "Значение").find(".monaco-editor").first()
+      .click().focused().type("{selectAll}{backspace}");
     cy.get("button.ant-btn-primary").click();
     cy.get(".ant-message").should("contain.text", "ошибки в полях");
   });
 
   it("Невалидный JSON - ошибка", () => {
-    cy.get(".monaco-editor").first().type("200{}");
+    cy.contains(".ant-form-item", "Значение").find(".monaco-editor").first()
+      .click().focused().type("200{}");
     cy.get("button.ant-btn-primary").click();
     cy.get(".ant-message").should("contain.text", "ошибки в полях");
   });

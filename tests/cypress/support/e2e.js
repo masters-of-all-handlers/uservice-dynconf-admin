@@ -34,7 +34,7 @@ Cypress.Commands.add("stubConfigsAPI", () => {
       url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}*`,
     },
     (req) => {
-      req.reply({statusCode: 200, body: {items: getConfigs()}});
+      req.reply({statusCode: 200, body: {items: getConfigs(req.query)}});
     }
   ).as("getConfigs");
   cy.intercept(
@@ -86,7 +86,7 @@ Cypress.Commands.add("stubConfigsAPI", () => {
       url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*`
     },
     (req) => {
-      editConfig(req.url.match(/(.*)\/([0-9a-f\-]{36})\/?$/)[2]);
+      editConfig({...req.body, uuid: req.url.match(/(.*)\/([0-9a-f\-]{36})\/?$/)[2]});
       req.reply({statusCode: 200});
     }
   ).as("editConfig");
@@ -96,7 +96,7 @@ Cypress.Commands.add("stubConfigsAPI", () => {
       url: `${API_BASE_ADMIN_URL}${API_CONFIGS_ENDPOINT}/*/clone`
     },
     req => {
-      cloneConfig(req.body);
+      cloneConfig({...req.body, uuid: req.url.match(/(.*)\/([0-9a-f\-]{36})\/clone\/?$/)[2]});
       req.reply({statusCode: 201});
     }
   ).as("cloneConfig");

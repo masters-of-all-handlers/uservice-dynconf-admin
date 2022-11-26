@@ -1,4 +1,4 @@
-import {getConfig} from "./configs.db";
+import {getConfigs} from "./configs.db";
 import {testFormReset} from "./utils";
 import {
   DASHBOARD_CONFIGS_CLONE_URL,
@@ -9,11 +9,11 @@ import {
 /// <reference types="cypress" />
 describe("Страница клонирования конфига", () => {
 
-  const config = getConfig("00000000-0000-0000-0000-000000000001");
+  const config = getConfigs()[0];
 
   beforeEach(() => {
-    cy.login();
     cy.stubConfigsAPI();
+    cy.login();
     cy
       .visit(DASHBOARD_CONFIGS_CLONE_URL(config.uuid));
     cy.wait("@getConfig");

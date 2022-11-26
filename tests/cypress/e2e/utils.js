@@ -11,3 +11,7 @@ export const testFormReset = ({config}) => {
     cy.get(".lines-content").first().should("have.text", config.config_value);
   });
 }
+
+export const testConfigsLength = (length) => {
+  cy.get(".ant-pagination-total-text").should("have.text", `Всего: ${length}`);
+}

@@ -9,10 +9,9 @@ import {testFormReset} from "./utils";
 /// <reference types="cypress" />
 describe("Страница создания конфига", () => {
   beforeEach(() => {
-    cy.login();
     cy.stubConfigsAPI();
-    cy
-      .visit(DASHBOARD_CONFIGS_CREATE_URL)
+    cy.login();
+    cy.visit(DASHBOARD_CONFIGS_CREATE_URL)
   });
 
   it("Все поля заполнены - успешное создание", () => {
