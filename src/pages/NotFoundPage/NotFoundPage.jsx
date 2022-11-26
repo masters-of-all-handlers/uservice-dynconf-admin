@@ -4,11 +4,10 @@ import {Button, Space} from "antd";
 
 import styles from "./styles.module.scss";
 
-import MainLayout from "../MainLayout/MainLayout";
-
 import {LOGIN_URL} from "../../constants";
 import useAuth from "../../hooks/useAuth";
 import LogoSection from "../../components/LogoSection/LogoSection";
+import MainLayout from "../../layouts/MainLayout/MainLayout";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();

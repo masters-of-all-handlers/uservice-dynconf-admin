@@ -1,46 +1,38 @@
 import React from "react";
 import {Button, Dropdown, Popconfirm, message} from "antd";
+import {useNavigate} from "react-router-dom";
 import {
   EllipsisOutlined,
   EditOutlined,
   DeleteOutlined,
   CopyOutlined,
 } from "@ant-design/icons";
-import {useNavigate} from "react-router-dom";
 
 import {
   DASHBOARD_CONFIGS_EDIT_URL,
   DASHBOARD_CONFIGS_CLONE_URL,
 } from "../../constants";
-
-import {variableAPI} from "../../services/VariableService";
+import {useDeleteConfigByIdMutation} from "../../services/UserverService";
 import {useDropdown} from "../../hooks/useDropdown";
 import {usePopconfirm} from "../../hooks/usePopconfirm";
 
-const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
-  // костыли))))
-  name = config_name || name;
+const ConfigTableRowActions = ({render: {uuid, config_name}}) => {
   const actionsDropdown = useDropdown();
   const deletePopconfirm = usePopconfirm();
-
   const navigate = useNavigate();
 
-  const [deleteVariableById, {isLoading: isLoadingDeleteVariableById}] =
-    variableAPI.useDeleteVariableByIdMutation();
+  const [deleteConfigById, {isLoading: isLoadingDeleteConfigById}] =
+    useDeleteConfigByIdMutation();
 
   const handleConfirmDelete = async () => {
-    const response = await deleteVariableById(uuid);
+    const {error} = await deleteConfigById(uuid);
 
     deletePopconfirm.close();
     actionsDropdown.close();
 
-    if (response.hasOwnProperty("error")) {
-      return message.error(
-        `При удалении конфига ${name} произошла ошибка ${response.error.status}`
-      );
+    if (!error) {
+      message.success(`Конфиг ${config_name} успешно удален`);
     }
-
-    message.success(`Конфиг ${name} удален`);
   };
 
   const handleCancelDelete = () => {
@@ -59,8 +51,10 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     }
   };
 
-  const handleMenuClick = (e) => {
-    const {key} = e;
+  const handleMenuItemClick = (e) => {
+    const {key, domEvent} = e;
+
+    domEvent.stopPropagation();
 
     switch (key) {
       case "edit":
@@ -79,29 +73,37 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     }
   };
 
+  const handleMenuClick = (e) => {
+    e.stopPropagation();
+
+    actionsDropdown.open();
+  };
+
   const menu = {
     items: [
       {
         key: "edit",
         label: "Редактировать",
-        icon: <EditOutlined/>,
+        icon: <EditOutlined />,
       },
+
       {
         key: "clone",
         label: "Клонировать",
-        icon: <CopyOutlined/>,
+        icon: <CopyOutlined />,
       },
+
       {
         key: "delete",
         label: (
           <Popconfirm
-            title={`Удалить ${name}?`}
+            title={`Удалить ${config_name}?`}
             open={deletePopconfirm.isOpen}
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}
             okText="Да"
             okButtonProps={{
-              loading: isLoadingDeleteVariableById,
+              loading: isLoadingDeleteConfigById,
               danger: true,
             }}
             cancelText="Нет"
@@ -109,11 +111,12 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
             Удалить
           </Popconfirm>
         ),
-        icon: <DeleteOutlined/>,
+        icon: <DeleteOutlined />,
         danger: true,
       },
     ],
-    onClick: handleMenuClick,
+
+    onClick: handleMenuItemClick,
   };
 
   return (
@@ -125,9 +128,9 @@ const ConfigTableRowActions = ({render: {uuid, config_name, name}}) => {
     >
       <Button
         type="text"
-        icon={<EllipsisOutlined/>}
+        icon={<EllipsisOutlined />}
         size="small"
-        onClick={actionsDropdown.open}
+        onClick={handleMenuClick}
       />
     </Dropdown>
   );

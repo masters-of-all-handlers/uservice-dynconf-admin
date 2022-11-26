@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+
 import {
   API_BASE_ADMIN_URL,
   API_CONFIGS_ENDPOINT,
@@ -6,8 +7,8 @@ import {
 } from "../constants";
 import {prepareAuthHeaders} from "../utils/auth";
 
-export const variableAPI = createApi({
-  reducerPath: "variableAPI",
+export const userverAPI = createApi({
+  reducerPath: "userverAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_ADMIN_URL,
     prepareHeaders: prepareAuthHeaders,
@@ -16,13 +17,13 @@ export const variableAPI = createApi({
 
   endpoints: (build) => ({
     getConfigs: build.query({
-      query: ({limit = 10, page = 1, s = "", s_services = ""}) => ({
+      query: ({limit, page, config, service}) => ({
         url: API_CONFIGS_ENDPOINT,
         params: {
           limit,
           page,
-          s,
-          s_services,
+          config,
+          service,
         },
       }),
 
@@ -40,36 +41,36 @@ export const variableAPI = createApi({
       providesTags: (result, error, uuid) => [{type: "Configs", uuid}],
     }),
 
-    updateVariable: build.mutation({
-      query: ({uuid, ...update}) => ({
-        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
-        method: "PATCH",
-        body: update,
-      }),
-
-      invalidatesTags: ["Configs", "Services"],
-    }),
-
-    createVariable: build.mutation({
-      query: (variable) => ({
+    createConfig: build.mutation({
+      query: (data) => ({
         url: API_CONFIGS_ENDPOINT,
         method: "POST",
-        body: variable,
+        body: data,
       }),
 
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    cloneVariable: build.mutation({
-      query: ({uuid, ...clone}) => ({
+    updateConfig: build.mutation({
+      query: ({uuid, data}) => ({
+        url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
+        method: "PATCH",
+        body: data,
+      }),
+
+      invalidatesTags: ["Configs", "Services"],
+    }),
+
+    cloneConfig: build.mutation({
+      query: ({uuid, data}) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}/clone`,
         method: "POST",
-        body: clone,
+        body: data,
       }),
       invalidatesTags: ["Configs", "Services"],
     }),
 
-    deleteVariableById: build.mutation({
+    deleteConfigById: build.mutation({
       query: (uuid) => ({
         url: `${API_CONFIGS_ENDPOINT}/${uuid}`,
         method: "DELETE",
@@ -77,7 +78,8 @@ export const variableAPI = createApi({
 
       invalidatesTags: ["Configs"],
     }),
-    getAllServices: build.query({
+
+    getServices: build.query({
       query: () => ({
         url: API_SERVICES_ENDPOINT,
       }),
@@ -87,4 +89,13 @@ export const variableAPI = createApi({
   }),
 });
 
-export const {useGetConfigsQuery, useGetConfigByIdQuery} = variableAPI;
+export const {
+  useGetConfigsQuery,
+  useGetConfigByIdQuery,
+  useCreateConfigMutation,
+  useUpdateConfigMutation,
+  useCloneConfigMutation,
+  useDeleteConfigByIdMutation,
+
+  useGetServicesQuery,
+} = userverAPI;
