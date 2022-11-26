@@ -11,13 +11,13 @@ import {
   Form,
   Input,
   Row,
-  Space,
-  Spin,
   Typography,
 } from "antd";
 
 import styles from "./styles.module.scss";
 import {rules} from "./fieldParams";
+
+import Spinner from "../Spinner/Spinner";
 
 import {useGetServicesQuery} from "../../services/UserverService";
 import {prettifyJSON, isJSONValid} from "../../utils/json";
@@ -128,13 +128,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                 overviewRulerBorder: false,
                 readOnly: hasNotConfigValueField,
               }}
-              loading={
-                <Row align="middle">
-                  <Space className={styles.spinner}>
-                    <Spin />
-                  </Space>
-                </Row>
-              }
+              loading={<Spinner />}
             />
           </Form.Item>
         </Col>
@@ -162,13 +156,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                   overviewRulerBorder: false,
                   renderOverviewRuler: false,
                 }}
-                loading={
-                  <Row align="middle">
-                    <Space className={styles.spinner}>
-                      <Spin />
-                    </Space>
-                  </Row>
-                }
+                loading={<Spinner />}
               />
             </Form.Item>
           </Col>

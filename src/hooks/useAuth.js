@@ -6,8 +6,8 @@ import {
   useEffect
 } from "react";
 import {authAPI} from "../services/AuthService";
-import {Spin} from "antd";
 import {getStoredTicket} from "../utils/auth";
+import Spinner from "../components/Spinner/Spinner";
 
 const AuthContext = createContext({
   data: {ticket: getStoredTicket()}, login(_) {
@@ -39,7 +39,7 @@ export const AuthProvider = ({children}) => {
     }
   }, [checkError, logout]);
   return isCheckLoading ?
-    <Spin style={{margin: "50vh auto 0", display: "block"}}/> :
+    <Spinner /> :
     <AuthContext.Provider value={{
       data: authData,
       login,
