@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import classnames from "classnames";
 import Editor, {DiffEditor} from "@monaco-editor/react";
+
 /* загрузка не с CDN, а с локального npm пакета */
 import loader from "@monaco-editor/loader";
 import * as monaco from "monaco-editor";
@@ -16,40 +17,12 @@ import {
 } from "antd";
 
 import styles from "./styles.module.scss";
+import {rules} from "./fieldParams";
 
 import {useGetServicesQuery} from "../../services/UserverService";
 import {prettifyJSON, isJSONValid} from "../../utils/json";
 
 loader.config({monaco});
-
-const prettifyJSON = (json) => {
-  try {
-    return JSON.stringify(JSON.parse(json), null, 2);
-  } catch (e) {
-    if (json) {
-      return json;
-    }
-    return "";
-  }
-};
-
-const isJSONValid = (json) => {
-  try {
-    JSON.parse(json);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-const validateJSON = (_, value) =>
-  new Promise((resolve, reject) => {
-    if (isJSONValid(value)) {
-      resolve();
-    } else {
-      reject("Значение должно быть валидным JSON");
-    }
-  });
 
 export default function ConfigFormFields({form, initialValues, modeData}) {
   const config_value = Form.useWatch("config_value", form);
@@ -85,15 +58,10 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
       <Row>
         <Col xs={24} md={12}>
           <Form.Item
-            label="Имя переменной"
-            rules={[
-              {
-                required: true,
-                message: "Введите имя переменной",
-              },
-            ]}
             className={styles.formItem}
+            label="Имя переменной"
             name="config_name"
+            rules={rules.configName}
           >
             <Input
               placeholder="MY_NICE_VAR"
@@ -106,13 +74,8 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
           <Form.Item
             className={styles.formItem}
             label="Сервис"
-            rules={[
-              {
-                required: true,
-                message: "Введите название сервиса",
-              },
-            ]}
             name="service_name"
+            rules={rules.serviceName}
             help={
               isNewService && (
                 <Typography.Text type="primary">
@@ -135,24 +98,16 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
       <Row>
         <Col xs={24} md={modeData.fields.initialValue ? 12 : 24}>
           <Form.Item
+            className={styles.formItem}
             label="Значение"
-            rules={[
-              {
-                required: true,
-                message: "Введите значение",
-              },
-              {
-                validator: validateJSON,
-              },
-            ]}
             name="config_value"
+            rules={rules.configValue}
             getValueProps={(value) => ({
               value: prettifyJSON(value),
               className: classnames("ant-input", {
                 "ant-input-status-error": !isJSONValid(value),
               }),
             })}
-            className={styles.formItem}
           >
             <Editor
               defaultLanguage="json"
@@ -181,6 +136,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
             />
           </Form.Item>
         </Col>
+
         {modeData.fields.initialValue && (
           <Col xs={24} md={12}>
             <Form.Item label="Diff" className={styles.formItem}>
