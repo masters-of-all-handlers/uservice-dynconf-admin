@@ -4,8 +4,8 @@ describe("Верхнее меню", () => {
     cy.visit("/dashboard/configs/create");
   })
 
-  it("Переход на список конфигов", async () => {
-    await cy
+  it("Переход на список конфигов",  () => {
+     cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Конфиги")
       .click();
@@ -14,8 +14,8 @@ describe("Верхнее меню", () => {
     });
   });
 
-  it("Переход на создание пользователя", async () => {
-    await cy
+  it("Переход на создание пользователя",  () => {
+     cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Пользователи")
       .click();
@@ -24,8 +24,8 @@ describe("Верхнее меню", () => {
     });
   });
 
-  it("Выход из аккаунта", async () => {
-    await cy
+  it("Выход из аккаунта",  () => {
+     cy
       .get(".ant-layout-header .ant-menu-title-content")
       .contains("Выход")
       .click();
