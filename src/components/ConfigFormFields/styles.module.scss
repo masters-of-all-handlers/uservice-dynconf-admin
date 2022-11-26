@@ -1,9 +1,19 @@
-.formItem {
-  padding: 24px;
-  margin-bottom: 0;
+@use "../../scss/include-media.scss" as *;
+
+.fields {
+  padding: 24px 0;
 }
 
-.spinner {
-  padding: 24px;
-  margin: 0 auto;
+.editorItem {
+  @include media(">=md") {
+    display: inline-block;
+    width: 45%;
+  }
+
+  & + & {
+    @include media(">=md") {
+      width: calc(55% - 20px);
+      margin-left: 20px;
+    }
+  }
 }

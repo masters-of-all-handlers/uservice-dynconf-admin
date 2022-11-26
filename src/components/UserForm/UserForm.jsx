@@ -4,12 +4,11 @@ import {
   message,
   PageHeader,
   Popconfirm,
-  Row,
-  Space, Spin
 } from "antd";
-import styles from "../../pages/EditPage/styles.module.scss";
+import styles from "./styles.module.scss";
 import React, {useEffect, useState} from "react";
 import UserFormFields from "../UserFormFields/UserFormFields";
+import Spinner from "../Spinner/Spinner";
 
 const modes = {
   create: {
@@ -93,11 +92,7 @@ export default function UserForm(
       showIcon
       closable
       className={styles.alert}
-    />) : (isLoading ? <Row align="middle">
-        <Space className={styles.spinner}>
-          <Spin/>
-        </Space>
-      </Row> :
+    />) : (isLoading ? <Spinner /> :
       <UserFormFields initialValues={initialValues} form={form}
                       modeData={modeData}/>)}
   </Form>

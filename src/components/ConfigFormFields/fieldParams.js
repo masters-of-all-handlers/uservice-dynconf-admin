@@ -1,4 +1,6 @@
-import {validateJSON} from "../../utils/json";
+import classNames from "classnames";
+
+import {validateJSON, prettifyJSON, isJSONValid} from "../../utils/json";
 
 export const rules = {
   configName: [
@@ -25,4 +27,15 @@ export const rules = {
       validator: validateJSON,
     },
   ],
+};
+
+export const getValuePropsConfigValue = (value) => {
+  const fieldClassNames = classNames("ant-input", {
+    "ant-input-status-error": !isJSONValid(value),
+  });
+
+  return {
+    value: prettifyJSON(value),
+    className: fieldClassNames,
+  };
 };
