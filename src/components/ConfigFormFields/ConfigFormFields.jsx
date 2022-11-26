@@ -1,21 +1,14 @@
 import React, {useState} from "react";
-import classnames from "classnames";
 import Editor, {DiffEditor} from "@monaco-editor/react";
 
 /* загрузка не с CDN, а с локального npm пакета */
 import loader from "@monaco-editor/loader";
 import * as monaco from "monaco-editor";
-import {
-  AutoComplete,
-  Col,
-  Form,
-  Input,
-  Row,
-  Typography,
-} from "antd";
+import {AutoComplete, Col, Form, Input, Row, Typography} from "antd";
 
 import styles from "./styles.module.scss";
 import {rules, getValuePropsConfigValue} from "./fieldParams";
+import {editorOptions, diffEditorOptions} from "./editorOptions";
 
 import Spinner from "../Spinner/Spinner";
 
@@ -110,17 +103,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
               defaultLanguage="json"
               height="300px"
               options={{
-                formatOnPaste: true,
-                formatOnType: false,
-                minimap: {
-                  enabled: false,
-                },
-                overviewRulerLanes: 0,
-                hideCursorInOverviewRuler: true,
-                scrollbar: {
-                  vertical: "hidden",
-                },
-                overviewRulerBorder: false,
+                ...editorOptions,
                 readOnly: hasNotConfigValueField,
               }}
               loading={<Spinner />}
@@ -136,21 +119,7 @@ export default function ConfigFormFields({form, initialValues, modeData}) {
                 height="300px"
                 modified={prettifyJSON(config_value)}
                 original={prettifyJSON(initialValues.config_value)}
-                options={{
-                  renderSideBySide: false,
-                  originalEditable: false,
-                  readOnly: true,
-                  minimap: {
-                    enabled: false,
-                  },
-                  overviewRulerLanes: 0,
-                  hideCursorInOverviewRuler: true,
-                  scrollbar: {
-                    vertical: "hidden",
-                  },
-                  overviewRulerBorder: false,
-                  renderOverviewRuler: false,
-                }}
+                options={diffEditorOptions}
                 loading={<Spinner />}
               />
             </Form.Item>
