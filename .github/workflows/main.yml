@@ -84,4 +84,4 @@ jobs:
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa 
             sudo chmod 600 ~/.ssh/id_rsa
             scp -o StrictHostKeyChecking=no .github/workflows/restart-docker.sh ${{ secrets.SSH_LOGIN }}:~/restart-docker.sh
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} "bash restart-docker.sh $IMAGE_NAME:$IMAGE_TAG 80 80"
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_LOGIN }} "bash restart-docker.sh $IMAGE_NAME:$IMAGE_TAG 8082 80"
